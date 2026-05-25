@@ -1,0 +1,81 @@
+
+---
+
+// バックエンドサーバー（Cloudflare D1 の API）を起動
+// --ip 0.0.0.0 でLAN内のスマホ・タブレットからも接続できるようになります
+
+cd customer-api-prototype
+npm run dev
+
+
+本番環境（URL）: npx wrangler deploy が完了した瞬間から、本番のWebサイトは、先ほどインポートしたD1データベースを参照するようになります。
+ローカル環境: 自分のPCで npx wrangler dev を実行したときは、これまで通りPC内のローカルDBを見に行きます。
+※もしローカル開発時も本番のDBを見たい場合は # 一度 Ctrl+C で停止してから、以下で再起動
+npx wrangler dev --remote --ip 0.0.0.0
+ と打ちます。
+---
+
+// フロントエンドサーバーを起動
+// PC から    → http://localhost:5173/
+// スマホ等  → http://192.168.45.3:5173/
+
+
+
+cd lite-handy-app
+npm.cmd run dev
+
+---
+
+// ※ .env.local の設定（スマホ対応済み）
+// VITE_CUSTOMER_API_ORIGIN=http://192.168.45.3:8787
+// VITE_PUBLIC_APP_ORIGIN=http://192.168.45.3:5173
+
+
+
+// db → customer-api-prototype\.wrangler-clean\v3\d1
+
+
+---
+Android で確認する場合:
+
+cd lite-handy-app
+npm run cap:open:android
+Android Studio が起動しますので、エミュレータまたは実機でビルド・実行してください。
+
+
+---
+ビルド
+
+cd lite-handy-app
+npm run build
+
+native
+
+コードを変更した後の同期: Web側のコードを変更した後は、以下のコマンドでネイティブ側に反映させる必要があります：
+
+npm run cap:sync
+
+
+---
+端末へ配布
+
+Generate App Bundles or APKs
+
+これを選択すると、次に「Android App Bundle」か「APK」かを選ぶ画面が出ますので、「APK」 を選択して進めてください。
+
+もしメニュー構成が少し違う場合、もっとも簡単なのは以下の階層を探すことです：
+
+Build メニューを開く
+Build Bundle(s) / APK(s) という項目を探す（もしあれば）
+その中にある Build APK(s) をクリック
+これを実行すると、しばらくして右下に 「APK(s) generated successfully」 と通知が出ます。その中の 「locate」 という青い文字をクリックすると、フォルダが開き、インストール用の app-debug.apk が見つかります。
+
+これをタブレットにコピーして開けば、インストールが始まります！
+
+---
+運用時のポイント：
+今後、画面のボタンの色を変えたり、新しい機能を追加したりした場合は、以下の「3点セット」を実行して各タブレットに配布してください：
+
+PCでビルド: npm run build
+ネイティブ同期: npx cap sync
+APK作成: Android Studio で Build APKs を実行して各端末へ配布。

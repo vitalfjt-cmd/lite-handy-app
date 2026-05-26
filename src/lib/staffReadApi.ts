@@ -8,6 +8,7 @@ type StaffTicketSummaryResponse = {
   orderedAt: string
   subtotal: number
   lineCount: number
+  customerCount?: number | null
   status: 'NEW' | 'COOKING' | 'SERVED'
   lines: StaffTicketLineResponse[]
   cancelled_lines: StaffTicketLineResponse[]
@@ -672,7 +673,7 @@ export function fetchStaffTicketDetail(storeSlug: string, ticketId: string, tick
   })
 }
 
-export function createStaffPrototypeTicket(storeSlug: string, tableLabel: string, menuBookCode?: string | null, customerCount?: number) {
+export function createStaffPrototypeTicket(storeSlug: string, tableLabel: string, menuBookCode?: string | null, customerCount?: number | null) {
   return invoke<{
     store: { id: string; slug: string; name: string }
     ticket: {
@@ -681,6 +682,7 @@ export function createStaffPrototypeTicket(storeSlug: string, tableLabel: string
       ordered_at: string
       status: 'OPEN'
       customer_access_token: string
+      customer_count?: number | null
       menu_book_id: string | null
     }
     table: { id: string; label: string }

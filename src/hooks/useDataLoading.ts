@@ -85,6 +85,7 @@ export function useDataLoading(setters: DataLoadingSetters) {
         menu_book_id: ticket.menuBookId,
         table_label: ticket.tableName,
         customer_access_token: ticket.customerAccessToken,
+        customer_count: ticket.customerCount,
         ordered_at: ticket.orderedAt,
         status: 'OPEN',
       }))

@@ -113,8 +113,9 @@ export type LiveTicket = {
   table_ref_id: string
   table_label?: string | null
   menu_book_id: string | null
-  customer_access_token: string
-  ordered_at: string
+  customer_access_token: string,
+  customer_count?: number | null,
+  ordered_at: string,
   status: 'OPEN' | 'CANCELLED' | 'CLOSED'
 }
 export type LivePaymentEntry = {
@@ -153,6 +154,7 @@ export type TicketSummaryView = {
   orderedAt: string
   subtotal: number
   lineCount: number
+  customerCount?: number | null
   status: 'NEW' | 'COOKING' | 'SERVED'
 }
 export type ReceiptSummaryLine = { itemName: string; qty: number; subtotal: number }

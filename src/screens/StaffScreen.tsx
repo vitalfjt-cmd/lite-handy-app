@@ -500,7 +500,7 @@ export function StaffScreen({
                   <span className={`status-badge ${t.status.toLowerCase()}`}>{t.status === 'NEW' ? '新規' : t.status === 'COOKING' ? '調理中' : '提供済'}</span>
                 </div>
                 <div className="ticket-meta">
-                  <span>{t.orderedAt}</span>
+                  <span>{t.orderedAt} / {t.customerCount || 1}名</span>
                   <span>{t.lineCount}点 / {yen(t.subtotal)}</span>
                 </div>
               </div>
@@ -515,7 +515,7 @@ export function StaffScreen({
                 <div className="title-group">
                   <button className="btn-secondary mobile-only" onClick={() => onSelectTicket(null)} style={{marginRight:'12px', padding:'4px 8px'}}>← 戻る</button>
                   <h2 className="detail-title">{selectedSummary.tableName} 詳細</h2>
-                  <span className="order-time">注文時刻: {selectedSummary.orderedAt} / 伝票: {selectedSummary.ticketNo}</span>
+                  <span className="order-time">注文時刻: {selectedSummary.orderedAt} / 伝票: {selectedSummary.ticketNo} / 客数: {selectedSummary.customerCount || 1}名</span>
                 </div>
                 <div className="action-group">
                   {selectedCustomerUrl && (

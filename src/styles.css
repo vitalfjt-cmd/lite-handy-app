@@ -37,19 +37,9 @@ body,
   margin: 0;
   height: 100%;
   min-height: 100%;
-  /* Native-app feel */
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-  overflow: hidden;
 }
 
-body {
-  /* Handle Safe Area for Native Apps (Capacitor) */
-  padding-top: env(safe-area-inset-top, 0);
-  padding-right: env(safe-area-inset-right, 0);
-  padding-bottom: env(safe-area-inset-bottom, 0);
-  padding-left: env(safe-area-inset-left, 0);
-}
+
 
 
 
@@ -90,40 +80,10 @@ button {
 }
 
 
-.shell.admin-mode {
-  background: linear-gradient(180deg, #f4f6f7 0%, #fafbf9 100%);
-  height: 100vh;
-  height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  padding: 0; /* Ensure no clipping from outer padding */
-}
-
-.shell.admin-mode > .content {
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  padding: 20px;
-}
-
-.shell.admin-mode > .topbar {
-  flex: 0 0 auto;
-}
-
-.shell.staff-mode {
-  background: linear-gradient(180deg, #f4f6f7 0%, #fafbf9 100%);
-  padding: 0;
-  gap: 0;
-  height: 100vh;
-  height: 100dvh;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-.shell.kds-mode {
+.shell.staff-mode,
+.shell.admin-mode,
+.shell.kds-mode,
+.shell.handy-mode {
   background: linear-gradient(180deg, #f4f6f7 0%, #fafbf9 100%);
   padding: 0;
   gap: 0;
@@ -135,7 +95,9 @@ button {
 }
 
 .shell.staff-mode > .content,
-.shell.kds-mode > .content {
+.shell.admin-mode > .content,
+.shell.kds-mode > .content,
+.shell.handy-mode > .content {
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -159,7 +121,9 @@ button {
 }
 
 .shell.staff-mode .panel,
-.shell.staff-mode .topbar-header {
+.shell.staff-mode .topbar-header,
+.shell.handy-mode .panel,
+.shell.handy-mode .topbar-header {
   background: transparent;
   border: none;
   box-shadow: none;
@@ -1494,12 +1458,7 @@ h1 {
   }
 
   .admin-side-panel {
-    position: sticky;
-    top: 20px;
-    max-height: calc(100dvh - 140px);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden; /* Hide panel-level scroll */
+    max-height: 100%;
   }
 
   .admin-side-nav {
@@ -1523,8 +1482,8 @@ h1 {
   }
 
   .admin-list-panel-wide {
-    min-height: calc(100dvh - 220px);
-    max-height: calc(100dvh - 220px);
+    height: 100%;
+    max-height: 100%;
   }
 
   .admin-list-panel-wide .admin-table-wrap {
@@ -1917,10 +1876,13 @@ h1 {
 }
 
 .admin-shell {
-  display: grid;
-  gap: 16px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  padding: 20px;
+  box-sizing: border-box;
   position: relative;
-  margin-top: 8px;
   --admin-surface: #fffdfa;
   --admin-surface-soft: #f6f8f9;
   --admin-line: #dbe3ea;
@@ -1933,6 +1895,8 @@ h1 {
 .admin-layout {
   display: grid;
   gap: 16px;
+  flex: 1;
+  min-height: 0;
 }
 
 .admin-shell .eyebrow {
@@ -2104,8 +2068,23 @@ h1 {
 }
 
 .admin-main {
-  display: grid;
-  gap: 12px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+}
+
+.admin-main > .ops-grid {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+}
+
+.admin-main > .ops-grid > .panel {
+  height: 100%;
+  min-height: 0;
 }
 
 .admin-list-head {
@@ -2187,7 +2166,8 @@ h1 {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  min-height: 500px;
+  flex: 1;
+  min-height: 0;
 }
 
 .placement-breadcrumbs {
@@ -2253,6 +2233,9 @@ h1 {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 16px;
+  overflow-y: auto;
+  min-height: 0;
+  flex: 1;
 }
 
 .placement-card {
@@ -2369,7 +2352,9 @@ h1 {
   background: white;
   border: 1px solid #e2e8f0;
   border-radius: 16px;
-  overflow: hidden;
+  overflow: auto;
+  flex: 1;
+  min-height: 0;
 }
 
 .placement-empty {
@@ -2577,8 +2562,19 @@ h1 {
   gap: 12px;
 }
 
-.admin-section-store {
-  min-width: 0;
+.admin-section-store,
+.admin-section-placements {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+}
+
+.admin-section-store .form-stack {
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+  padding-right: 12px;
 }
 
 .admin-store-field {
@@ -4650,7 +4646,7 @@ h1 {
 }
 
 /* Ensure independent screens take full space */
-.shell.staff-mode, .shell.admin-mode, .shell.kds-mode {
+.shell.staff-mode, .shell.admin-mode, .shell.kds-mode, .shell.handy-mode {
   padding: 0;
   height: 100vh;
   height: 100dvh;

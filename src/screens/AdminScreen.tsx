@@ -469,8 +469,8 @@ export function AdminScreen(props: Props) {
               storeSlug={props.adminStoreSlug}
               disabled={disabled}
               yen={props.yen}
-              setAdminMessage={props.setAdminMessage}
-              setError={props.setError}
+              setAdminMessage={(msg) => msg ? alert(msg) : null}
+              setError={(msg) => msg ? alert(msg) : null}
             />
           ) : null}
 

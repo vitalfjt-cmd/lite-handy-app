@@ -79,3 +79,20 @@ Build Bundle(s) / APK(s) という項目を探す（もしあれば）
 PCでビルド: npm run build
 ネイティブ同期: npx cap sync
 APK作成: Android Studio で Build APKs を実行して各端末へ配布。
+
+
+customer-api-prototype ディレクトリはGitリポジトリになっていないため、以下のコマンドを実行してバックエンドをCloudflare Workersへデプロイ
+
+cd customer-api-prototype
+npm run deploy
+
+
+Cloudflare APIへの接続で認証エラー（Authentication error [code: 10000]）が発生した場合、
+
+一度ログアウトしてから再ログインすると正常に動作する場合がある
+
+npx wrangler logout
+
+npx wrangler login
+
+npm run deploy

@@ -95,7 +95,7 @@ export function SetupScreen({
               <div className="field">
                 <label>役割 (View Mode)</label>
                 <div className="setup-view-options">
-                  {(['handy', 'staff', 'kds', 'admin'] as AppView[]).map((v) => (
+                  {(['handy', 'staff', 'kds', 'admin', 'sales'] as AppView[]).map((v) => (
                     <button
                       key={v}
                       type="button"
@@ -105,12 +105,14 @@ export function SetupScreen({
                       <span className="setup-view-icon">
                         {v === 'handy' ? '📝' :
                          v === 'staff' ? '🖥️' :
-                         v === 'kds' ? '🔥' : '⚙️'}
+                         v === 'kds' ? '🔥' : 
+                         v === 'sales' ? '📊' : '⚙️'}
                       </span>
                       <span className="setup-view-label">
                         {v === 'handy' ? 'Handy (スマホ用)' :
                          v === 'staff' ? 'ホール (タブレット用)' :
-                         v === 'kds' ? 'キッチン用' : '管理者用'}
+                         v === 'kds' ? 'キッチン用' : 
+                         v === 'sales' ? '売上管理' : 'マスタメンテナンス'}
                       </span>
                     </button>
                   ))}

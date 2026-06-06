@@ -35,6 +35,7 @@ const ADMIN_TABS: Array<{ id: AdminTab; label: string; caption: string }> = [
 const D1_EDITABLE_ADMIN_TABS: AdminTab[] = ['menuBooks', 'categories', 'subcategories', 'items', 'placements', 'store', 'tables', 'staff', 'sales']
 
 type Props = {
+  mode?: 'master' | 'sales'
   storeName: string
   categoryCount: number
   itemCount: number
@@ -206,7 +207,19 @@ function checkBox(checked: boolean, onChange: (next: boolean) => void, disabled 
 }
 
 export function AdminScreen(props: Props) {
-  const [activeTab, setActiveTab] = useState<AdminTab>('menuBooks')
+  const [activeTab, setActiveTab] = useState<AdminTab>(props.mode === 'sales' ? 'sales' : 'menuBooks')
+
+  useEffect(() => {
+    setActiveTab(props.mode === 'sales' ? 'sales' : 'menuBooks')
+  }, [props.mode])
+
+  const tabs = useMemo(() => {
+    if (props.mode === 'sales') {
+      return ADMIN_TABS.filter((t) => t.id === 'sales')
+    } else {
+      return ADMIN_TABS.filter((t) => t.id !== 'sales')
+    }
+  }, [props.mode])
   const [menuBookModalOpen, setMenuBookModalOpen] = useState(false)
   const [itemModalOpen, setItemModalOpen] = useState(false)
   const [categoryModalOpen, setCategoryModalOpen] = useState(false)
@@ -223,10 +236,10 @@ export function AdminScreen(props: Props) {
   const [scopedPlacementSubcategoryId, setScopedPlacementSubcategoryId] = useState('')
 
   useEffect(() => {
-    if (props.adminReadOnlyMode && !D1_EDITABLE_ADMIN_TABS.includes(activeTab)) {
+    if (props.mode !== 'sales' && props.adminReadOnlyMode && !D1_EDITABLE_ADMIN_TABS.includes(activeTab)) {
       setActiveTab('menuBooks')
     }
-  }, [activeTab, props.adminReadOnlyMode])
+  }, [activeTab, props.adminReadOnlyMode, props.mode])
 
   useEffect(() => {
     if (activeTab !== 'placements') return
@@ -276,11 +289,11 @@ export function AdminScreen(props: Props) {
             </button>
             <div>
               <p className="eyebrow">ADMIN</p>
-              <h2>メニューブック構成</h2>
+              <h2>{props.mode === 'sales' ? '売上管理' : 'マスタメンテナンス'}</h2>
             </div>
           </div>
           <div className="admin-side-nav">
-            {ADMIN_TABS.map((tab) => (
+            {tabs.map((tab) => (
               <button
                 key={tab.id}
                 className={`admin-nav-button admin-nav-button-${tab.id} ${activeTab === tab.id ? 'active' : ''}`}

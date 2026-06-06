@@ -141,6 +141,7 @@ function getIcon(view: AppView) {
     case 'staff': return '🖥️'
     case 'kds': return '🔥'
     case 'admin': return '⚙️'
+    case 'sales': return '📊'
     case 'handy': return '📝'
     default: return '🚀'
   }

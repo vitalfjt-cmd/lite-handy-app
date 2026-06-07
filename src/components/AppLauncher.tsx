@@ -137,7 +137,7 @@ export function AppLauncher({
 function getIcon(view: AppView) {
   switch (view) {
     case 'customer': return '📱'
-    case 'cust-tablet': return '💊'
+    case 'cust-tablet': return '📱'
     case 'staff': return '🖥️'
     case 'kds': return '🔥'
     case 'admin': return '⚙️'

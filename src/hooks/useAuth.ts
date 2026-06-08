@@ -1,10 +1,11 @@
 import { useState, useEffect, FormEvent } from 'react'
-import { fetchStaffPrototypeSession, loginStaffPrototype, logoutStaffPrototype, staffReadApiEnabled, staffReadStoreSlugOverride } from '../lib/staffReadApi'
+import { firebaseAuth } from '../lib/firebase'
+import { fetchStaffPrototypeSession, logoutStaffPrototype, staffReadApiEnabled, staffReadStoreSlugOverride } from '../lib/staffReadApi'
 import { PROTOTYPE_STAFF_SESSION_STORAGE_KEY } from '../constants'
 import type { StaffProfile } from '../types'
 
 export function useAuth() {
-  const [email, setEmail] = useState('owner@example.com')
+  const [email, setEmail] = useState('vtl.ucd@aroma.ocn.ne.jp')
   const [password, setPassword] = useState('demo1234')
   const [session, setSession] = useState<any | null>(null)
   const [profile, setProfile] = useState<StaffProfile | null>(null)
@@ -37,10 +38,12 @@ export function useAuth() {
     setAuthError(null)
     try {
       if (staffReadApiEnabled) {
-        const res = await loginStaffPrototype(authStoreSlug, email, password)
-        window.sessionStorage.setItem(PROTOTYPE_STAFF_SESSION_STORAGE_KEY, res.access_token)
-        setProfile(res.profile)
-        setSession({ access_token: res.access_token, user: { id: res.profile.id, email: res.profile.email } } as any)
+        const res = await firebaseAuth.signInWithEmailAndPassword(email, password)
+        const token = `firebase-token-${res.user.email}`
+        window.sessionStorage.setItem(PROTOTYPE_STAFF_SESSION_STORAGE_KEY, token)
+        const sessionData = await fetchStaffPrototypeSession(authStoreSlug, token)
+        setProfile(sessionData.profile)
+        setSession({ access_token: token, user: { id: sessionData.profile.id, email: sessionData.profile.email } } as any)
       } else {
         throw new Error('Staff read API is not enabled.')
       }
@@ -56,7 +59,10 @@ export function useAuth() {
     try {
       if (staffReadApiEnabled) {
         const token = window.sessionStorage.getItem(PROTOTYPE_STAFF_SESSION_STORAGE_KEY)
-        if (token) await logoutStaffPrototype(staffReadStoreSlugOverride || 'demo-bbq', token)
+        if (token && !token.startsWith('firebase-token-')) {
+          await logoutStaffPrototype(staffReadStoreSlugOverride || 'demo-bbq', token)
+        }
+        await firebaseAuth.signOut()
         window.sessionStorage.removeItem(PROTOTYPE_STAFF_SESSION_STORAGE_KEY)
       }
       setProfile(null)

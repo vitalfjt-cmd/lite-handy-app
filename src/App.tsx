@@ -24,6 +24,7 @@ import { kdsStatusLabel } from './lib/staffUtils'
 import { AdminScreen } from './screens/AdminScreen'
 import { KdsScreen } from './screens/KdsScreen'
 import { StaffScreen } from './screens/StaffScreen'
+import { LoginScreen } from './screens/LoginScreen'
 import type {
   ActiveStoreSummary,
   AppView,
@@ -122,6 +123,7 @@ export default function App() {
   const [adminMessage, setAdminMessage] = useState<string | null>(null)
   const [staffMessage, setStaffMessage] = useState<string | null>(null)
   const [isLauncherOpen, setIsLauncherOpen] = useState(false)
+  const [wasLoggingIn, setWasLoggingIn] = useState(false)
 
   // Staff UI State
   const [handyItemId, setHandyItemId] = useState('')
@@ -341,6 +343,19 @@ export default function App() {
     const timer = window.setTimeout(() => setAdminMessage(null), 4000)
     return () => window.clearTimeout(timer)
   }, [adminMessage, setAdminMessage])
+
+  useEffect(() => {
+    if (!session && (view === 'staff' || view === 'handy' || view === 'kds' || view === 'admin' || view === 'sales')) {
+      setWasLoggingIn(true)
+    }
+  }, [session, view])
+
+  useEffect(() => {
+    if (session && wasLoggingIn) {
+      setWasLoggingIn(false)
+      setView('staff')
+    }
+  }, [session, wasLoggingIn])
 
   // Customer ordering logic removed for Handy-only version
   const customerOrderingEnabled = false
@@ -612,7 +627,21 @@ export default function App() {
         />
       )}
       <main className="content">
-        {/* Customer and Tablet screens removed */}
+        {!session && (view === 'staff' || view === 'handy' || view === 'kds' || view === 'admin' || view === 'sales') ? (
+          <LoginScreen
+            email={email}
+            onEmailChange={setEmail}
+            password={password}
+            onPasswordChange={setPassword}
+            onSignIn={async (event) => { if (event && (event as any).preventDefault) (event as any).preventDefault(); await handleSignIn() }}
+            authBusy={authBusy}
+            error={authError || error}
+            authStoreSlug={authStoreSlug}
+            onAuthStoreSlugChange={setAuthStoreSlug}
+          />
+        ) : (
+          <>
+            {/* Customer and Tablet screens removed */}
         {view === 'staff' || view === 'handy' ? (
           <StaffScreen
             staffReadOnlyMode={staffReadApiEnabled}
@@ -903,6 +932,8 @@ export default function App() {
             onCancel={nativeSetup.isConfigured ? () => moveTo(nativeSetup.config!.view) : undefined}
           />
         ) : null}
+          </>
+        )}
       </main>
     </div>
   )

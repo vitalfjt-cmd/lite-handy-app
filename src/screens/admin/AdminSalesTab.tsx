@@ -12,7 +12,7 @@ type Props = {
 export function AdminSalesTab({ storeSlug, disabled, yen, setAdminMessage, setError }: Props) {
   const [report, setReport] = useState<any>(null)
   const [loading, setLoading] = useState(false)
-  const [_businessDateStr, setBusinessDateStr] = useState<string>('')
+  const [businessDateStr, setBusinessDateStr] = useState<string>('')
   
   const [voidReceiptNo, setVoidReceiptNo] = useState('')
   const [voidPaymentType, setVoidPaymentType] = useState<string>('')

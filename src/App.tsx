@@ -698,7 +698,8 @@ export default function App() {
             onNewTicketMenuBookChange={setNewTicketMenuBookId}
             onCreateTicket={(tableRefId, menuBookId, customerCount) => createStaffTicket(tableRefId, menuBookId, customerCount)}
             onSavePaymentEntry={async (payload) => { const res = await savePaymentEntry(payload); return Boolean(res) }}
-            onCloseTicket={async () => { await settleTicket(); return true }}
+            onCloseTicket={async (ticketId?: string) => { await settleTicket(ticketId); return true }}
+            liveLines={liveLines}
             directAction={staffDirectAction}
             onClearDirectAction={() => setStaffDirectAction(null)}
             terminalName={nativeSetup.config?.terminalName}

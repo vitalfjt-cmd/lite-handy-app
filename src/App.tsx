@@ -67,6 +67,10 @@ export default function App() {
     if (nativeSetup.isConfigured && nativeSetup.config) return nativeSetup.config.view
     return 'setup'
   })
+  const [adminTab, setAdminTab] = useState<string>(() => {
+    const params = new URLSearchParams(window.location.search)
+    return params.get('tab') || ''
+  })
   // const custFlow = useCustomerFlow(view)
   const [customerAccess, setCustomerAccess] = useState(() => readCustomerAccessParams())
   const [customerBusy, setCustomerBusy] = useState(false)
@@ -249,6 +253,8 @@ export default function App() {
       } else if (nextCustomerAccess.storeSlug && nextCustomerAccess.qrToken) {
         setCustomerAccess(nextCustomerAccess)
       }
+      const params = new URLSearchParams(window.location.search)
+      setAdminTab(params.get('tab') || '')
     }
     window.addEventListener('hashchange', syncLocationState)
     window.addEventListener('popstate', syncLocationState)
@@ -562,11 +568,18 @@ export default function App() {
 
 
 
-  function moveTo(nextView: AppView) {
+  function moveTo(nextView: AppView, tab?: string) {
     if (nextView === 'customer' || nextView === 'cust-tablet') return
 
     const url = new URL(window.location.href)
     url.searchParams.set('view', nextView)
+    if (tab) {
+      url.searchParams.set('tab', tab)
+      setAdminTab(tab)
+    } else {
+      url.searchParams.delete('tab')
+      setAdminTab('')
+    }
     url.hash = ''
     window.history.pushState({}, '', url)
     setView(nextView)
@@ -588,6 +601,7 @@ export default function App() {
         isOpen={isLauncherOpen}
         onClose={() => setIsLauncherOpen(false)}
         currentView={view}
+        activeTab={adminTab}
         onMove={moveTo}
         onSignOut={() => void handleSignOut()}
         session={session}
@@ -725,6 +739,13 @@ export default function App() {
           <AdminScreen
             key={view}
             mode={view === 'sales' ? 'sales' : 'master'}
+            activeTab={adminTab as any}
+            onTabChange={(tab) => {
+              setAdminTab(tab)
+              const url = new URL(window.location.href)
+              url.searchParams.set('tab', tab)
+              window.history.replaceState({}, '', url)
+            }}
             storeName={liveStore?.name ?? activeStore.name}
             categoryCount={liveCategories.length}
             itemCount={adminVisibleItems.length}

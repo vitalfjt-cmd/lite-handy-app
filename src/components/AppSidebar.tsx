@@ -121,7 +121,7 @@ export function AppSidebar({
         flexWrap: 'wrap',
       }}>
         <span style={{ color: '#888', fontWeight: 'bold', marginRight: '16px', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px' }}>
-          Lite POS
+          pachira
         </span>
         
         {/* Customer buttons removed */}

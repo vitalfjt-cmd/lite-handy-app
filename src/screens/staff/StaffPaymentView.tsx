@@ -64,6 +64,8 @@ type StaffPaymentViewProps = {
   onReceiptClosed: () => void
   targetPaymentAmount: number | null
   setTargetPaymentAmount: React.Dispatch<React.SetStateAction<number | null>>
+  currentPersonLabel: string | null
+  setCurrentPersonLabel: React.Dispatch<React.SetStateAction<string | null>>
   setPendingPaymentItems: React.Dispatch<React.SetStateAction<Array<{ name: string; qty: number; subtotal: number }>>>
   liveTicketSummaries: TicketSummaryView[]
   combinedTicketIds: string[]
@@ -113,6 +115,8 @@ export function StaffPaymentView({
   onReceiptClosed,
   targetPaymentAmount,
   setTargetPaymentAmount,
+  currentPersonLabel,
+  setCurrentPersonLabel,
   setPendingPaymentItems,
   liveTicketSummaries,
   combinedTicketIds,
@@ -315,6 +319,20 @@ export function StaffPaymentView({
     );
   };
 
+  const getNextPersonNumber = () => {
+    let maxNum = 0
+    for (const p of payments) {
+      if (p.label) {
+        const match = p.label.match(/\((\d+)人目\)/)
+        if (match) {
+          const num = parseInt(match[1], 10)
+          if (num > maxNum) maxNum = num
+        }
+      }
+    }
+    return maxNum + 1
+  }
+
   return (
     <div className="payment-app standalone">
       <header className="payment-full-header">
@@ -336,6 +354,7 @@ export function StaffPaymentView({
                 setDiscountAmount(0)
                 setDiscountRate(0)
                 setTargetPaymentAmount(null)
+                setCurrentPersonLabel(null)
                 setPendingPaymentItems([])
               }}
               style={{ marginRight: '16px' }}
@@ -549,7 +568,12 @@ export function StaffPaymentView({
                   ✅ {mutationBusy === 'payment-entry' ? '処理中...' : '会計を確定する'}
                 </button>
                 <button
-                  onClick={() => setPayments((prev) => prev.slice(0, -1))}
+                  onClick={() => {
+                    setPayments((prev) => prev.slice(0, -1))
+                    setTargetPaymentAmount(null)
+                    setCurrentPersonLabel(null)
+                    setPendingPaymentItems([])
+                  }}
                   style={{ background: 'transparent', border: 'none', color: '#fa5252', fontSize: '1.2rem', cursor: 'pointer', textDecoration: 'underline' }}
                 >
                   直前の支払いをやり直す
@@ -968,6 +992,8 @@ export function StaffPaymentView({
                     const amt = Math.ceil(remainingTotal / splitCount);
                     setCurrentPaymentInput(String(amt))
                     setTargetPaymentAmount(amt)
+                    const personNum = getNextPersonNumber()
+                    setCurrentPersonLabel(`割勘分 (${personNum}人目)`)
                     setCalcMode('normal')
                     setInputSource('modal')
                   }}

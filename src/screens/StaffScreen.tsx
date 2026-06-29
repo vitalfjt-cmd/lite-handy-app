@@ -721,6 +721,7 @@ export function StaffScreen({
         mutationBusy={mutationBusy}
         storeName={storeName}
         yen={yen}
+        staffMessage={staffMessage}
         setShowPaymentModal={setShowPaymentModal}
         setPayments={setPayments as any}
         setCurrentPaymentInput={setCurrentPaymentInput}

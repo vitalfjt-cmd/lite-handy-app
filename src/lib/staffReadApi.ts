@@ -16,7 +16,8 @@ type StaffTicketSummaryResponse = {
     id: string
     order_ticket_id: string
     payment_seq: number
-    payment_type: 'CASH' | 'CARD' | 'OTHER'
+    payment_type: string
+      payment_type_label?: string | null
     discount_amount: number
     coupon_amount: number
     voucher_amount: number
@@ -283,6 +284,12 @@ export function fetchStaffPrototypeBootstrap(storeSlug: string) {
       valid_from: string | null
       valid_to: string | null
     }[]
+    payment_methods: {
+      id: string
+      name: string
+      sort_order: number
+      is_active: boolean
+    }[]
   }>({
     action: 'staff-bootstrap',
     storeSlug,
@@ -384,6 +391,12 @@ export function fetchAdminPrototypeBootstrap(storeSlug: string) {
       role_type: 'ADMIN' | 'STAFF' | 'KDS'
       is_active: boolean
       password_configured: boolean
+    }[]
+    payment_methods: {
+      id: string
+      name: string
+      sort_order: number
+      is_active: boolean
     }[]
   }>({
     action: 'admin-bootstrap',
@@ -749,7 +762,8 @@ export function fetchStaffTicketDetail(
         id: string
         order_ticket_id: string
         payment_seq: number
-        payment_type: 'CASH' | 'CARD' | 'OTHER'
+        payment_type: string
+      payment_type_label?: string | null
         discount_amount: number
         coupon_amount: number
         voucher_amount: number
@@ -905,7 +919,7 @@ export function addStaffPrototypePaymentEntry(
   storeSlug: string,
   payload: {
     ticketId: string
-    paymentType: 'CASH' | 'CARD' | 'OTHER'
+    paymentType: string
     discountAmount: number
     couponAmount: number
     voucherAmount: number
@@ -924,7 +938,8 @@ export function addStaffPrototypePaymentEntry(
       id: string
       order_ticket_id: string
       payment_seq: number
-      payment_type: 'CASH' | 'CARD' | 'OTHER'
+      payment_type: string
+      payment_type_label?: string | null
       discount_amount: number
       coupon_amount: number
       voucher_amount: number
@@ -1032,8 +1047,8 @@ export function staffAuditLog(storeSlug: string, actionType: string, targetTicke
 export function voidStaffTicket(
   storeSlug: string,
   receiptNo: string,
-  newPaymentType?: 'CASH' | 'CARD' | 'OTHER' | null,
-  paymentChanges?: { id: string; paymentType: 'CASH' | 'CARD' | 'OTHER' }[] | null,
+  newPaymentType?: string | null,
+  paymentChanges?: { id: string; paymentType: string }[] | null,
 ) {
   return invoke<{ ok: true; ticket_id: string }>({
     action: 'void-ticket',
@@ -1044,3 +1059,33 @@ export function voidStaffTicket(
   })
 }
 
+export function saveAdminPrototypePaymentMethod(
+  storeSlug: string,
+  payload: {
+    paymentMethodId?: string
+    name: string
+    sortOrder: number
+    isActive: boolean
+  },
+) {
+  return invoke<{
+    payment_method: {
+      id: string
+      name: string
+      sort_order: number
+      is_active: boolean
+    }
+  }>({
+    action: 'admin-save-payment-method',
+    storeSlug,
+    ...payload,
+  })
+}
+
+export function deleteAdminPrototypePaymentMethod(storeSlug: string, paymentMethodId: string) {
+  return invoke<{ ok: true }>({
+    action: 'admin-delete-payment-method',
+    storeSlug,
+    paymentMethodId,
+  })
+}

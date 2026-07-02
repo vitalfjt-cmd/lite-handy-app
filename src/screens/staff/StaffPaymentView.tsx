@@ -1,8 +1,8 @@
 import React from 'react'
-import { TicketSummaryView, LivePaymentEntry } from '../../types'
+import { TicketSummaryView, LivePaymentEntry, AdminPaymentMethod } from '../../types'
 import { LiveLine } from '../../lib/staffUtils'
 
-type PaymentKind = 'CASH' | 'CARD' | 'OTHER'
+type PaymentKind = string
 
 type StaffPaymentViewProps = {
   selectedSummary: TicketSummaryView
@@ -72,6 +72,7 @@ type StaffPaymentViewProps = {
   onAddCombinedTicket: (ticketId: string) => void
   onRemoveCombinedTicket: (ticketId: string) => void
   staffMessage: string | null
+  livePaymentMethods: AdminPaymentMethod[]
 }
 
 export function StaffPaymentView({
@@ -123,6 +124,7 @@ export function StaffPaymentView({
   combinedTicketIds,
   onAddCombinedTicket,
   onRemoveCombinedTicket,
+  livePaymentMethods,
   staffMessage,
 }: StaffPaymentViewProps) {
   const groupedPayments = React.useMemo(() => {
@@ -492,7 +494,7 @@ export function StaffPaymentView({
                         {activePrintGroup.payments.map((pm, idx) => (
                           <div key={idx} style={{ marginBottom: '8px' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '4px' }}>
-                              <span>お支払い方法 ({pm.method})</span>
+                              <span>お支払い方法 ({livePaymentMethods.find((x) => x.id === pm.method)?.name || pm.method})</span>
                               <span>{yen(pm.received)}</span>
                             </div>
                             {pm.change > 0 && (
@@ -522,7 +524,7 @@ export function StaffPaymentView({
                       <>
                         {payments.map(p => (
                           <div key={p.id} style={{ display: 'flex', justifyContent: 'space-between', marginTop: '4px' }}>
-                            <span>{p.label || p.method}</span>
+                            <span>{p.label || livePaymentMethods.find((pm) => pm.id === p.method)?.name || p.method}</span>
                             <span>{yen(p.amount)}</span>
                           </div>
                         ))}
@@ -943,18 +945,45 @@ export function StaffPaymentView({
                   </div>
                 )}
                 <div className="methods-grid">
-                  <button className="method-card cash" disabled={!currentPaymentInput} onClick={() => addPaymentMethod('現金')}>
-                    <span className="method-icon">💵</span>現金
-                  </button>
-                  <button className="method-card credit" disabled={!currentPaymentInput} onClick={() => addPaymentMethod('クレジットカード')}>
-                    <span className="method-icon">💳</span>クレジット
-                  </button>
-                  <button className="method-card qr" disabled={!currentPaymentInput} onClick={() => addPaymentMethod('QR決済')}>
-                    <span className="method-icon">📱</span>QRコード
-                  </button>
-                  <button className="method-card other" disabled={!currentPaymentInput} onClick={() => addPaymentMethod('商品券')}>
-                    <span className="method-icon">🎫</span>商品券
-                  </button>
+                  {livePaymentMethods.length > 0 ? (
+                    livePaymentMethods
+                      .filter((pm) => pm.is_active)
+                      .map((pm) => {
+                        let icon = '💵';
+                        if (pm.name.includes('クレジット') || pm.name.includes('カード')) icon = '💳';
+                        else if (pm.name.toLowerCase().includes('qr') || pm.name.includes('pay') || pm.name.includes('ペイ')) icon = '📱';
+                        else if (pm.name.includes('券') || pm.name.includes('チケット')) icon = '🎫';
+                        
+                        let className = 'method-card';
+                        if (pm.id.startsWith('cash')) className += ' cash';
+                        else if (pm.id.startsWith('card')) className += ' credit';
+                        else if (pm.id.startsWith('qr') || pm.name.includes('pay') || pm.name.includes('ペイ')) className += ' qr';
+                        else className += ' other';
+
+                        return (
+                          <button
+                            key={pm.id}
+                            className={className}
+                            disabled={!currentPaymentInput}
+                            onClick={() => addPaymentMethod(pm.id)}
+                          >
+                            <span className="method-icon">{icon}</span>{pm.name}
+                          </button>
+                        );
+                      })
+                  ) : (
+                    <>
+                      <button className="method-card cash" disabled={!currentPaymentInput} onClick={() => addPaymentMethod('CASH')}>
+                        <span className="method-icon">💵</span>現金
+                      </button>
+                      <button className="method-card credit" disabled={!currentPaymentInput} onClick={() => addPaymentMethod('CARD')}>
+                        <span className="method-icon">💳</span>クレジット
+                      </button>
+                      <button className="method-card other" disabled={!currentPaymentInput} onClick={() => addPaymentMethod('OTHER')}>
+                        <span className="method-icon">📱</span>その他
+                      </button>
+                    </>
+                  )}
                 </div>
               </div>
             </>

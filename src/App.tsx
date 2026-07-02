@@ -105,6 +105,7 @@ export default function App() {
     liveBookSubcategoryItems, setLiveBookSubcategoryItems,
     liveStaffUsers, setLiveStaffUsers,
     liveItems, setLiveItems,
+    livePaymentMethods, setLivePaymentMethods,
     selectedTicketId, setSelectedTicketId,
     staffDirectAction, setStaffDirectAction,
     staffHandyTopCategories, setStaffHandyTopCategories,
@@ -147,7 +148,7 @@ export default function App() {
   } = useDataLoading({
     setLoadBusy, setError, setProfile, setLiveStore, setLiveTickets, setLiveLines, setLivePaymentEntries,
     setLiveTables, setLiveMenuBooks, setLiveCategories, setLiveSubcategories,
-    setLiveBookCategories, setLiveBookCategorySubcategories, setLiveBookSubcategoryItems, setLiveItems, setLiveStaffUsers,
+    setLiveBookCategories, setLiveBookCategorySubcategories, setLiveBookSubcategoryItems, setLiveItems, setLiveStaffUsers, setLivePaymentMethods,
     setNewTicketMenuBookId,
     setAdminMenuBookId: adminForm.setAdminMenuBookId,
     setAdminPlacementMenuBookId: adminForm.setAdminPlacementMenuBookId,
@@ -698,6 +699,7 @@ export default function App() {
             liveMenuBooks={liveMenuBooks}
             newTicketMenuBookId={newTicketMenuBookId}
             selectedCustomerUrl={selectedCustomerUrl}
+            livePaymentMethods={livePaymentMethods}
             yen={yen}
             kdsStatusLabel={kdsStatusLabel}
             messageTone={messageTone}
@@ -764,6 +766,11 @@ export default function App() {
             livePlacements={adminPlacements}
             liveTables={adminTables}
             liveStaffUsers={liveStaffUsers}
+            livePaymentMethods={livePaymentMethods}
+            adminPaymentMethodName={adminForm.adminPaymentMethodName}
+            adminPaymentMethodSortOrder={adminForm.adminPaymentMethodSortOrder}
+            adminPaymentMethodIsActive={adminForm.adminPaymentMethodIsActive}
+            editingPaymentMethodId={adminForm.editingPaymentMethodId}
             adminMenuBookName={adminForm.adminMenuBookName}
             adminMenuBookCode={adminForm.adminMenuBookCode}
             adminMenuBookDescription={adminForm.adminMenuBookDescription}
@@ -887,6 +894,11 @@ export default function App() {
             onStaffIsActiveChange={adminForm.setAdminStaffIsActive}
             onSaveStaffUser={adminOps.saveStaffUser}
             onCancelStaffUserEdit={adminForm.resetStaffUser}
+            onPaymentMethodNameChange={adminForm.setAdminPaymentMethodName}
+            onPaymentMethodSortOrderChange={adminForm.setAdminPaymentMethodSortOrder}
+            onPaymentMethodIsActiveChange={adminForm.setAdminPaymentMethodIsActive}
+            onSavePaymentMethod={adminOps.savePaymentMethod}
+            onCancelPaymentMethodEdit={adminForm.resetPaymentMethod}
             onToggleSoldOut={adminOps.toggleSoldOut}
             onEditMenuBook={(id) => {
               const book = liveMenuBooks.find((b) => b.id === id)
@@ -928,6 +940,11 @@ export default function App() {
               if (user) adminForm.beginEditStaffUser(user)
             }}
             onDeleteStaffUser={adminOps.deleteStaffUser}
+            onEditPaymentMethod={(id) => {
+              const pm = livePaymentMethods.find((x) => x.id === id)
+              if (pm) adminForm.beginEditPaymentMethod(pm)
+            }}
+            onDeletePaymentMethod={adminOps.deletePaymentMethod}
             setAdminMessage={setAdminMessage}
             setError={setError}
             onOpenLauncher={() => setIsLauncherOpen(true)}

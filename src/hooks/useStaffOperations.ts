@@ -153,7 +153,7 @@ export function useStaffOperations(deps: StaffOperationsDeps) {
     }
   }
 
-  const createHandyOrder = async (overrideItemId?: string, overrideQty?: string) => {
+  const createHandyOrder = async (overrideItemId?: string, overrideQty?: string, toppings?: string[]) => {
     const targetItemId = overrideItemId || handyItemId
     const targetQty = overrideQty || handyQty
     if (!profile || !selectedTicket || !targetItemId) return

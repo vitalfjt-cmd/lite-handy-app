@@ -467,6 +467,7 @@ export default function App() {
               isActive: true,
               isSoldOut: item.is_sold_out,
               subcategoryId: composeScopedCategoryId(item.parent_category_id ?? null, item.category_id),
+              toppings: item.toppings ?? [],
             })),
         )
       } catch {
@@ -528,6 +529,7 @@ export default function App() {
           createdAt: line.created_at,
           subcategoryName: subcategory?.name ?? 'その他',
           subcategorySortOrder: subcategory?.sort_order ?? 9999,
+          toppings: line.toppings,
         }
       })
   }, [activeLiveTickets, liveLines, liveTables, liveItems, liveSubcategories, liveBookSubcategoryItems, session])
@@ -710,7 +712,7 @@ export default function App() {
             onCancelLine={(lineId) => void cancelLine(lineId)}
             onHandyItemChange={setHandyItemId}
             onHandyQtyChange={setHandyQty}
-            onCreateHandyOrder={(itemId, qty) => void createHandyOrder(itemId, qty)}
+            onCreateHandyOrder={(itemId, qty, toppings) => void createHandyOrder(itemId, qty, toppings)}
             onNewTicketMenuBookChange={setNewTicketMenuBookId}
             onCreateTicket={(tableRefId, menuBookId, customerCount) => createStaffTicket(tableRefId, menuBookId, customerCount)}
             onSavePaymentEntry={async (payload) => { const res = await savePaymentEntry(payload); return Boolean(res) }}
@@ -799,6 +801,7 @@ export default function App() {
             adminItemSortOrder={adminForm.adminItemSortOrder}
             adminItemIsActive={adminForm.adminItemIsActive}
             adminItemIsSoldOut={adminForm.adminItemIsSoldOut}
+            adminItemToppingIds={adminForm.adminItemToppingIds}
             editingMenuItemId={adminForm.editingMenuItemId}
             adminPlacementMenuBookId={adminForm.adminPlacementMenuBookId}
             adminPlacementTopCategoryId={adminForm.adminPlacementTopCategoryId}
@@ -860,6 +863,7 @@ export default function App() {
             onItemSortOrderChange={adminForm.setAdminItemSortOrder}
             onItemIsActiveChange={adminForm.setAdminItemIsActive}
             onItemIsSoldOutChange={adminForm.setAdminItemIsSoldOut}
+            onItemToppingIdsChange={adminForm.setAdminItemToppingIds}
             onCreateMenuItem={adminOps.createMenuItem}
             onCancelMenuItemEdit={adminForm.resetItem}
             onPlacementMenuBookChange={adminForm.setAdminPlacementMenuBookId}

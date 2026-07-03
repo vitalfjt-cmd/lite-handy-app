@@ -38,6 +38,7 @@ type StaffTicketLineResponse = {
   kds_status: 'NEW' | 'COOKING' | 'SERVED' | 'CANCELLED'
   customer_note: string | null
   created_at: string
+  toppings?: { id: string; name: string; price: number }[]
 }
 
 const staffApiOrigin =
@@ -382,6 +383,7 @@ export function fetchAdminPrototypeBootstrap(storeSlug: string) {
       image_url: string | null
       sort_order: number
       is_active: boolean
+      toppings?: { id: string; name: string; price: number; is_sold_out: boolean }[]
     }[]
     staff_users: {
       id: string
@@ -595,6 +597,7 @@ export function saveAdminPrototypeItem(
     imageUrl?: string | null
     sortOrder: number
     isActive: boolean
+    toppingIds?: string[]
   },
 ) {
   return invoke<{
@@ -609,6 +612,7 @@ export function saveAdminPrototypeItem(
       image_url: string | null
       sort_order: number
       is_active: boolean
+      toppings?: { id: string; name: string; price: number; is_sold_out: boolean }[]
     }
   }>({
     action: 'admin-save-item',

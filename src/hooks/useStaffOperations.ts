@@ -167,7 +167,7 @@ export function useStaffOperations(deps: StaffOperationsDeps) {
       if (staffReadApiEnabled) {
         const storeSlug = staffReadStoreSlugOverride || liveStore?.slug
         if (!storeSlug) throw new Error('staff_store_slug_missing')
-        const added = await addStaffPrototypeOrder(storeSlug, selectedTicket.id, menuItem.id, quantity, terminalName)
+        const added = await addStaffPrototypeOrder(storeSlug, selectedTicket.id, menuItem.id, quantity, toppings, terminalName)
         setLiveLines((current) => [
           ...current,
           {
@@ -180,6 +180,14 @@ export function useStaffOperations(deps: StaffOperationsDeps) {
             kds_status: 'NEW',
             customer_note: null,
             created_at: new Date().toISOString(),
+            toppings: toppings ? toppings.map(tid => {
+              const tItem = (menuItem as any).toppings?.find((t: any) => t.id === tid)
+              return {
+                id: tid,
+                name: tItem?.name ?? 'トッピング',
+                price: tItem?.price ?? 0
+              }
+            }) : [],
           },
         ])
       }

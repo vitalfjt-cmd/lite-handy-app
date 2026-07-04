@@ -848,7 +848,7 @@ export function cancelStaffPrototypeLine(storeSlug: string, lineId: string) {
   })
 }
 
-export function addStaffPrototypeOrder(storeSlug: string, ticketId: string, menuItemId: string, quantity: number, terminalName?: string) {
+export function addStaffPrototypeOrder(storeSlug: string, ticketId: string, menuItemId: string, quantity: number, toppings?: string[], terminalName?: string) {
   return invoke<{
     store: { id: string; slug: string; name: string }
     ticket: {
@@ -868,6 +868,7 @@ export function addStaffPrototypeOrder(storeSlug: string, ticketId: string, menu
     ticketId,
     menuItemId,
     quantity,
+    toppings,
     terminalName,
   })
 }

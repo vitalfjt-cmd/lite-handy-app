@@ -124,6 +124,7 @@ export type LiveTicket = {
   customer_count?: number | null,
   ordered_at: string,
   status: 'OPEN' | 'CANCELLED' | 'CLOSED'
+  receipt_no?: string | null
 }
 export type LivePaymentEntry = {
   id: string
@@ -165,6 +166,7 @@ export type TicketSummaryView = {
   lineCount: number
   customerCount?: number | null
   status: 'NEW' | 'COOKING' | 'SERVED'
+  receiptNo?: string | null
 }
 export type ReceiptSummaryLine = { itemName: string; qty: number; subtotal: number }
 export type CustomerCategory = { id: string; name: string; parentId?: string | null }

@@ -50,6 +50,7 @@ export function useStaffData() {
       subtotal,
       lineCount: activeLines.length,
       status: ticketStatusFromLines(activeLines),
+      receiptNo: selectedTicket.receipt_no || null,
     }
   }, [selectedTicket, activeLines])
 
@@ -128,6 +129,7 @@ export function useStaffData() {
           subtotal,
           lineCount: lines.length,
           status: ticketStatusFromLines(lines),
+          receiptNo: t.receipt_no || null,
         }
       })
   }, [liveTickets, liveLines])

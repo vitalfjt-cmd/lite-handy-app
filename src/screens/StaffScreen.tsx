@@ -61,7 +61,7 @@ type StaffScreenProps = {
     finalAmount: number
     receivedAmount: number
   }) => Promise<boolean>
-  onCloseTicket: (ticketId?: string) => Promise<boolean>
+  onCloseTicket: (ticketId?: string) => Promise<string | null>
   directAction?: 'HANDY' | 'PAYMENT' | null
   onClearDirectAction?: () => void
   terminalName?: string
@@ -694,15 +694,17 @@ export function StaffScreen({
       }
 
       // Close all tickets
+      let lastReceiptNo: string | null = null
       for (const t of targetTickets) {
-        const closed = await onCloseTicket(t.ticketId)
-        if (!closed) {
+        const receiptNo = await onCloseTicket(t.ticketId)
+        if (!receiptNo) {
           alert('会計の確定に失敗しました。再度お試しください。')
           return
         }
+        lastReceiptNo = receiptNo
       }
 
-      setFinalizedSummary(combinedSummary)
+      setFinalizedSummary(combinedSummary ? { ...combinedSummary, receiptNo: lastReceiptNo } : null)
       setFinalizedLines(combinedLines)
       setFinalizedPayments(payments)
       setFinalizedDiscountAmount(discountAmount)

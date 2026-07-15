@@ -50,6 +50,7 @@ type StaffScreenProps = {
   onHandyItemChange: (value: string) => void
   onHandyQtyChange: (value: string) => void
   onCreateHandyOrder: (itemId?: string, qty?: string, toppings?: string[]) => void
+  onCreateHandyOrders: (items: Array<{ itemId: string; qty: number; toppings?: string[] }>) => void
   onNewTicketMenuBookChange: (value: string) => void
   onCreateTicket: (tableRefId: string, menuBookId: string, customerCount?: number) => Promise<boolean>
   onSavePaymentEntry: (payload: {
@@ -117,6 +118,7 @@ export function StaffScreen({
   onHandyItemChange,
   onHandyQtyChange,
   onCreateHandyOrder,
+  onCreateHandyOrders,
   onNewTicketMenuBookChange,
   onCreateTicket,
   onSavePaymentEntry,
@@ -368,9 +370,12 @@ export function StaffScreen({
     }).join('\n')
     if (!window.confirm(`以下の内容で厨房に送信しますか？\n\n${summary}`)) return
 
-    for (const item of handyCart) {
-      await onCreateHandyOrder(item.id, String(item.qty), item.toppingIds)
-    }
+    const apiItems = handyCart.map(item => ({
+      itemId: item.id,
+      qty: item.qty,
+      toppings: item.toppingIds
+    }))
+    await onCreateHandyOrders(apiItems)
     setHandyCart([])
     setShowHandyModal(false)
   }

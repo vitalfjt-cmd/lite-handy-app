@@ -34,7 +34,6 @@ const ADMIN_SUB_MENU_ITEMS = [
   { id: 'items', label: 'メニュー' },
   { id: 'placements', label: 'メニューブック構成' },
   { id: 'store', label: '店舗' },
-  { id: 'tables', label: 'テーブル' },
   { id: 'staff', label: 'スタッフ' },
   { id: 'paymentMethods', label: '決済種別' },
 ]

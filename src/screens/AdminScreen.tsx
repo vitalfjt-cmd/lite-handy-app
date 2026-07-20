@@ -46,12 +46,11 @@ const ADMIN_TABS: Array<{ id: AdminTab; label: string; caption: string }> = [
   { id: 'productSalesHistory', label: '商品注文データ照会', caption: '期間指定での商品別注文数照会' },
   { id: 'receiptReissue', label: 'レシート再発行', caption: '指定した日付 of レシートの再発行・印刷' },
   { id: 'store', label: '店舗', caption: '店舗設定' },
-  { id: 'tables', label: 'テーブル', caption: '席・QR管理' },
   { id: 'staff', label: 'スタッフ', caption: '認証・権限管理' },
   { id: 'paymentMethods', label: '決済種別', caption: 'マスタ・表示順設定' },
 ]
 
-const D1_EDITABLE_ADMIN_TABS: AdminTab[] = ['menuBooks', 'categories', 'subcategories', 'items', 'placements', 'store', 'tables', 'staff', 'sales', 'categorySales', 'subcategorySales', 'salesHistory', 'hourlySalesHistory', 'paymentHistory', 'accountingHistory', 'productSalesHistory', 'paymentMethods', 'receiptReissue']
+const D1_EDITABLE_ADMIN_TABS: AdminTab[] = ['menuBooks', 'categories', 'subcategories', 'items', 'placements', 'store', 'staff', 'sales', 'categorySales', 'subcategorySales', 'salesHistory', 'hourlySalesHistory', 'paymentHistory', 'accountingHistory', 'productSalesHistory', 'paymentMethods', 'receiptReissue']
 
 type Props = {
   mode?: 'master' | 'sales'

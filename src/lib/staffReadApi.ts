@@ -291,6 +291,7 @@ export function fetchStaffPrototypeBootstrap(storeSlug: string) {
       name: string
       sort_order: number
       is_active: boolean
+      is_change_allowed: boolean
     }[]
   }>({
     action: 'staff-bootstrap',
@@ -400,6 +401,7 @@ export function fetchAdminPrototypeBootstrap(storeSlug: string) {
       name: string
       sort_order: number
       is_active: boolean
+      is_change_allowed: boolean
     }[]
   }>({
     action: 'admin-bootstrap',
@@ -1149,6 +1151,7 @@ export function saveAdminPrototypePaymentMethod(
     name: string
     sortOrder: number
     isActive: boolean
+    isChangeAllowed: boolean
   },
 ) {
   return invoke<{
@@ -1157,6 +1160,7 @@ export function saveAdminPrototypePaymentMethod(
       name: string
       sort_order: number
       is_active: boolean
+      is_change_allowed: boolean
     }
   }>({
     action: 'admin-save-payment-method',

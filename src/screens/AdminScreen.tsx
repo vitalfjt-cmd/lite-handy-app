@@ -77,6 +77,7 @@ type Props = {
   adminPaymentMethodName: string
   adminPaymentMethodSortOrder: string
   adminPaymentMethodIsActive: boolean
+  adminPaymentMethodIsChangeAllowed: boolean
   editingPaymentMethodId: string | null
   adminMenuBookName: string
   adminMenuBookCode: string
@@ -139,6 +140,7 @@ type Props = {
   onPaymentMethodNameChange: (value: string) => void
   onPaymentMethodSortOrderChange: (value: string) => void
   onPaymentMethodIsActiveChange: (value: boolean) => void
+  onPaymentMethodIsChangeAllowedChange: (value: boolean) => void
   onSavePaymentMethod: () => Promise<boolean>
   onCancelPaymentMethodEdit: () => void
   onEditPaymentMethod: (id: string) => void
@@ -750,6 +752,7 @@ export function AdminScreen(props: Props) {
             adminPaymentMethodName={props.adminPaymentMethodName}
             adminPaymentMethodSortOrder={props.adminPaymentMethodSortOrder}
             adminPaymentMethodIsActive={props.adminPaymentMethodIsActive}
+            adminPaymentMethodIsChangeAllowed={props.adminPaymentMethodIsChangeAllowed}
             disabled={disabled}
             onClose={() => {
               setPaymentMethodModalOpen(false)
@@ -758,6 +761,7 @@ export function AdminScreen(props: Props) {
             onPaymentMethodNameChange={props.onPaymentMethodNameChange}
             onPaymentMethodSortOrderChange={props.onPaymentMethodSortOrderChange}
             onPaymentMethodIsActiveChange={props.onPaymentMethodIsActiveChange}
+            onPaymentMethodIsChangeAllowedChange={props.onPaymentMethodIsChangeAllowedChange}
             onSavePaymentMethod={props.onSavePaymentMethod}
             checkBox={checkBox}
           />

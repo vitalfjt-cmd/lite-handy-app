@@ -60,6 +60,7 @@ export function useAdminForm() {
   const [adminPaymentMethodName, setAdminPaymentMethodName] = useState('')
   const [adminPaymentMethodSortOrder, setAdminPaymentMethodSortOrder] = useState('10')
   const [adminPaymentMethodIsActive, setAdminPaymentMethodIsActive] = useState(true)
+  const [adminPaymentMethodIsChangeAllowed, setAdminPaymentMethodIsChangeAllowed] = useState(true)
 
   const [editingStaffUserId, setEditingStaffUserId] = useState<string | null>(null)
   const [adminStaffEmail, setAdminStaffEmail] = useState('')
@@ -137,6 +138,7 @@ export function useAdminForm() {
     setAdminPaymentMethodName('')
     setAdminPaymentMethodSortOrder('10')
     setAdminPaymentMethodIsActive(true)
+    setAdminPaymentMethodIsChangeAllowed(true)
   }
 
   const resetStaffUser = () => {
@@ -212,6 +214,7 @@ export function useAdminForm() {
     setAdminPaymentMethodName(pm.name)
     setAdminPaymentMethodSortOrder(String(pm.sort_order ?? 0))
     setAdminPaymentMethodIsActive(pm.is_active)
+    setAdminPaymentMethodIsChangeAllowed(pm.is_change_allowed ?? true)
   }
 
   const beginEditStaffUser = (staffUser: any) => {
@@ -282,6 +285,7 @@ export function useAdminForm() {
     adminPaymentMethodName, setAdminPaymentMethodName,
     adminPaymentMethodSortOrder, setAdminPaymentMethodSortOrder,
     adminPaymentMethodIsActive, setAdminPaymentMethodIsActive,
+    adminPaymentMethodIsChangeAllowed, setAdminPaymentMethodIsChangeAllowed,
     resetPaymentMethod,
 
     editingStaffUserId, setEditingStaffUserId,

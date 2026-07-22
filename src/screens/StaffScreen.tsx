@@ -4,8 +4,8 @@ import type { KeyboardEventHandler } from 'react'
 import { DirectActionView } from './staff/DirectActionView'
 import { StaffPaymentView } from './staff/StaffPaymentView'
 import { StaffHandyView } from './staff/StaffHandyView'
-import { StaffPrototypeTopCategory, StaffPrototypeSubCategory, StaffPrototypeItem, LivePaymentEntry, LiveTableRef, LiveMenuBook, TicketSummaryView, AdminPaymentMethod } from '../types'
-import { LiveLine } from '../lib/staffUtils'
+import { isTimeWithinWindow } from '../lib/appUtils'
+import { StaffPrototypeTopCategory, StaffPrototypeSubCategory, StaffPrototypeItem, LivePaymentEntry, LiveTableRef, LiveMenuBook, TicketSummaryView, LiveLine, LiveMenuItem , AdminPaymentMethod } from '../types'
 
 type PaymentKind = string
 type TicketFilter = 'new' | 'progress' | 'served' | 'all'
@@ -1023,7 +1023,15 @@ export function StaffScreen({
                   onChange={e => onNewTicketMenuBookChange(e.target.value)} 
                   style={{width:'100%', padding:'12px', background:'#111', color:'white', border:'1px solid #444', borderRadius:'8px', fontSize:'1.1rem'}}
                 >
-                  {liveMenuBooks.map(mb => <option key={mb.id} value={mb.id}>{mb.name}</option>)}
+                  {liveMenuBooks.map(mb => {
+                    const isAvailable = isTimeWithinWindow(mb.available_from_time, mb.available_to_time)
+                    const timeRange = (mb.available_from_time || mb.available_to_time) ? ` (${mb.available_from_time || ''}〜${mb.available_to_time || ''})` : ''
+                    return (
+                      <option key={mb.id} value={mb.id}>
+                        {isAvailable ? `${mb.name}${timeRange}` : `(時間外) ${mb.name}${timeRange}`}
+                      </option>
+                    )
+                  })}
                 </select>
               </label>
               <label>

@@ -44,13 +44,14 @@ export function useStaffData() {
       ticketId: selectedTicket.id,
       ticketNo: selectedTicket.ticket_no,
       tableName: selectedTicket.table_label || 'Table',
-      customerUrl: selectedTicket.customer_access_token ? `/c/${selectedTicket.customer_access_token}` : null,
-      customerCount: selectedTicket.customer_count,
       orderedAt: selectedTicket.ordered_at,
       subtotal,
       lineCount: activeLines.length,
       status: ticketStatusFromLines(activeLines),
+      customerUrl: selectedTicket.customer_access_token ? `/c/${selectedTicket.customer_access_token}` : null,
+      customerCount: selectedTicket.customer_count,
       receiptNo: selectedTicket.receipt_no || null,
+      menuBookId: selectedTicket.menu_book_id || null,
     }
   }, [selectedTicket, activeLines])
 
@@ -123,16 +124,17 @@ export function useStaffData() {
           ticketId: t.id,
           ticketNo: t.ticket_no,
           tableName: t.table_label || 'Table',
-          customerUrl: t.customer_access_token ? `/c/${t.customer_access_token}` : null,
-          customerCount: t.customer_count,
           orderedAt: t.ordered_at,
           subtotal,
           lineCount: lines.length,
           status: ticketStatusFromLines(lines),
+          customerUrl: t.customer_access_token ? `/c/${t.customer_access_token}` : null,
+          customerCount: t.customer_count,
           receiptNo: t.receipt_no || null,
+          menuBookId: t.menu_book_id || null,
         }
       })
-  }, [liveTickets, liveLines])
+  }, [activeLiveTickets, liveLines])
 
   return {
     liveStore, setLiveStore,

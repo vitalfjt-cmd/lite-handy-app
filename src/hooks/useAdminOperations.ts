@@ -52,8 +52,8 @@ export function useAdminOperations(deps: AdminOperationsDependencies) {
     refreshAdminData
   } = deps
 
-  const createMenuBook = async () => {
-    if (!profile || profile.role_type !== 'ADMIN' || !adminForm.adminMenuBookName.trim()) return
+  const createMenuBook = async (): Promise<boolean> => {
+    if (!profile || profile.role_type !== 'ADMIN' || !adminForm.adminMenuBookName.trim()) return false
     setMutationBusy('admin-menu-book')
     setAdminMessage(null)
     try {
@@ -61,11 +61,11 @@ export function useAdminOperations(deps: AdminOperationsDependencies) {
       const sortOrder = Number(adminForm.adminMenuBookSortOrder)
       if (!normalizedCode) {
         setAdminMessage('メニューブックコードを入力してください。')
-        return
+        return false
       }
       if (!Number.isFinite(sortOrder)) {
         setAdminMessage('表示順を正しく入力してください。')
-        return
+        return false
       }
       if (staffReadApiEnabled) {
         const storeSlug = staffReadStoreSlugOverride || liveStore?.slug
@@ -86,10 +86,12 @@ export function useAdminOperations(deps: AdminOperationsDependencies) {
       }
       adminForm.resetBook()
       setAdminMessage(adminForm.editingMenuBookId ? 'メニューブックを更新しました。' : 'メニューブックを追加しました。')
+      return true
     } catch (err) {
       const message = formatError(err)
       setError(message)
       window.alert(message)
+      return false
     } finally {
       setMutationBusy(null)
     }

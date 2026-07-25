@@ -58,7 +58,16 @@ export function AdminMenuBookModal(props: Props) {
           <label>終了日<input type="date" value={props.adminMenuBookValidTo} onChange={(event) => props.onMenuBookValidToChange(event.target.value)} disabled={props.disabled} /></label>
           <label>有効{props.checkBox(props.adminMenuBookIsActive, props.onMenuBookIsActiveChange, props.disabled)}</label>
           <div className="button-row">
-            <button className="primary-button" onClick={props.onCreateMenuBook} disabled={props.disabled}>{props.editingMenuBookId ? '保存' : '追加'}</button>
+            <button
+              className="primary-button"
+              type="button"
+              onClick={async () => {
+                await props.onCreateMenuBook()
+              }}
+              disabled={props.disabled}
+            >
+              {props.editingMenuBookId ? '保存' : '追加'}
+            </button>
             <button
               className="secondary-button"
               onClick={props.onClose}

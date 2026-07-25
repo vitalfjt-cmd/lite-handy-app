@@ -153,7 +153,7 @@ type Props = {
   onMenuBookAvailableToTimeChange: (value: string) => void
   onMenuBookValidFromChange: (value: string) => void
   onMenuBookValidToChange: (value: string) => void
-  onCreateMenuBook: () => void
+  onCreateMenuBook?: () => Promise<boolean | void> | boolean | void
   onCancelMenuBookEdit: () => void
   onCategoryNameChange: (value: string) => void
   onCategorySortOrderChange: (value: string) => void
@@ -664,7 +664,12 @@ export function AdminScreen(props: Props) {
             onMenuBookValidFromChange={props.onMenuBookValidFromChange}
             onMenuBookValidToChange={props.onMenuBookValidToChange}
             onMenuBookIsActiveChange={props.onMenuBookIsActiveChange}
-            onCreateMenuBook={props.onCreateMenuBook}
+            onCreateMenuBook={async () => {
+              if (props.onCreateMenuBook) {
+                const ok = await props.onCreateMenuBook()
+                if (ok) setMenuBookModalOpen(false)
+              }
+            }}
             checkBox={checkBox}
           />
 

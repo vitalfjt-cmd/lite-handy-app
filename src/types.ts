@@ -94,6 +94,7 @@ export type LiveMenuItem = {
   name: string
   price: number
   tax_type?: 'INCLUDED' | 'EXCLUDED' | 'NONE'
+  tax_rate_type?: 'STANDARD' | 'REDUCED' | 'NONE'
   is_sold_out: boolean
   image_url?: string | null
   sort_order: number
@@ -110,6 +111,9 @@ export type LiveStore = {
   payment_timing_mode: 'PREPAID' | 'POSTPAID'
   ticket_no_reset_mode: 'DAILY' | 'SEQUENCE'
   ticket_no_digits: number
+  tax_rate?: number
+  reduced_tax_rate?: number
+  tax_display_mode?: 'INCLUDED' | 'EXCLUDED'
   open_business_date?: string | null
   today_business_date?: string
 }
@@ -149,6 +153,7 @@ export type LiveLine = {
   item_name_snapshot: string
   quantity: number
   line_subtotal: number
+  tax_rate_type?: 'STANDARD' | 'REDUCED' | 'NONE'
   kds_status: 'NEW' | 'COOKING' | 'SERVED' | 'CANCELLED'
   customer_note: string | null
   created_at: string
@@ -171,7 +176,7 @@ export type TicketSummaryView = {
 }
 export type ReceiptSummaryLine = { itemName: string; qty: number; subtotal: number }
 export type CustomerCategory = { id: string; name: string; parentId?: string | null }
-export type CustomerMenuItem = { id: string; categoryId: string; name: string; price: number; soldOut: boolean; lead?: string; imageUrl?: string | null; toppings?: { id: string; name: string; price: number; is_sold_out: boolean }[] }
+export type CustomerMenuItem = { id: string; categoryId: string; name: string; price: number; tax_type?: 'INCLUDED' | 'EXCLUDED' | 'NONE'; tax_rate_type?: 'STANDARD' | 'REDUCED' | 'NONE'; soldOut: boolean; lead?: string; imageUrl?: string | null; toppings?: { id: string; name: string; price: number; is_sold_out: boolean }[] }
 
 export type StaffPrototypeTopCategory = { id: string; name: string }
 export type StaffPrototypeSubCategory = { id: string; name: string; parentId: string; sortOrder: number }
@@ -179,6 +184,8 @@ export type StaffPrototypeItem = {
   id: string
   name: string
   price: number
+  tax_type?: 'INCLUDED' | 'EXCLUDED' | 'NONE'
+  tax_rate_type?: 'STANDARD' | 'REDUCED' | 'NONE'
   isActive: boolean
   isSoldOut: boolean
   subcategoryId: string

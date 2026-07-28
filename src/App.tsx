@@ -704,6 +704,9 @@ export default function App() {
             newTicketMenuBookId={newTicketMenuBookId}
             selectedCustomerUrl={selectedCustomerUrl}
             livePaymentMethods={livePaymentMethods}
+            taxDisplayMode={liveStore?.tax_display_mode}
+            taxRate={liveStore?.tax_rate}
+            reducedTaxRate={liveStore?.reduced_tax_rate}
             yen={yen}
             kdsStatusLabel={kdsStatusLabel}
             messageTone={messageTone}

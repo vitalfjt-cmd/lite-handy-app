@@ -39,6 +39,9 @@ type StaffScreenProps = {
   newTicketMenuBookId: string
   selectedCustomerUrl: string | null
   livePaymentMethods: AdminPaymentMethod[]
+  taxDisplayMode?: 'INCLUDED' | 'EXCLUDED'
+  taxRate?: number
+  reducedTaxRate?: number
   yen: (value: number) => string
   kdsStatusLabel: (status: LiveLine['kds_status'] | 'NEW' | 'COOKING' | 'SERVED') => string
   messageTone: (message: string | null) => 'success' | 'error'
@@ -108,6 +111,9 @@ export function StaffScreen({
   newTicketMenuBookId,
   selectedCustomerUrl,
   livePaymentMethods,
+  taxDisplayMode,
+  taxRate,
+  reducedTaxRate,
   yen,
   kdsStatusLabel,
   messageTone,
@@ -854,6 +860,9 @@ export function StaffScreen({
         handyTopCategoryId={handyTopCategoryId}
         handySubCategoryId={handySubCategoryId}
         mutationBusy={mutationBusy}
+        taxDisplayMode={taxDisplayMode}
+        taxRate={taxRate}
+        reducedTaxRate={reducedTaxRate}
         yen={yen}
         setShowHandyModal={(v) => {
           if (isHandyMode) {

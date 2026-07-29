@@ -181,7 +181,6 @@ export function StaffScreen({
   }>>([])
   const [finalizedDiscountAmount, setFinalizedDiscountAmount] = useState<number>(0)
   const [finalizedDiscountRate, setFinalizedDiscountRate] = useState<number>(0)
-  const [showQrModal, setShowQrModal] = useState(false)
   const [mobileView, setMobileView] = useState<'list' | 'detail'>('list')
   
   const [calcMode, setCalcMode] = useState<'normal' | 'split' | 'itemized'>('normal')
@@ -324,7 +323,6 @@ export function StaffScreen({
     setShowPaymentModal(false)
     setCombinedTicketIds([])
     setHandyCart([])
-    setShowQrModal(false)
     setMobileView(selectedTicketId ? 'detail' : 'list')
   }, [selectedTicketId])
 
@@ -1015,11 +1013,6 @@ export function StaffScreen({
                         </div>
                       </div>
                       <div className="action-group">
-                        {selectedCustomerUrl && (
-                          <button className="btn-secondary" onClick={() => setShowQrModal(true)}>
-                            客用QR表示
-                          </button>
-                        )}
                         <button className="btn-secondary" disabled={isTicketMenuBookOutOfTime} style={isTicketMenuBookOutOfTime ? { background: '#888', cursor: 'not-allowed', opacity: 0.7 } : undefined} onClick={() => setShowHandyModal(true)}>
                           {isTicketMenuBookOutOfTime ? '時間外' : '注文'}
                         </button>
@@ -1177,43 +1170,6 @@ export function StaffScreen({
             <div style={{display:'flex', gap:'16px'}}>
               <button style={{flex:1, padding:'12px', background:'transparent', color:'white', border:'1px solid #444', borderRadius:'8px'}} onClick={() => setShowCreateTicketModal(false)}>キャンセル</button>
               <button style={{flex:1, padding:'12px', background:'#4dabf7', color:'white', border:'none', borderRadius:'8px', fontWeight:'bold'}} disabled={mutationBusy === 'create-ticket'} onClick={handleCreateTicket}>発行する</button>
-            </div>
-          </div>
-        </div>
-      )}
-      {showQrModal && selectedCustomerUrl && (
-        <div 
-          style={{position:'fixed', top:0, left:0, right:0, bottom:0, background:'rgba(0,0,0,0.85)', display:'flex', alignItems:'center', justifyContent:'center', zIndex: 2000}}
-          onClick={() => setShowQrModal(false)}
-        >
-          <div 
-            style={{background:'white', padding:'24px', borderRadius:'16px', textAlign:'center', color:'#333', maxWidth:'90vw'}}
-            onClick={e => e.stopPropagation()}
-          >
-            <h3 style={{marginBottom:'16px'}}>注文用QRコード</h3>
-            <p style={{marginBottom:'24px', color:'#666'}}>{selectedSummary?.tableName} / 伝票: {selectedSummary?.ticketNo}</p>
-            <div style={{background:'#f8f9fa', padding:'16px', borderRadius:'12px', marginBottom:'24px'}}>
-              <img 
-                src={`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(selectedCustomerUrl)}`} 
-                alt="Customer QR" 
-                style={{display:'block', margin:'0 auto', maxWidth:'100%'}}
-              />
-            </div>
-            <div style={{display:'flex', gap:'12px'}}>
-               <button 
-                className="btn-secondary" 
-                style={{flex:1, color:'#333', borderColor:'#ccc'}}
-                onClick={() => window.print()}
-              >
-                印刷する
-              </button>
-              <button 
-                className="btn-primary" 
-                style={{flex:1}}
-                onClick={() => setShowQrModal(false)}
-              >
-                閉じる
-              </button>
             </div>
           </div>
         </div>

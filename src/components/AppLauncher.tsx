@@ -169,14 +169,6 @@ export function AppLauncher({
             </div>
 
             <div className="launcher-footer" style={{display:'flex', gap:'12px', justifyContent:'center'}}>
-              <button 
-                type="button" 
-                className="launcher-auth-button" 
-                style={{ background: '#eef5e4', color: '#89b356', border: '1px solid #89b356', borderRadius: '16px', fontWeight: 'bold' }} 
-                onClick={() => { onMove('setup'); onClose(); }}
-              >
-                ⚙️ 端末設定
-              </button>
               <button className="launcher-auth-button signout" onClick={() => { onSignOut(); onClose(); }}>
                 Sign Out
               </button>
@@ -211,14 +203,6 @@ export function AppLauncher({
               {error && <p className="notice error">{error}</p>}
               <button className="primary-button large" disabled={authBusy} type="submit">
                 {authBusy ? 'Signing in...' : 'Sign In'}
-              </button>
-              <button 
-                type="button"
-                className="launcher-auth-button" 
-                style={{ background: '#eef5e4', color: '#89b356', border: '1px solid #89b356', borderRadius: '16px', marginTop: '8px', width: '100%', padding: '12px', fontWeight: 'bold' }} 
-                onClick={() => { onMove('setup'); onClose(); }}
-              >
-                ⚙️ 端末設定 (Setup)
               </button>
             </form>
           </div>

@@ -10,6 +10,9 @@ type Props = {
   adminItemName: string
   adminItemPrice: string
   adminItemTaxType: 'INCLUDED' | 'EXCLUDED' | 'NONE'
+  adminItemTaxRateType?: 'STANDARD' | 'REDUCED' | 'NONE'
+  adminStoreTaxRate?: string | number
+  adminStoreReducedTaxRate?: string | number
   adminItemImageUrl: string
   adminItemSortOrder: string
   adminItemIsActive: boolean
@@ -25,6 +28,7 @@ type Props = {
   onItemNameChange: (value: string) => void
   onItemPriceChange: (value: string) => void
   onItemTaxTypeChange: (value: 'INCLUDED' | 'EXCLUDED' | 'NONE') => void
+  onItemTaxRateTypeChange?: (value: 'STANDARD' | 'REDUCED' | 'NONE') => void
   onItemImageUrlChange: (value: string) => void
   onUploadItemImage: (file: File) => Promise<void>
   onClearItemImage: () => void
@@ -94,6 +98,14 @@ export function AdminItemModal(props: Props) {
               <option value="INCLUDED">税込</option>
               <option value="EXCLUDED">税抜</option>
               <option value="NONE">なし</option>
+            </select>
+          </label>
+          <label>
+            税率区分
+            <select value={props.adminItemTaxRateType || 'STANDARD'} onChange={(event) => props.onItemTaxRateTypeChange?.(event.target.value as 'STANDARD' | 'REDUCED' | 'NONE')} disabled={disabled}>
+              <option value="STANDARD">標準税率 ({props.adminStoreTaxRate || '10'}%)</option>
+              <option value="REDUCED">軽減税率 ({props.adminStoreReducedTaxRate || '8'}%)</option>
+              <option value="NONE">非課税 (0%)</option>
             </select>
           </label>
           <label>

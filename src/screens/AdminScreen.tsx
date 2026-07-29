@@ -101,6 +101,7 @@ type Props = {
   adminItemName: string
   adminItemPrice: string
   adminItemTaxType: 'INCLUDED' | 'EXCLUDED' | 'NONE'
+  adminItemTaxRateType?: 'STANDARD' | 'REDUCED' | 'NONE'
   adminItemImageUrl: string
   itemImageUploadBusy: boolean
   adminItemSortOrder: string
@@ -122,6 +123,9 @@ type Props = {
   adminStorePaymentTimingMode: 'PREPAID' | 'POSTPAID'
   adminStoreTicketNoResetMode: 'DAILY' | 'SEQUENCE'
   adminStoreTicketNoDigits: string
+  adminStoreTaxRate?: string
+  adminStoreReducedTaxRate?: string
+  adminStoreTaxDisplayMode?: 'INCLUDED' | 'EXCLUDED'
   adminTableLabel: string
   adminTableQrToken: string
   adminTableGroupName: string
@@ -170,6 +174,7 @@ type Props = {
   onItemNameChange: (value: string) => void
   onItemPriceChange: (value: string) => void
   onItemTaxTypeChange: (value: 'INCLUDED' | 'EXCLUDED' | 'NONE') => void
+  onItemTaxRateTypeChange?: (value: 'STANDARD' | 'REDUCED' | 'NONE') => void
   onItemImageUrlChange: (value: string) => void
   onUploadItemImage: (file: File) => Promise<void>
   onClearItemImage: () => void
@@ -196,6 +201,9 @@ type Props = {
   onStorePaymentTimingModeChange: (value: 'PREPAID' | 'POSTPAID') => void
   onStoreTicketNoResetModeChange: (value: 'DAILY' | 'SEQUENCE') => void
   onStoreTicketNoDigitsChange: (value: string) => void
+  onStoreTaxRateChange?: (value: string) => void
+  onStoreReducedTaxRateChange?: (value: string) => void
+  onStoreTaxDisplayModeChange?: (value: 'INCLUDED' | 'EXCLUDED') => void
   onSaveStoreSettings: () => void
   onTableLabelChange: (value: string) => void
   onTableQrTokenChange: (value: string) => void
@@ -388,6 +396,8 @@ export function AdminScreen(props: Props) {
               categoryNameMap={categoryNameMap}
               itemCategoryOptions={itemCategoryOptions}
               yen={props.yen}
+              adminStoreTaxRate={props.adminStoreTaxRate}
+              adminStoreReducedTaxRate={props.adminStoreReducedTaxRate}
               disabled={disabled}
               onEditMenuItem={(id) => {
                 props.onEditMenuItem(id)
@@ -457,6 +467,9 @@ export function AdminScreen(props: Props) {
               adminStorePaymentTimingMode={props.adminStorePaymentTimingMode}
               adminStoreTicketNoResetMode={props.adminStoreTicketNoResetMode}
               adminStoreTicketNoDigits={props.adminStoreTicketNoDigits}
+              adminStoreTaxRate={props.adminStoreTaxRate || '10'}
+              adminStoreReducedTaxRate={props.adminStoreReducedTaxRate || '8'}
+              adminStoreTaxDisplayMode={props.adminStoreTaxDisplayMode || 'INCLUDED'}
               disabled={disabled}
               onStoreNameChange={props.onStoreNameChange}
               onStoreSlugChange={props.onStoreSlugChange}
@@ -465,6 +478,9 @@ export function AdminScreen(props: Props) {
               onStorePaymentTimingModeChange={props.onStorePaymentTimingModeChange}
               onStoreTicketNoResetModeChange={props.onStoreTicketNoResetModeChange}
               onStoreTicketNoDigitsChange={props.onStoreTicketNoDigitsChange}
+              onStoreTaxRateChange={props.onStoreTaxRateChange || (() => {})}
+              onStoreReducedTaxRateChange={props.onStoreReducedTaxRateChange || (() => {})}
+              onStoreTaxDisplayModeChange={props.onStoreTaxDisplayModeChange || (() => {})}
               onSaveStoreSettings={props.onSaveStoreSettings}
             />
           ) : null}
@@ -609,6 +625,9 @@ export function AdminScreen(props: Props) {
             adminItemName={props.adminItemName}
             adminItemPrice={props.adminItemPrice}
             adminItemTaxType={props.adminItemTaxType}
+            adminItemTaxRateType={props.adminItemTaxRateType || 'STANDARD'}
+            adminStoreTaxRate={props.adminStoreTaxRate}
+            adminStoreReducedTaxRate={props.adminStoreReducedTaxRate}
             adminItemImageUrl={props.adminItemImageUrl}
             adminItemSortOrder={props.adminItemSortOrder}
             adminItemIsActive={props.adminItemIsActive}
@@ -627,6 +646,7 @@ export function AdminScreen(props: Props) {
             onItemNameChange={props.onItemNameChange}
             onItemPriceChange={props.onItemPriceChange}
             onItemTaxTypeChange={props.onItemTaxTypeChange}
+            onItemTaxRateTypeChange={props.onItemTaxRateTypeChange}
             onItemImageUrlChange={props.onItemImageUrlChange}
             onUploadItemImage={props.onUploadItemImage}
             onClearItemImage={props.onClearItemImage}

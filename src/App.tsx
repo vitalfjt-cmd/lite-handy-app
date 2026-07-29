@@ -165,6 +165,9 @@ export default function App() {
     setAdminStorePaymentTimingMode: adminForm.setAdminStorePaymentTimingMode,
     setAdminStoreTicketNoResetMode: adminForm.setAdminStoreTicketNoResetMode,
     setAdminStoreTicketNoDigits: (digits) => adminForm.setAdminStoreTicketNoDigits(Number(digits)),
+    setAdminStoreTaxRate: (rate) => adminForm.setAdminStoreTaxRate(Number(rate)),
+    setAdminStoreReducedTaxRate: (rate) => adminForm.setAdminStoreReducedTaxRate(Number(rate)),
+    setAdminStoreTaxDisplayMode: adminForm.setAdminStoreTaxDisplayMode,
     setPublicStore, setPublicTable, setPublicOpenTicket, setPublicCategories, setPublicItems,
     setPublicMenuReady, setCustomerBusy, setCustomerMessage, setCustomerAccess, setSession
   })
@@ -843,6 +846,9 @@ export default function App() {
             adminStorePaymentTimingMode={adminForm.adminStorePaymentTimingMode}
             adminStoreTicketNoResetMode={adminForm.adminStoreTicketNoResetMode}
             adminStoreTicketNoDigits={String(adminForm.adminStoreTicketNoDigits)}
+            adminStoreTaxRate={String(adminForm.adminStoreTaxRate)}
+            adminStoreReducedTaxRate={String(adminForm.adminStoreReducedTaxRate)}
+            adminStoreTaxDisplayMode={adminForm.adminStoreTaxDisplayMode}
             adminTableLabel={adminForm.adminTableLabel}
             adminTableQrToken={adminForm.adminTableQrToken}
             adminTableGroupName={adminForm.adminTableGroupName}
@@ -883,6 +889,7 @@ export default function App() {
             onItemNameChange={adminForm.setAdminItemName}
             onItemPriceChange={adminForm.setAdminItemPrice}
             onItemTaxTypeChange={adminForm.setAdminItemTaxType}
+            onItemTaxRateTypeChange={adminForm.setAdminItemTaxRateType}
             onItemImageUrlChange={adminForm.setAdminItemImageUrl}
             onUploadItemImage={adminOps.uploadMenuItemImage}
             onClearItemImage={adminOps.clearMenuItemImage}
@@ -909,6 +916,9 @@ export default function App() {
             onStorePaymentTimingModeChange={adminForm.setAdminStorePaymentTimingMode}
             onStoreTicketNoResetModeChange={adminForm.setAdminStoreTicketNoResetMode}
             onStoreTicketNoDigitsChange={(v) => adminForm.setAdminStoreTicketNoDigits(Number(v))}
+            onStoreTaxRateChange={(v) => adminForm.setAdminStoreTaxRate(Number(v))}
+            onStoreReducedTaxRateChange={(v) => adminForm.setAdminStoreReducedTaxRate(Number(v))}
+            onStoreTaxDisplayModeChange={adminForm.setAdminStoreTaxDisplayMode}
             onSaveStoreSettings={adminOps.saveStoreSettings}
             onTableLabelChange={adminForm.setAdminTableLabel}
             onTableQrTokenChange={adminForm.setAdminTableQrToken}

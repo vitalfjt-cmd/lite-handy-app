@@ -381,6 +381,7 @@ export function fetchAdminPrototypeBootstrap(storeSlug: string) {
       name: string
       price: number
       tax_type: 'INCLUDED' | 'EXCLUDED' | 'NONE'
+      tax_rate_type?: 'STANDARD' | 'REDUCED' | 'NONE'
       is_sold_out: boolean
       image_url: string | null
       sort_order: number
@@ -420,6 +421,9 @@ export function saveAdminPrototypeStore(
     paymentTimingMode: 'PREPAID' | 'POSTPAID'
     ticketNoResetMode: 'DAILY' | 'SEQUENCE'
     ticketNoDigits: number
+    taxRate?: number
+    reducedTaxRate?: number
+    taxDisplayMode?: 'INCLUDED' | 'EXCLUDED'
   },
 ) {
   return invoke<{
@@ -596,6 +600,7 @@ export function saveAdminPrototypeItem(
     name: string
     price: number
     taxType: 'INCLUDED' | 'EXCLUDED' | 'NONE'
+    taxRateType?: 'STANDARD' | 'REDUCED' | 'NONE'
     isSoldOut: boolean
     imageUrl?: string | null
     sortOrder: number

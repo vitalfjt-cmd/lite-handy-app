@@ -35,6 +35,7 @@ export function useAdminForm() {
   const [adminItemName, setAdminItemName] = useState('')
   const [adminItemPrice, setAdminItemPrice] = useState('500')
   const [adminItemTaxType, setAdminItemTaxType] = useState<'INCLUDED' | 'EXCLUDED' | 'NONE'>('INCLUDED')
+  const [adminItemTaxRateType, setAdminItemTaxRateType] = useState<'STANDARD' | 'REDUCED' | 'NONE'>('STANDARD')
   const [adminItemImageUrl, setAdminItemImageUrl] = useState('')
   const [adminItemSortOrder, setAdminItemSortOrder] = useState('10')
   const [adminItemIsActive, setAdminItemIsActive] = useState(true)
@@ -76,6 +77,9 @@ export function useAdminForm() {
   const [adminStorePaymentTimingMode, setAdminStorePaymentTimingMode] = useState<'PREPAID' | 'POSTPAID'>('POSTPAID')
   const [adminStoreTicketNoResetMode, setAdminStoreTicketNoResetMode] = useState<'DAILY' | 'SEQUENCE'>('DAILY')
   const [adminStoreTicketNoDigits, setAdminStoreTicketNoDigits] = useState(4)
+  const [adminStoreTaxRate, setAdminStoreTaxRate] = useState(10)
+  const [adminStoreReducedTaxRate, setAdminStoreReducedTaxRate] = useState(8)
+  const [adminStoreTaxDisplayMode, setAdminStoreTaxDisplayMode] = useState<'INCLUDED' | 'EXCLUDED'>('INCLUDED')
   const [itemImageUploadBusy, setItemImageUploadBusy] = useState(false)
 
   const resetBook = () =>
@@ -183,6 +187,7 @@ export function useAdminForm() {
     setAdminItemName(item.name)
     setAdminItemPrice(String(item.price))
     setAdminItemTaxType(item.tax_type ?? 'INCLUDED')
+    setAdminItemTaxRateType(item.tax_rate_type ?? 'STANDARD')
     setAdminItemImageUrl(item.image_url ?? '')
     setAdminItemSortOrder(String(item.sort_order))
     setAdminItemIsActive(item.is_active)
@@ -257,6 +262,7 @@ export function useAdminForm() {
     adminItemName, setAdminItemName,
     adminItemPrice, setAdminItemPrice,
     adminItemTaxType, setAdminItemTaxType,
+    adminItemTaxRateType, setAdminItemTaxRateType,
     adminItemImageUrl, setAdminItemImageUrl,
     adminItemSortOrder, setAdminItemSortOrder,
     adminItemIsActive, setAdminItemIsActive,
@@ -303,6 +309,9 @@ export function useAdminForm() {
     adminStorePaymentTimingMode, setAdminStorePaymentTimingMode,
     adminStoreTicketNoResetMode, setAdminStoreTicketNoResetMode,
     adminStoreTicketNoDigits, setAdminStoreTicketNoDigits,
+    adminStoreTaxRate, setAdminStoreTaxRate,
+    adminStoreReducedTaxRate, setAdminStoreReducedTaxRate,
+    adminStoreTaxDisplayMode, setAdminStoreTaxDisplayMode,
     itemImageUploadBusy, setItemImageUploadBusy,
     beginEditMenuBook,
     beginEditCategory,

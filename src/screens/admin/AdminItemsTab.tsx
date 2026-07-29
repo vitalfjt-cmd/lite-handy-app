@@ -7,6 +7,8 @@ type Props = {
   categoryNameMap: Map<string, string>
   itemCategoryOptions: { id: string; name: string }[]
   yen: (value: number) => string
+  adminStoreTaxRate?: string | number
+  adminStoreReducedTaxRate?: string | number
   disabled: boolean
   onEditMenuItem: (id: string) => void
   onToggleSoldOut: (itemId: string, nextValue: boolean) => void
@@ -163,7 +165,14 @@ export function AdminItemsTab(props: Props) {
                   <td className="admin-cell-code">{item.code || '未設定'}</td>
                   <td className="admin-cell-category">{props.categoryNameMap.get(item.category_id) ?? `未設定 (${item.category_id.slice(0, 8)})`}</td>
                   <td className="admin-cell-price">{props.yen(item.price)}</td>
-                  <td className="admin-cell-tax">{item.tax_type || 'INCLUDED'}</td>
+                  <td className="admin-cell-tax">
+                    {item.tax_type || 'INCLUDED'}
+                    {item.tax_rate_type === 'REDUCED'
+                      ? ` (${props.adminStoreReducedTaxRate || '8'}%)`
+                      : item.tax_rate_type === 'NONE'
+                      ? ' (0%)'
+                      : ` (${props.adminStoreTaxRate || '10'}%)`}
+                  </td>
                   <td className="admin-cell-sort">{item.sort_order}</td>
                   <td className="admin-cell-status">{item.is_active ? (item.is_sold_out ? '売切' : '有効') : '無効'}</td>
                   <td className="admin-cell-actions">

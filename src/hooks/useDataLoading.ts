@@ -37,6 +37,9 @@ export type DataLoadingSetters = {
   setAdminStorePaymentTimingMode: (mode: 'PREPAID' | 'POSTPAID') => void
   setAdminStoreTicketNoResetMode: (mode: 'DAILY' | 'SEQUENCE') => void
   setAdminStoreTicketNoDigits: (digits: string | number) => void
+  setAdminStoreTaxRate?: (rate: any) => void
+  setAdminStoreReducedTaxRate?: (rate: any) => void
+  setAdminStoreTaxDisplayMode?: (mode: any) => void
   setPublicStore: (store: any) => void
   setPublicTable: (table: any) => void
   setPublicOpenTicket: (ticket: any) => void
@@ -58,6 +61,7 @@ export function useDataLoading(setters: DataLoadingSetters) {
     setAdminItemCategoryId, setAdminPlacementTopCategoryId, setAdminPlacementCategoryId, setAdminPlacementItemId,
     setAdminStoreName, setAdminStoreSlug, setAdminStoreTimezone, setAdminStoreBusinessOffsetMinutes,
     setAdminStorePaymentTimingMode, setAdminStoreTicketNoResetMode, setAdminStoreTicketNoDigits,
+    setAdminStoreTaxRate, setAdminStoreReducedTaxRate, setAdminStoreTaxDisplayMode,
     setPublicStore, setPublicTable, setPublicOpenTicket, setPublicCategories, setPublicItems,
     setPublicMenuReady, setCustomerBusy, setCustomerMessage, setCustomerAccess, setSession
   } = setters
@@ -195,6 +199,9 @@ export function useDataLoading(setters: DataLoadingSetters) {
     setAdminStorePaymentTimingMode(bootstrap.store.payment_timing_mode)
     setAdminStoreTicketNoResetMode(bootstrap.store.ticket_no_reset_mode)
     setAdminStoreTicketNoDigits(bootstrap.store.ticket_no_digits)
+    setAdminStoreTaxRate?.((bootstrap.store as any).tax_rate ?? 10)
+    setAdminStoreReducedTaxRate?.((bootstrap.store as any).reduced_tax_rate ?? 8)
+    setAdminStoreTaxDisplayMode?.((bootstrap.store as any).tax_display_mode ?? 'INCLUDED')
   }
 
   const loadLiveData = async (activeSession: any, view: string, PROTOTYPE_STAFF_SESSION_STORAGE_KEY: string) => {

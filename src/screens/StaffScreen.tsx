@@ -840,6 +840,7 @@ export function StaffScreen({
         liveTicketSummaries={liveTicketSummaries}
         combinedTicketIds={combinedTicketIds}
         livePaymentMethods={livePaymentMethods}
+        liveItems={liveItems as any}
         onAddCombinedTicket={(id) => setCombinedTicketIds((prev) => [...prev, id])}
         onRemoveCombinedTicket={(id) => setCombinedTicketIds((prev) => prev.filter((x) => x !== id))}
       />

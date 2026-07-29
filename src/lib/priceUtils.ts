@@ -14,23 +14,21 @@ export function formatItemPrice(
   }
 
   const effectiveRate = taxRateType === 'REDUCED' ? reducedTaxRate : taxRate
-  const isReduced = taxRateType === 'REDUCED'
-  const rateLabel = isReduced ? `${effectiveRate}%` : `${effectiveRate}%`
 
   if (taxType === 'EXCLUDED') {
     if (taxDisplayMode === 'INCLUDED') {
       const taxIncludedPrice = Math.round(price * (1 + effectiveRate / 100))
-      return `${yen(taxIncludedPrice)}（税込${rateLabel}）`
+      return `${yen(taxIncludedPrice)}（税込）`
     } else {
-      return `${yen(price)}（税抜${rateLabel}）`
+      return `${yen(price)}（税抜）`
     }
   } else {
     // Default taxType is INCLUDED
     if (taxDisplayMode === 'EXCLUDED') {
       const taxExcludedPrice = Math.round(price / (1 + effectiveRate / 100))
-      return `${yen(taxExcludedPrice)}（税抜${rateLabel}）`
+      return `${yen(taxExcludedPrice)}（税抜）`
     } else {
-      return `${yen(price)}（税込${rateLabel}）`
+      return `${yen(price)}（税込）`
     }
   }
 }

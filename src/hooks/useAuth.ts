@@ -6,7 +6,7 @@ import type { StaffProfile } from '../types'
 
 export function useAuth() {
   const [email, setEmail] = useState('vtl.ucd@aroma.ocn.ne.jp')
-  const [password, setPassword] = useState('demo1234')
+  const [password, setPassword] = useState('')
   const [session, setSession] = useState<any | null>(null)
   const [profile, setProfile] = useState<StaffProfile | null>(null)
   const [authBusy, setAuthBusy] = useState(false)

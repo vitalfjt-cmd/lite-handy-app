@@ -4,7 +4,7 @@ import type { KeyboardEventHandler } from 'react'
 import { DirectActionView } from './staff/DirectActionView'
 import { StaffPaymentView } from './staff/StaffPaymentView'
 import { StaffHandyView } from './staff/StaffHandyView'
-import { isTimeWithinWindow } from '../lib/appUtils'
+import { isTimeWithinWindow, formatTime } from '../lib/appUtils'
 import { StaffPrototypeTopCategory, StaffPrototypeSubCategory, StaffPrototypeItem, LivePaymentEntry, LiveTableRef, LiveMenuBook, TicketSummaryView, LiveLine, LiveMenuItem , AdminPaymentMethod } from '../types'
 
 type PaymentKind = string
@@ -977,9 +977,9 @@ export function StaffScreen({
                       <div className="title-group">
                         <button className="btn-secondary mobile-only" onClick={() => onSelectTicket(null)} style={{marginRight:'12px', padding:'4px 8px'}}>← 戻る</button>
                         <h2 className="detail-title">{selectedSummary.tableName} 詳細</h2>
-                        <span className="order-time">注文時刻: {selectedSummary.orderedAt} / 伝票: {selectedSummary.ticketNo} / 客数: {selectedSummary.customerCount || 1}名</span>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '6px' }}>
-                          <span style={{ fontSize: '0.85rem', color: '#aaa' }}>メニューブック:</span>
+                        <span className="order-time">注文時刻: {formatTime(selectedSummary.orderedAt)} / 伝票: {selectedSummary.ticketNo} / 客数: {selectedSummary.customerCount || 1}名</span>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '6px', flexWrap: 'wrap' }}>
+                          <span style={{ fontSize: '0.85rem', color: '#aaa', whiteSpace: 'nowrap', flexShrink: 0 }}>メニューブック:</span>
                           <select
                             data-testid="staff-ticket-menu-book-select"
                             value={selectedSummary.menuBookId || ''}
@@ -997,7 +997,10 @@ export function StaffScreen({
                               border: '1px solid #444',
                               borderRadius: '6px',
                               fontSize: '0.85rem',
-                              cursor: 'pointer'
+                              cursor: 'pointer',
+                              maxWidth: '100%',
+                              flex: '1 1 auto',
+                              minWidth: '120px'
                             }}
                           >
                             {liveMenuBooks.map((mb) => {

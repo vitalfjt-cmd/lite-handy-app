@@ -66,7 +66,7 @@ export default function App() {
     const hashView = readViewFromHash()
     if (hashView) return hashView
     if (nativeSetup.isConfigured && nativeSetup.config) return nativeSetup.config.view
-    return 'setup'
+    return 'staff'
   })
   const [adminTab, setAdminTab] = useState<string>(() => {
     const params = new URLSearchParams(window.location.search)
@@ -247,10 +247,10 @@ export default function App() {
       const hashView = readViewFromHash()
       if (hashView) {
         setView(hashView)
-      } else if (!nativeSetup.isConfigured) {
-        setView('setup')
-      } else if (nativeSetup.config) {
+      } else if (nativeSetup.isConfigured && nativeSetup.config) {
         setView(nativeSetup.config.view)
+      } else {
+        setView('staff')
       }
       const nextCustomerAccess = readCustomerAccessParams()
       if (hashView !== 'cust-tablet') {

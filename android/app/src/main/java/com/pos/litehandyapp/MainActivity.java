@@ -1,4 +1,4 @@
-package com.pos.liteapp.v3;
+package com.pos.litehandyapp;
 
 import com.getcapacitor.BridgeActivity;
 

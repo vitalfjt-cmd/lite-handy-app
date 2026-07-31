@@ -111,7 +111,7 @@ export function AppLauncher({
         <div className="launcher-header">
           <h2>
             pachira{"\n"}
-            Demo
+            Handy
           </h2>
           <button className="launcher-close" onClick={onClose}>&times;</button>
         </div>

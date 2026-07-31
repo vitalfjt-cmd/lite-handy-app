@@ -32,7 +32,7 @@ npm.cmd run dev
 
 
 
-// db → customer-api-prototype\.wrangler-clean\v3\d1
+// db → customer-api-prototype\.wrangler-clean\d1
 
 
 ---

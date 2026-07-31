@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.pos.liteapp.v3',
-  appName: 'Lite App V3',
+  appId: 'com.pos.litehandyapp',
+  appName: 'Lite Handy App',
   webDir: 'dist',
   server: {
     androidScheme: 'http',

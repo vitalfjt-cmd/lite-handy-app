@@ -1,6 +1,6 @@
-# Lite App V3 - Native Version
+# Lite Handy App - Native Version
 
-This version of the Lite App is configured as a **Native App** using [Capacitor](https://capacitorjs.com/).
+This version of the Lite Handy App is configured as a **Native App** using [Capacitor](https://capacitorjs.com/).
 
 ## Getting Started
 

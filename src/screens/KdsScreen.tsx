@@ -114,10 +114,10 @@ export function KdsScreen({
           <button className="menu-trigger" onClick={onOpenLauncher} aria-label="Open Menu">
             <span className="material-icons">menu</span>
           </button>
-          <h2 className="glow-text">KDS / 調理指示画面</h2>
+          <h2 className="glow-text">KDS / 調理指示</h2>
         </div>
         <div className="header-meta">
-          <div className="filter-chips" style={{marginRight: '24px'}}>
+          <div className="filter-chips">
              <button className={`chip ${mode === 'all' ? 'active' : ''}`} onClick={() => onModeChange('all')}>すべて</button>
              {tableOptions.map(table => (
                <button 
@@ -129,7 +129,7 @@ export function KdsScreen({
                </button>
              ))}
           </div>
-          <span className="queue-badge">現在: {groupedOrders.length} 件</span>
+          <span className="queue-badge">現在: {groupedOrders.length}件</span>
         </div>
       </header>
 

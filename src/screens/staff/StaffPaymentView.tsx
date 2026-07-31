@@ -464,7 +464,7 @@ export function StaffPaymentView({
         <div className="header-left">
           {!paymentFinalized && (
             <button className="btn-secondary back-btn" onClick={() => setShowPaymentModal(false)}>
-              ← スタッフ画面へ戻る
+              ← 戻る
             </button>
           )}
           <h2 className="payment-title">お会計：{selectedSummary.tableName}</h2>
@@ -472,7 +472,7 @@ export function StaffPaymentView({
         <div className="header-right">
           {!paymentFinalized && (
             <button
-              className="btn-secondary"
+              className="btn-secondary reset-btn"
               onClick={() => {
                 setPayments([])
                 setCurrentPaymentInput('')
@@ -482,9 +482,8 @@ export function StaffPaymentView({
                 setCurrentPersonLabel(null)
                 setPendingPaymentItems([])
               }}
-              style={{ marginRight: '16px' }}
             >
-              支払いをリセット
+              リセット
             </button>
           )}
           <span className="payment-time">伝票: {selectedSummary.ticketNo}</span>

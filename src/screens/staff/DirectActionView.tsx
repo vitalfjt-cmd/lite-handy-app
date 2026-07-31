@@ -1,5 +1,5 @@
-import React from 'react'
 import { TicketSummaryView } from '../../types'
+import { formatTime } from '../../lib/appUtils'
 
 type DirectActionViewProps = {
   directAction: 'HANDY' | 'PAYMENT'
@@ -100,7 +100,7 @@ export function DirectActionView({
             >
               <div style={{ fontSize: '3rem', fontWeight: 'bold' }}>{t.tableName}</div>
               <div style={{ display: 'flex', gap: '12px', fontSize: '1.2rem', color: '#adb5bd' }}>
-                <span>{t.orderedAt}</span>
+                <span>{formatTime(t.orderedAt)}</span>
                 <span>({t.lineCount}点)</span>
               </div>
               <div style={{ fontSize: '1.5rem', color: '#51cf66', fontWeight: 'bold', marginTop: '8px' }}>{yen(t.subtotal)}</div>

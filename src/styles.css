@@ -47,6 +47,8 @@ body,
   margin: 0;
   height: 100%;
   min-height: 100%;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 
@@ -3680,26 +3682,40 @@ h1 {
   background: var(--s-primary);
   color: #ffffff;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 12px 24px;
+  padding: 8px 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
 }
 .staff-header h2 {
   color: #ffffff;
+  margin: 0;
+  font-size: 1.1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .staff-header .menu-trigger {
   color: #ffffff !important;
   background: rgba(255, 255, 255, 0.15) !important;
+  flex-shrink: 0;
 }
 .staff-header .staff-badge {
   background: rgba(255, 255, 255, 0.2);
   color: #ffffff;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .staff-header .btn-secondary {
   background: rgba(255, 255, 255, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.4);
   color: #ffffff;
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding: 6px 12px;
+  font-size: 0.85rem;
 }
 .staff-header .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.3);
@@ -3708,14 +3724,25 @@ h1 {
 .logo-area {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 8px;
+  min-width: 0;
+  flex: 1;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
 .staff-badge {
   background: #333;
-  padding: 4px 12px;
+  padding: 4px 10px;
   border-radius: 12px;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .staff-layout {
@@ -4431,12 +4458,13 @@ h1 {
 
 
 @media (max-width: 768px) {
+  html { font-size: 13.5px; }
   .mobile-only { display: block !important; }
   .desktop-only { display: none !important; }
 
   /* Staff App Responsive */
-  .staff-header { padding: 8px 16px; }
-  .staff-header h2 { font-size: 1.1rem; }
+  .staff-header { padding: 6px 12px; }
+  .staff-header h2 { font-size: 1rem; max-width: 130px; }
   .staff-layout { display: block; overflow: hidden; position: relative; height: 100%; }
   .ticket-list-pane, .ticket-detail-pane { width: 100%; height: 100%; position: absolute; top: 0; left: 0; transition: transform 0.3s ease; }
   
@@ -4446,10 +4474,14 @@ h1 {
   .staff-layout.show-detail .ticket-list-pane { transform: translateX(-100%); }
   .staff-layout.show-detail .ticket-detail-pane { transform: translateX(0); }
 
-  .pane-header { padding: 12px; }
+  .pane-header { padding: 10px; }
   .ticket-list { padding: 8px; }
-  .detail-header { padding: 12px; flex-direction: column; align-items: stretch; gap: 12px; }
+  .detail-header { padding: 10px; flex-direction: column; align-items: stretch; gap: 8px; }
   .detail-header .action-group { justify-content: space-between; }
+  .lines-header, .line-row { grid-template-columns: 1.8fr 0.8fr 1fr 1.2fr; gap: 4px; padding: 10px 8px; }
+  .line-status { display: flex; align-items: center; gap: 4px; white-space: nowrap; overflow: hidden; }
+  .line-status .status-badge { white-space: nowrap; flex-shrink: 0; font-size: 0.7rem; padding: 2px 4px; }
+  .line-status button { white-space: nowrap; flex-shrink: 0; padding: 2px 4px !important; font-size: 0.75rem !important; margin-left: 2px !important; }
   
   /* Handy App Responsive */
   .handy-layout { display: flex; flex-direction: column; }

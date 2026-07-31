@@ -1,6 +1,7 @@
 import React from 'react'
 import { TicketSummaryView, LivePaymentEntry, AdminPaymentMethod, LiveMenuItem } from '../../types'
 import { LiveLine } from '../../lib/staffUtils'
+import { formatTime } from '../../lib/appUtils'
 
 type PaymentKind = string
 
@@ -228,7 +229,7 @@ export function StaffPaymentView({
             </div>
           )}
           <h3 className="receipt-brand">{storeName}</h3>
-          <p className="receipt-meta">注文: {selectedSummary.orderedAt}</p>
+          <p className="receipt-meta">注文: {formatTime(selectedSummary.orderedAt)}</p>
           {selectedSummary.receiptNo && <p className="receipt-meta">レシート番号: {selectedSummary.receiptNo}</p>}
           {g && <p className="receipt-meta" style={{ fontWeight: 'bold', fontSize: '1.05rem', marginTop: '4px', textAlign: 'center', background: '#e8f5e9', padding: '4px', borderRadius: '4px', color: '#1b813e' }}>{g.label}</p>}
           <div className="receipt-divider"></div>

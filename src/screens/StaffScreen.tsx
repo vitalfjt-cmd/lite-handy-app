@@ -1034,7 +1034,7 @@ export function StaffScreen({
                   <span>状態</span>
                 </div>
                 <div style={{ flex: 1, overflowY: 'auto', minHeight: 0 }}>
-                  {selectedLines.map(line => (
+                  {selectedLines.filter(l => l.kds_status !== 'CANCELLED').map(line => (
                     <div key={line.id} className="line-row" style={{ height: 'auto', minHeight: '60px', padding: '12px 16px' }}>
                       <span className="line-name">
                         <div style={{ fontWeight: 'bold' }}>{line.item_name_snapshot}</div>
@@ -1078,13 +1078,13 @@ export function StaffScreen({
       </div>
 
       {showCreateTicketModal && (
-        <div style={{position:'fixed', top:0, left:0, right:0, bottom:0, background:'rgba(0,0,0,0.8)', display:'flex', alignItems:'center', justifyContent:'center', zIndex: 1000}}>
-          <div style={{background:'#222', padding:'32px', borderRadius:'12px', width:'400px', color:'white'}}>
-            <h2 style={{fontSize:'1.5rem', marginBottom:'24px', borderBottom:'1px solid #444', paddingBottom:'12px'}}>伝票発行 (テーブル指定)</h2>
-            <div style={{display:'flex', flexDirection:'column', gap:'16px', marginBottom:'32px'}}>
+        <div style={{position:'fixed', top:0, left:0, right:0, bottom:0, background:'rgba(0,0,0,0.8)', display:'flex', alignItems:'center', justifyContent:'center', zIndex: 1000, padding: '16px', boxSizing: 'border-box'}}>
+          <div style={{background:'#222', padding:'24px 20px', borderRadius:'12px', width:'100%', maxWidth:'400px', boxSizing:'border-box', color:'white'}}>
+            <h2 style={{fontSize:'1.4rem', marginBottom:'20px', borderBottom:'1px solid #444', paddingBottom:'12px'}}>伝票発行 (テーブル指定)</h2>
+            <div style={{display:'flex', flexDirection:'column', gap:'16px', marginBottom:'24px'}}>
               <label>
                 <div style={{marginBottom:'8px', color:'#aaa'}}>テーブル選択</div>
-                <select value={newTicketTableId} onChange={e => setNewTicketTableId(e.target.value)} style={{width:'100%', padding:'12px', background:'#111', color:'white', border:'1px solid #444', borderRadius:'8px', fontSize:'1.1rem'}}>
+                <select value={newTicketTableId} onChange={e => setNewTicketTableId(e.target.value)} style={{width:'100%', padding:'12px', background:'#111', color:'white', border:'1px solid #444', borderRadius:'8px', fontSize:'1.1rem', boxSizing:'border-box'}}>
                   {availableTables.map(t => <option key={t.id} value={t.id}>{t.label}</option>)}
                 </select>
               </label>
@@ -1093,7 +1093,7 @@ export function StaffScreen({
                 <select 
                   value={newTicketMenuBookId} 
                   onChange={e => onNewTicketMenuBookChange(e.target.value)} 
-                  style={{width:'100%', padding:'12px', background:'#111', color:'white', border:'1px solid #444', borderRadius:'8px', fontSize:'1.1rem'}}
+                  style={{width:'100%', padding:'12px', background:'#111', color:'white', border:'1px solid #444', borderRadius:'8px', fontSize:'1.1rem', boxSizing:'border-box'}}
                 >
                   {liveMenuBooks.map(mb => {
                     const isAvailable = isTimeWithinWindow(mb.available_from_time, mb.available_to_time)
@@ -1108,23 +1108,24 @@ export function StaffScreen({
               </label>
               <label>
                 <div style={{marginBottom:'8px', color:'#aaa'}}>客数</div>
-                <div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
+                <div style={{display: 'flex', alignItems: 'center', gap: '8px', width: '100%', boxSizing: 'border-box'}}>
                   <button 
                     type="button" 
                     onClick={() => setNewTicketCustomerCount(prev => String(Math.max(1, (parseInt(prev) || 1) - 1)))}
                     style={{
-                      width: '48px',
-                      height: '48px',
+                      width: '44px',
+                      height: '44px',
                       background: '#333',
                       color: 'white',
                       border: '1px solid #444',
                       borderRadius: '8px',
-                      fontSize: '1.5rem',
+                      fontSize: '1.4rem',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       cursor: 'pointer',
-                      userSelect: 'none'
+                      userSelect: 'none',
+                      flexShrink: 0
                     }}
                   >
                     -
@@ -1135,15 +1136,16 @@ export function StaffScreen({
                     value={newTicketCustomerCount} 
                     onChange={e => setNewTicketCustomerCount(e.target.value)} 
                     style={{
-                      flex: 1, 
-                      padding: '12px', 
+                      flex: '1 1 auto', 
+                      minWidth: 0,
+                      padding: '10px', 
                       background: '#111', 
                       color: 'white', 
                       border: '1px solid #444', 
                       borderRadius: '8px', 
                       fontSize: '1.1rem',
                       textAlign: 'center',
-                      height: '48px',
+                      height: '44px',
                       boxSizing: 'border-box'
                     }} 
                   />
@@ -1151,18 +1153,19 @@ export function StaffScreen({
                     type="button" 
                     onClick={() => setNewTicketCustomerCount(prev => String((parseInt(prev) || 1) + 1))}
                     style={{
-                      width: '48px',
-                      height: '48px',
+                      width: '44px',
+                      height: '44px',
                       background: '#333',
                       color: 'white',
                       border: '1px solid #444',
                       borderRadius: '8px',
-                      fontSize: '1.5rem',
+                      fontSize: '1.4rem',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       cursor: 'pointer',
-                      userSelect: 'none'
+                      userSelect: 'none',
+                      flexShrink: 0
                     }}
                   >
                     +

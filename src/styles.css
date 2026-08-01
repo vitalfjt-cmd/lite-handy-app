@@ -3896,7 +3896,7 @@ h1 {
 
 .lines-header {
   display: grid;
-  grid-template-columns: 2fr minmax(90px, 1fr) minmax(70px, 1fr) minmax(130px, 1.4fr);
+  grid-template-columns: 2fr minmax(92px, 1.1fr) minmax(70px, 1fr) minmax(120px, 1.3fr);
   padding: 12px 16px;
   background: var(--s-surface-hover);
   border-bottom: 1px solid var(--s-border);
@@ -3906,7 +3906,7 @@ h1 {
 
 .line-row {
   display: grid;
-  grid-template-columns: 2fr minmax(90px, 1fr) minmax(70px, 1fr) minmax(130px, 1.4fr);
+  grid-template-columns: 2fr minmax(92px, 1.1fr) minmax(70px, 1fr) minmax(120px, 1.3fr);
   padding: 12px 16px;
   align-items: center;
   border-bottom: 1px solid var(--s-border);
@@ -4493,8 +4493,48 @@ h1 {
   .ticket-detail-pane { padding: 12px; padding-bottom: max(16px, calc(12px + env(safe-area-inset-bottom, 0px))); display: flex; flex-direction: column; overflow-y: auto; box-sizing: border-box; }
   .detail-header { padding: 8px; flex-direction: column; align-items: stretch; gap: 8px; flex-shrink: 0; }
   .detail-header .action-group { justify-content: space-between; }
-  .lines-header, .line-row { grid-template-columns: 1.3fr minmax(72px, 0.9fr) minmax(55px, 0.8fr) minmax(110px, 1.5fr); gap: 4px; padding: 10px 6px; }
-  .line-qty .stepper.compact button { width: 24px !important; height: 24px !important; padding: 0 !important; font-size: 0.85rem !important; }
+  .lines-header, .line-row { grid-template-columns: 1.2fr minmax(88px, 1.1fr) minmax(55px, 0.8fr) minmax(105px, 1.3fr); gap: 4px; padding: 10px 4px; }
+  .line-qty .stepper.compact {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 16px !important;
+    overflow: visible !important;
+    width: auto !important;
+    min-width: max-content !important;
+    flex-shrink: 0 !important;
+    padding: 2px 4px !important;
+    border: 1px solid var(--c-primary, #ff5a5f) !important;
+    gap: 2px !important;
+  }
+  .line-qty .stepper.compact button {
+    width: 26px !important;
+    min-width: 26px !important;
+    max-width: 26px !important;
+    height: 26px !important;
+    min-height: 26px !important;
+    max-height: 26px !important;
+    padding: 0 !important;
+    font-size: 0.95rem !important;
+    flex-shrink: 0 !important;
+    background: transparent !important;
+    color: var(--c-primary, #ff5a5f) !important;
+    border: none !important;
+    cursor: pointer !important;
+    line-height: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  .line-qty .stepper.compact span {
+    width: 20px !important;
+    min-width: 20px !important;
+    max-width: 20px !important;
+    text-align: center !important;
+    font-size: 0.85rem !important;
+    flex-shrink: 0 !important;
+    line-height: 1 !important;
+  }
   .line-status { display: flex; align-items: center; justify-content: flex-end; gap: 4px; white-space: nowrap; flex-shrink: 0; }
   .line-status .status-badge { white-space: nowrap; flex-shrink: 0; font-size: 0.7rem; padding: 2px 4px; }
   .line-status button { white-space: nowrap; flex-shrink: 0; padding: 2px 5px !important; font-size: 0.75rem !important; margin-left: 2px !important; }

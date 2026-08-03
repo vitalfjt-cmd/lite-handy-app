@@ -117,18 +117,26 @@ export function KdsScreen({
           <h2 className="glow-text">KDS / 調理指示</h2>
         </div>
         <div className="header-meta">
-          <div className="filter-chips">
-             <button className={`chip ${mode === 'all' ? 'active' : ''}`} onClick={() => onModeChange('all')}>すべて</button>
-             {tableOptions.map(table => (
-               <button 
-                 key={table} 
-                 className={`chip ${mode === 'table' && selectedTableName === table ? 'active' : ''}`} 
-                 onClick={() => { onModeChange('table'); onSelectTable(table) }}
-                >
-                 {table}
-               </button>
-             ))}
-          </div>
+          <select
+            className="kds-table-select"
+            value={mode === 'all' ? 'all' : (selectedTableName || 'all')}
+            onChange={(e) => {
+              const val = e.target.value
+              if (val === 'all') {
+                onModeChange('all')
+              } else {
+                onModeChange('table')
+                onSelectTable(val)
+              }
+            }}
+          >
+            <option value="all">すべての卓</option>
+            {tableOptions.map((table) => (
+              <option key={table} value={table}>
+                卓番: {table}
+              </option>
+            ))}
+          </select>
           <span className="queue-badge">現在: {groupedOrders.length}件</span>
         </div>
       </header>

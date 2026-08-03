@@ -120,13 +120,9 @@ export function AppSidebar({
         boxShadow: 'none',
         flexWrap: 'wrap',
       }}>
-        <span style={{ color: '#888', fontWeight: 'bold', marginRight: '16px', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px' }}>
-          pachira
-        </span>
-        
         {/* Customer buttons removed */}
         <button style={getBtnStyle(view === 'staff', '#4dabf7')} onClick={() => onMove('staff')}>
-          🖥️ Staff
+          🖥️ 伝票一覧
         </button>
         <button style={getBtnStyle(false, '#cc5de8')} onClick={() => onDirectAction?.('HANDY')}>
           📝 Handy
@@ -141,13 +137,12 @@ export function AppSidebar({
           ⚙️ Admin
         </button>
         <button style={getBtnStyle(view === 'setup', '#868e96')} onClick={() => onMove('setup')}>
-          端末設定
+          設定
         </button>
 
         <div style={{ flex: 1, minWidth: '20px' }}></div>
         
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginRight: '16px' }}>
-          <span style={{ color: '#aaa', fontSize: '0.75rem' }}>{liveStoreName}</span>
           {profile && <span style={{ color: '#fff', fontSize: '0.8rem', fontWeight: 'bold' }}>{profile.display_name}</span>}
         </div>
 

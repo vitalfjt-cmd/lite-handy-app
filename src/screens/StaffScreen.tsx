@@ -891,7 +891,7 @@ export function StaffScreen({
           <button className="menu-trigger" onClick={onOpenLauncher} aria-label="Open Menu">
             <span className="material-icons">menu</span>
           </button>
-          <h2>{storeName}</h2>
+          <h2>伝票一覧</h2>
           <div style={{display:'flex', gap:'6px', alignItems:'center'}}>
             <span className="staff-badge">{isHandyMode ? 'Handy' : '稼働中'}</span>
             {terminalName && <span className="staff-badge" style={{background:'#5d7281'}}>{terminalName}</span>}

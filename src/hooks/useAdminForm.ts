@@ -1,3 +1,4 @@
+import type { AdminPlacementRow } from '../screens/admin/types'
 import { useState } from 'react'
 import {
   resetAdminBookForm,
@@ -195,14 +196,14 @@ export function useAdminForm() {
     setAdminItemToppingIds(item.toppings?.map((t: any) => t.id) || [])
   }
 
-  const beginEditPlacement = (placement: any) => {
+  const beginEditPlacement = (placement: AdminPlacementRow) => {
     setEditingPlacementId(placement.id)
-    setAdminPlacementMenuBookId(placement.menu_book_id)
-    setAdminPlacementTopCategoryId(placement.menu_category_id)
-    setAdminPlacementCategoryId(placement.menu_subcategory_id)
-    setAdminPlacementItemId(placement.menu_item_id)
-    setAdminPlacementDisplayNameOverride(placement.display_name_override ?? '')
-    setAdminPlacementDescriptionOverride(placement.description_override ?? '')
+    setAdminPlacementMenuBookId(placement.menuBookId)
+    setAdminPlacementTopCategoryId(placement.topCategoryId)
+    setAdminPlacementCategoryId(placement.subcategoryId)
+    setAdminPlacementItemId(placement.itemId)
+    setAdminPlacementDisplayNameOverride(placement.displayNameOverride ?? '')
+    setAdminPlacementDescriptionOverride(placement.descriptionOverride ?? '')
   }
 
   const beginEditTable = (tableRef: any) => {

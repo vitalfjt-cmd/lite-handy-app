@@ -22,6 +22,12 @@ React 19 + Vite 7 + TypeScript 5 をベースとした Web SPA であり、Capac
 - **認証**: Firebase Auth (`firebase.ts`) またはプロトタイプ認証トークンによるセッション管理。
 - **モバイル・ネイティブ拡張**: `@capacitor/core` を使用したネイティブ端末機能との連携およびアプリ動作対応。
 
+
+### スタッフ認証・DBテーブル仕様 (Firebase Auth & Staff Tables)
+- **Firebase Authentication**: スタッフのログイン本人確認・認証および UID (`auth_user_id`) の発行を担当。
+- **`staff_users` テーブル (使用中)**: 店舗に所属するスタッフのプロファイル・権限マスタ。Firebase の UID (`auth_user_id`) に対し、店舗ごとの表示名 (`display_name`)、権限ロール (`role_type`: `ADMIN` / `STAFF` / `KDS`)、有効フラグ (`is_active`) を紐付けて保持・管理（マスタ管理画面の「スタッフ一覧」で編集可能）。
+- **`staff_sessions` テーブル (非推奨・互換用)**: 開発初期の独自セッション管理用テーブル。Firebase Auth 導入後はセッション維持が Firebase SDK およびクライアント側 (`sessionStorage` 等) へ移行したため、アプリケーションの主要フローからは実質使われていません。
+
 ### 2.3 モジュール構成 (Custom Hooks & Lib)
 主要なビジネスロジックをカスタムフックおよびライブラリに集約：
 - **`useDataLoading`**: 初期データおよびポリング更新データのロードオーケストレーター。

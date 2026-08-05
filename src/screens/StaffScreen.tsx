@@ -975,8 +975,10 @@ export function StaffScreen({
                     )}
                     <div className="detail-header">
                       <div className="title-group">
-                        <button className="btn-secondary mobile-only" onClick={() => onSelectTicket(null)} style={{marginRight:'12px', padding:'4px 8px'}}>← 戻る</button>
-                        <h2 className="detail-title">{selectedSummary.tableName} 詳細</h2>
+                        <h2 className="detail-title">
+                          <button className="btn-secondary mobile-only" onClick={() => onSelectTicket(null)} style={{marginRight:'12px', padding:'4px 8px'}}>← 戻る</button>
+                          {selectedSummary.tableName} 詳細
+                        </h2>
                         <span className="order-time">注文時刻: {formatTime(selectedSummary.orderedAt)} / 伝票: {selectedSummary.ticketNo} / 客数: {selectedSummary.customerCount || 1}名</span>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '6px', flexWrap: 'wrap' }}>
                           <span style={{ fontSize: '0.85rem', color: '#aaa', whiteSpace: 'nowrap', flexShrink: 0 }}>メニューブック:</span>
@@ -1019,7 +1021,7 @@ export function StaffScreen({
                         <button className="btn-secondary" disabled={isTicketMenuBookOutOfTime} style={isTicketMenuBookOutOfTime ? { background: '#888', cursor: 'not-allowed', opacity: 0.7 } : undefined} onClick={() => setShowHandyModal(true)}>
                           {isTicketMenuBookOutOfTime ? '時間外' : '注文'}
                         </button>
-                        <button className="btn-primary" onClick={() => setShowPaymentModal(true)}>会計へ進む</button>
+                        <button className="btn-primary" onClick={() => setShowPaymentModal(true)}>会計</button>
                       </div>
                     </div>
                   </>

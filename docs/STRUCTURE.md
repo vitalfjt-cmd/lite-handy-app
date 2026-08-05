@@ -6,7 +6,7 @@ lite-handy-app/
 ├── android/            # Android ネイティブプロジェクト (Capacitor)
 ├── ios/                # iOS ネイティブプロジェクト (Capacitor)
 ├── docs/               # 仕様書および構成ドキュメント
-├── figma-mocks/        # UIデザインモック
+├── figma-mocks/        # UIデザインモック画像
 ├── public/             # 静的アセット (ロゴ、ファビコン等)
 ├── tests/              # Playwright E2E テストおよびサポートスクリプト
 ├── capacitor.config.ts # Capacitor プラットフォーム設定
@@ -34,7 +34,7 @@ lite-handy-app/
     │   ├── staffReadApi.ts   # Workers / D1 バックエンド通信クライアント
     │   └── staffUtils.ts     # 伝票・KDSロジック補助関数
     ├── screens/        # 画面ビューコンポーネント
-    │   ├── admin/            # マスタ管理・売上分析サブタブ群
+    │   ├── admin/            # マスタ管理 & 売上分析サブタブ群 (27コンポーネント)
     │   ├── staff/            # スタッフ画面サブビュー (Handy/Payment/DirectAction)
     │   ├── AdminScreen.tsx   # マスタメンテナンス・売上管理メイン画面
     │   ├── KdsScreen.tsx     # キッチンディスプレイシステム (KDS) 画面
@@ -43,7 +43,7 @@ lite-handy-app/
     │   ├── SetupScreen.tsx   # 端末設定画面 (Capacitorネイティブ設定)
     │   └── StaffScreen.tsx   # スタッフ伝票一覧・詳細画面
     ├── App.tsx         # ルーティング・状態結合メインコンポーネント
-    ├── constants.ts   # ビュー定義およびセッションキー定数
+    ├── constants.ts    # ビュー定義およびセッションキー定数
     ├── main.tsx        # エントリポイント
     ├── styles.css      # 全体デザインシステム (CSS変数、100vhレイアウト)
     └── types.ts        # TypeScript 型定義
@@ -64,7 +64,7 @@ lite-handy-app/
   - `StaffPaymentView.tsx`: 会計・個別割勘・まとめ会計専用画面。
 - **`KdsScreen.tsx`**: キッチンでの調理進捗管理画面（未調理 NEW → 調理中 COOKING → 提供済 SERVED）。
 - **`SeatsScreen.tsx`**: 店舗のテーブル稼働・座席状況一覧画面。
-- **`AdminScreen.tsx` / `src/screens/admin/`**: メニューブック、カテゴリ、サブカテゴリ、メニュー商品、トッピング、店舗・スタッフ、決済種別のマスタ管理および売上データ分析画面。
+- **`AdminScreen.tsx` / `src/screens/admin/`**: メニューブック、カテゴリ、サブカテゴリ、メニュー商品、トッピング、店舗・スタッフ、決済種別、卓配置のマスタ管理および売上データ分析画面 (全27サブコンポーネント)。
 - **`SetupScreen.tsx`**: 端末識別名や Capacitor ネイティブプラグイン接続の設定画面。
 
 ### 2.3 `src/hooks/`

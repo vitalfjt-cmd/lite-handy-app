@@ -1,35 +1,36 @@
 # Lite Handy App 仕様定義 (SPECIFICATION)
 
 ## 1. 概要
-`lite-handy-app` は、飲食店向けのハンディ端末およびPOS操作・注文エントリーシステム (Order Entry System / POS) です。
-React 19 + Vite + TypeScript をベースとした Web SPA であり、Capacitor を統合することで iOS / Android ネイティブモバイル端末（ハンディ端末）へのデプロイにも対応しています。バックエンドには Cloudflare Workers + D1 (SQLite) および Firebase Auth を使用しています。
+`lite-handy-app` は、飲食店向けのハンディ端末および POS 操作・注文エントリーシステム (Order Entry System / POS) に特化した Web & モバイルネイティブアプリケーションです。
+React 19 + Vite 7 + TypeScript 5 をベースとした Web SPA であり、Capacitor 8 を統合することで iOS / Android ネイティブモバイル端末（ハンディ端末）へのデプロイに対応しています。バックエンドには Cloudflare Workers + Cloudflare D1 (SQLite) および Firebase Auth を使用しています。
 
 ## 2. アーキテクチャ
 ### 2.1 画面管理 (View Switching)
-アプリ内ナビゲーション（AppLauncher / AppSidebar）またはビュー切り替えにより画面を展開します。
+アプリ内ナビゲーション（AppLauncher / AppSidebar）または各種ボタンアクションによりビューを展開します。
 主なビューは以下の通りです：
 - `staff`: スタッフ向け伝票一覧・詳細・会計・注文操作画面
 - `handy`: ハンディ端末向け直接注文入力モード（カテゴリ選択・トッピング選択・買い物かご・厨房送信）
 - `kds`: キッチンディスプレイシステム (Kitchen Display System - 調理・提供管理画面)
-- `seats`: 座席情報・テーブル稼働状況画面
-- `admin`: マスタメンテナンス画面（メニューブック、カテゴリ、サブカテゴリ、メニュー、トッピング、店舗、スタッフ、決済種別設定）
-- `sales`: 売上管理・レジ締めデータ参照画面（時間帯別・カテゴリ別・個別会計履歴参照、レシート再発行）
-- `setup`: 端末設定画面（Capacitor / ネイティブ環境設定、端末識別名等）
+- `seats`: 店舗座席稼働モニター画面
+- `admin`: マスタメンテナンス画面（メニューブック、カテゴリ、サブカテゴリ、メニュー、トッピング、店舗、スタッフ、決済種別、卓配置設定）
+- `sales`: 売上管理・レジ締めデータ参照画面（時間帯別・カテゴリ別・サブカテゴリ別・商品別・個別会計履歴参照、レシート印刷/再発行）
+- `setup`: 端末設定画面（Capacitor / ネイティブ環境設定、店舗 Slug・卓番割り当て等）
+- `login`: スタッフログイン画面
 
 ### 2.2 データ連携
-- **Staff / KDS / Admin / Sales**: Cloudflare Workers API (`staffReadApi.ts`) による認証とデータ連携。Cloudflare D1 上の実データと同期。
-- **認証**: Firebase Auth / プロトタイプ認証トークンによるセッション管理。
+- **Staff / KDS / Admin / Sales / Seats**: Cloudflare Workers API (`staffReadApi.ts`) による認証とデータ連携。Cloudflare D1 上の実データと同期。
+- **認証**: Firebase Auth (`firebase.ts`) またはプロトタイプ認証トークンによるセッション管理。
 - **モバイル・ネイティブ拡張**: `@capacitor/core` を使用したネイティブ端末機能との連携およびアプリ動作対応。
 
-### 2.3 モジュール構成 (Custom Hooks)
-主要なビジネスロジックをカスタムフックに集約し、保守性と視認性を高めています：
-- **`useDataLoading`**: 初期データおよびリアルタイム更新データのロードオーケストレーター。
+### 2.3 モジュール構成 (Custom Hooks & Lib)
+主要なビジネスロジックをカスタムフックおよびライブラリに集約：
+- **`useDataLoading`**: 初期データおよびポリング更新データのロードオーケストレーター。
 - **`useStaffData`**: 伝票、注文明細、テーブル、メニューブック、商品マスタ等の共有ドメイン状態の保持。
-- **`useStaffOperations`**: 伝票発行、注文入力、明細変更・取消、会計保存、KDSステータス更新等のアクション管理。
-- **`useAdminOperations`**: マスタメンテナンス画面の CRUD ミューテーションロジック。
-- **`useAdminForm`**: メニューやカテゴリ等の管理画面フォーム状態管理。
+- **`useStaffOperations`**: 伝票発行、注文入力、明細変更・取消、会計保存、KDSステータス更新、伝票加算等のアクション管理。
+- **`useAdminOperations` / `useAdminForm`**: マスタメンテナンス画面の CRUD ミューテーションロジックおよびフォーム状態管理。
 - **`useAuth`**: スタッフ認証状態およびログイン・ログアウトセッションの統合管理。
 - **`useNativeSetup`**: Capacitor による iOS/Android ネイティブ環境設定の管理。
+- **`priceUtils.ts`**: 標準税率 (10%) / 軽減税率 (8%) および税込/税抜表示の設定に基づく金額計算。
 
 ## 3. 主要機能
 ### 3.1 ハンディ注文入力 & 伝票管理 (Handy / Staff)
@@ -43,25 +44,25 @@ React 19 + Vite + TypeScript をベースとした Web SPA であり、Capacitor
   - 注文明細の数量変更・差分更新・個別取消。
 
 ### 3.2 会計・決済 (Payment System)
-- **決済フロー**: 伝票選択 → 支払方法選択（現金、クレジットカード、QR決済、商品券等） → 会計確定。
-- **伝票加算**: 複数伝票のまとめ会計。
+- **決済フロー**: 伝票選択 → 支払方法選択（現金、クレジットカード、QR決済等） → 預かり金額テンキー入力 → 会計確定。
+- **伝票加算 (まとめ会計)**: 複数伝票の一括合算会計。
 - **高度な会計機能**:
   - 値引き・割引（定額値引き・定率割引）。
   - 個別会計（商品ごとの明細選択および人ごとの個別会計処理）。
   - 人数指定割勘（均等割）。
-  - 釣銭可否フラグに応じた超過預かり確認および画面テンキー入力。
+  - 釣銭計算および画面テンキー入力。
 
 ### 3.3 調理・キッチン管理 (KDS)
-- **ステータス遷移**: `新規 (NEW)` → `調理中 (COOKING)` → `提供済み (SERVED)`。
+- **ステータス遷移**: `未調理 (NEW)` → `調理中 (COOKING)` → `提供済み (SERVED)`。
 - **表示フィルタ**: 全件表示、新規・調理中の絞り込み、卓番検索。
 
 ### 3.4 マスタメンテナンス & 売上管理 (Admin / Sales)
-- **マスタ管理**: メニューブック、カテゴリ、サブカテゴリ、メニュー商品、トッピング、店舗・スタッフアカウント、決済種別の管理。
+- **マスタ管理**: メニューブック、カテゴリ、サブカテゴリ、メニュー商品、トッピング、店舗・スタッフアカウント、決済種別、卓配置 (Placements) の管理。
 - **税率設定**: 店舗標準税率（10%）、軽減税率（8%）、商品ごとの税区分設定および税込/税抜き表示切替。
-- **売上分析**: レジ締め・売上状況、売上データ参照、時間帯別・カテゴリ別・サブカテゴリ別・会計種別売上参照、レシート再発行。
+- **売上分析**: レジ締め・売上状況、売上データ参照、時間帯別・カテゴリ別・サブカテゴリ別・商品別・会計種別売上参照、レシート再発行。
 
 ### 3.5 ネイティブモバイル対応 (Capacitor)
-- Capacitor CLI / Core による iOS (`ios/`) / Android (`android/`) ネイティブアプリ環境の同期・構築。
+- Capacitor CLI / Core による iOS (`ios/`) / Android (`android/`) ネイティブアプリ環境の同期・構築 (`npm run cap:sync`)。
 
 ## 4. デザイン・UI/UX 方針
 - **ハンディ・タッチ最適化**: スマホ・ハンディ端末での片手操作・誤操作防止に配慮したボタンサイズとレイアウト。
@@ -70,10 +71,10 @@ React 19 + Vite + TypeScript をベースとした Web SPA であり、Capacitor
 
 ## 5. 技術スタック
 - **Frontend**: React 19, Vite 7, TypeScript 5, Vanilla CSS (`styles.css`)
-- **Native / Mobile**: Capacitor Core / iOS / Android (`@capacitor/core`, `@capacitor/cli`)
-- **Backend / DB**: Cloudflare Workers, Cloudflare D1 (SQLite), Firebase Auth
+- **Native / Mobile**: Capacitor Core / CLI / iOS / Android 8 (`@capacitor/core`, `@capacitor/cli`)
+- **Backend / DB / Auth**: Cloudflare Workers, Cloudflare D1 (SQLite), Firebase Auth
 - **Testing**: Playwright (`@playwright/test`)
 
 ## 6. 制約事項・運用注意事項
-- **顧客用QR注文画面の除外**: `lite-handy-app` は店舗スタッフ・ハンディ端末に特化したアプリであり、顧客向けQR注文画面 (`customer`, `cust-tablet`) および「客用QR表示」機能は含まれません。
+- **顧客用QR注文画面の除外**: `lite-handy-app` は店舗スタッフ・ハンディ端末に特化したアプリであり、顧客向けQR注文画面 (`customer`, `cust-tablet`) は含まれません。
 - **オンライン同期**: 通信切断時のオフラインローカルキュー等の調整は今後の最適化対象。

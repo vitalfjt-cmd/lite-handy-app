@@ -53,7 +53,7 @@ export function AdminStoreTab(props: Props) {
             <div>
               <input type="number" value={props.adminStoreBusinessOffsetMinutes} onChange={(event) => props.onStoreBusinessOffsetMinutesChange(event.target.value)} disabled={props.disabled} />
               <span style={{ fontSize: '0.8rem', color: '#666', marginTop: '4px', display: 'block' }}>
-                例: 300分を設定すると AM 5:00 が日付の境界になります（深夜営業向け）。0分は 0:00 境界です。
+            <p className="hint" style={{ fontSize: "0.85rem", color: "var(--text-sub)", marginTop: "4px" }}>{"例: 深夜営業があり AM 5:00 で営業日付を切り替えたい場合は AM 0:00 からの経過時間を分で設定します （60分×5＝300分）"}</p>
               </span>
             </div>
           </label>

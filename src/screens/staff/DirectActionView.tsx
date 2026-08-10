@@ -33,6 +33,7 @@ export function DirectActionView({
         display: 'flex',
         flexDirection: 'column',
         padding: '24px',
+        paddingTop: 'max(28px, calc(16px + env(safe-area-inset-top, 0px)))',
         zIndex: 9999,
         overflowY: 'auto',
       }}

@@ -1908,7 +1908,10 @@ h1 {
   background: var(--s-primary, #1b813e);
   color: #ffffff;
   border-bottom: 1px solid rgba(0, 0, 0, 0.15);
-  padding: 12px 24px;
+  padding-top: max(28px, calc(10px + env(safe-area-inset-top, 0px)));
+  padding-bottom: 12px;
+  padding-left: max(24px, env(safe-area-inset-left, 0px));
+  padding-right: max(24px, env(safe-area-inset-right, 0px));
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -3680,8 +3683,8 @@ h1 {
   background: var(--s-primary);
   color: #ffffff;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  padding-top: max(8px, env(safe-area-inset-top, 0px));
-  padding-bottom: 8px;
+  padding-top: max(28px, calc(10px + env(safe-area-inset-top, 0px)));
+  padding-bottom: 10px;
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
   display: flex;
@@ -4005,7 +4008,7 @@ h1 {
    KDS (Kitchen Display)
    ========================================= */
 .kds-app { background: #f5f6f7; color: #212529; flex: 1; height: 100%; overflow: hidden; display: flex; flex-direction: column; }
-.kds-header { display: flex; align-items: center; justify-content: space-between; padding-top: max(12px, env(safe-area-inset-top, 0px)); padding-bottom: 12px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); background: var(--s-primary); border-bottom: 1px solid rgba(0,0,0,0.1); color: #ffffff; gap: 8px; flex-wrap: nowrap; box-sizing: border-box; }
+.kds-header { display: flex; align-items: center; justify-content: space-between; padding-top: max(28px, calc(10px + env(safe-area-inset-top, 0px))); padding-bottom: 12px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); background: var(--s-primary); border-bottom: 1px solid rgba(0,0,0,0.1); color: #ffffff; gap: 8px; flex-wrap: nowrap; box-sizing: border-box; }
 .kds-header .logo-area { display: flex; align-items: center; gap: 8px; min-width: 0; flex: 1 1 auto; overflow: hidden; }
 .kds-header .logo-area h2 { font-size: 1.1rem; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; flex-shrink: 1; }
 .glow-text { color: #ffffff; text-shadow: 0 0 8px rgba(255,255,255,0.3); }
@@ -4061,7 +4064,10 @@ h1 {
   background: var(--s-primary);
   color: #ffffff;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 12px 24px;
+  padding-top: max(28px, calc(10px + env(safe-area-inset-top, 0px)));
+  padding-bottom: 12px;
+  padding-left: max(24px, env(safe-area-inset-left, 0px));
+  padding-right: max(24px, env(safe-area-inset-right, 0px));
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -4205,7 +4211,12 @@ h1 {
   background: #f5f6f7; color: #212529; height: 100%; display: flex; flex-direction: column; overflow: hidden;
 }
 .handy-header {
-  background: var(--s-primary); padding: 12px 24px; border-bottom: 1px solid rgba(0,0,0,0.1);
+  background: var(--s-primary);
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  padding-top: max(28px, calc(10px + env(safe-area-inset-top, 0px)));
+  padding-bottom: 12px;
+  padding-left: max(24px, env(safe-area-inset-left, 0px));
+  padding-right: max(24px, env(safe-area-inset-right, 0px));
   display: flex; justify-content: space-between; align-items: center; color: #ffffff;
 }
 .handy-header-left { display: flex; align-items: center; gap: 16px; }
@@ -4487,8 +4498,10 @@ h1 {
   .staff-header,
   .handy-header,
   .kds-header,
-  .payment-full-header {
-    padding-top: max(8px, calc(6px + env(safe-area-inset-top, 0px))) !important;
+  .payment-full-header,
+  .seats-header,
+  .admin-header {
+    padding-top: max(28px, calc(10px + env(safe-area-inset-top, 0px))) !important;
     padding-bottom: 8px !important;
     padding-left: 12px !important;
     padding-right: 12px !important;
@@ -4569,7 +4582,7 @@ h1 {
   }
 
   /* Handy App Responsive */
-  .handy-header { padding-top: max(8px, calc(6px + env(safe-area-inset-top, 0px))) !important; }
+  .handy-header { padding-top: max(28px, calc(10px + env(safe-area-inset-top, 0px))) !important; }
   .handy-layout { display: flex; flex-direction: column; }
   .handy-menu-pane { flex: 1; min-height: 0; }
   .handy-slip-pane {
@@ -4762,6 +4775,8 @@ h1 {
 
 .launcher-header {
   padding: 24px;
+  padding-top: max(28px, calc(16px + env(safe-area-inset-top, 0px)));
+  padding-left: max(24px, env(safe-area-inset-left, 0px));
   background: linear-gradient(135deg, #1b813e 0%, #146932 100%);
   display: flex;
   flex-direction: column;
@@ -5542,8 +5557,10 @@ h1 {
   background: var(--s-primary);
   color: #ffffff;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 8px 16px;
-  padding-top: max(8px, calc(6px + env(safe-area-inset-top, 0px)));
+  padding-bottom: 10px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-top: max(28px, calc(10px + env(safe-area-inset-top, 0px)));
   display: flex;
   justify-content: space-between;
   align-items: center;

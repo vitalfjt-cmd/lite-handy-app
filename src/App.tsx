@@ -577,10 +577,10 @@ export default function App() {
 
 
   function moveTo(nextView: AppView, tab?: string) {
-    if (nextView === 'customer' || nextView === 'cust-tablet') return
+    const targetView = (nextView === 'customer' || nextView === 'cust-tablet') ? 'seats' : nextView
 
     const url = new URL(window.location.href)
-    url.searchParams.set('view', nextView)
+    url.searchParams.set('view', targetView)
     if (tab) {
       url.searchParams.set('tab', tab)
       setAdminTab(tab)
@@ -739,17 +739,9 @@ export default function App() {
             liveTables={liveTables}
             liveTicketSummaries={liveTicketSummaries}
             yen={yen}
-            onSelectTable={(tableLabel) => {
-              const ticket = liveTicketSummaries.find(t => t.tableName === tableLabel)
-              if (ticket) {
-                setSelectedTicketId(ticket.ticketId)
-              } else {
-                setSelectedTicketId(null)
-              }
-              moveTo('staff')
-            }}
             onOpenLauncher={() => setIsLauncherOpen(true)}
             storeName={liveStore?.name ?? activeStore.name}
+            storeSlug={liveStore?.slug || publicStoreSlug}
           />
         ) : null}
         {view === 'kds' ? (

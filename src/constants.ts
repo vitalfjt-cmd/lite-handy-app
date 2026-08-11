@@ -1,6 +1,7 @@
 import { AppView } from './types'
 
 export const VIEWS: { id: AppView; label: string; caption: string }[] = [
+  { id: 'customer', label: 'スマホ', caption: '' },
   { id: 'staff', label: '伝票一覧', caption: '' },
   { id: 'kds', label: 'KDS', caption: '' },
   { id: 'seats', label: '座席情報', caption: '' },

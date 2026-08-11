@@ -412,7 +412,15 @@ export default function App() {
     // Fallback to summary's URL only if it looks like a full URL
     if (selectedSummary?.customerUrl && (selectedSummary.customerUrl.startsWith('http') || selectedSummary.customerUrl.startsWith('/'))) {
       if (selectedSummary.customerUrl.startsWith('/')) {
-        return window.location.origin + selectedSummary.customerUrl
+        return 'https://lite-app-v3.pages.dev' + selectedSummary.customerUrl
+      }
+      if (selectedSummary.customerUrl.includes('localhost') || selectedSummary.customerUrl.includes('127.0.0.1') || selectedSummary.customerUrl.includes('192.168.')) {
+        try {
+          const parsed = new URL(selectedSummary.customerUrl)
+          return 'https://lite-app-v3.pages.dev' + parsed.pathname + parsed.search
+        } catch {
+          // ignore
+        }
       }
       return selectedSummary.customerUrl
     }

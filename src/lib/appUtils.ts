@@ -16,10 +16,13 @@ export type BrowserLocationLike = {
 
 function resolveAppOrigin(currentLocation: Pick<BrowserLocationLike, 'origin'>): string {
   const publicOrigin = import.meta.env.VITE_PUBLIC_APP_ORIGIN?.trim()
-  if (publicOrigin) {
+  if (publicOrigin && !publicOrigin.includes('localhost') && !publicOrigin.includes('127.0.0.1') && !publicOrigin.includes('192.168.')) {
     return publicOrigin.replace(/\/+$/, '')
   }
-  return currentLocation.origin
+  if (currentLocation.origin && !currentLocation.origin.includes('localhost') && !currentLocation.origin.includes('127.0.0.1') && !currentLocation.origin.includes('192.168.') && !currentLocation.origin.startsWith('capacitor://')) {
+    return currentLocation.origin.replace(/\/+$/, '')
+  }
+  return 'https://lite-app-v3.pages.dev'
 }
 
 export function normalizeAppLocation(currentLocation: Pick<Location, 'href' | 'hash' | 'pathname' | 'search'> = window.location) {
@@ -235,6 +238,22 @@ export function sanitizeFilePart(value: string): string {
     .replace(/^-+|-+$/g, '') || 'image'
 }
 
+export function extractCleanTicketToken(candidate?: string | null): string | null {
+  if (!candidate) return null
+  if (candidate.includes('ticket=')) {
+    try {
+      const match = candidate.match(/ticket=([^&]+)/)
+      if (match && match[1]) return decodeURIComponent(match[1])
+    } catch {
+      // ignore
+    }
+  }
+  if (candidate.startsWith('http://') || candidate.startsWith('https://') || candidate.startsWith('/')) {
+    return null
+  }
+  return candidate
+}
+
 export function buildCustomerUrl(
   baseLocation: Pick<BrowserLocationLike, 'origin' | 'pathname'>,
   storeSlug: string | null | undefined,
@@ -243,12 +262,14 @@ export function buildCustomerUrl(
   targetView: 'customer' | 'cust-tablet' = 'customer',
 ): string | null {
   if (!storeSlug || !qrToken) return null
-  const url = new URL(resolveAppOrigin(baseLocation) + baseLocation.pathname)
+  const origin = resolveAppOrigin(baseLocation)
+  const url = new URL(origin + '/')
   url.searchParams.set('view', targetView)
   url.searchParams.set('store', storeSlug)
   url.searchParams.set('qr', qrToken)
-  if (ticketToken) {
-    url.searchParams.set('ticket', ticketToken)
+  const cleanTicket = extractCleanTicketToken(ticketToken)
+  if (cleanTicket) {
+    url.searchParams.set('ticket', cleanTicket)
   }
   return url.toString()
 }

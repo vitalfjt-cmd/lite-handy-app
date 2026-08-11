@@ -45,7 +45,7 @@ export function normalizeAppLocation(currentLocation: Pick<Location, 'href' | 'h
   if (hash.startsWith('#/')) {
     const raw = hash.slice(2)
     const [hashView, hashQuery = ''] = raw.split('?')
-    if (hashView === 'customer' || hashView === 'staff' || hashView === 'kds' || hashView === 'admin' || hashView === 'sales' || hashView === 'cust-tablet' || hashView === 'handy' || hashView === 'setup' || hashView === 'seats') {
+    if (hashView === 'customer' || hashView === 'staff' || hashView === 'kds' || hashView === 'admin' || hashView === 'sales' || hashView === 'cust-tablet' || hashView === 'handy' || hashView === 'setup' || hashView === 'seats' || hashView === 'customer-qr' || hashView === 'cust-tablet-qr') {
       url.searchParams.set('view', hashView)
     }
 
@@ -78,9 +78,9 @@ export function readCustomerAccessParams(
 export function readViewFromHash(currentLocation: Pick<Location, 'hash' | 'search'> = window.location): AppView | null {
   const params = new URLSearchParams(currentLocation.search)
   const queryView = params.get('view')
-  if (queryView === 'staff' || queryView === 'kds' || queryView === 'admin' || queryView === 'sales' || queryView === 'customer' || queryView === 'cust-tablet' || queryView === 'handy' || queryView === 'setup' || queryView === 'seats') return queryView as AppView
+  if (queryView === 'staff' || queryView === 'kds' || queryView === 'admin' || queryView === 'sales' || queryView === 'customer' || queryView === 'cust-tablet' || queryView === 'handy' || queryView === 'setup' || queryView === 'seats' || queryView === 'customer-qr' || queryView === 'cust-tablet-qr') return queryView as AppView
   const hash = currentLocation.hash.replace('#/', '')
-  return hash === 'staff' || hash === 'kds' || hash === 'admin' || hash === 'sales' || hash === 'cust-tablet' || hash === 'customer' || hash === 'handy' || hash === 'setup' || hash === 'seats' ? hash as AppView : null
+  return hash === 'staff' || hash === 'kds' || hash === 'admin' || hash === 'sales' || hash === 'cust-tablet' || hash === 'customer' || hash === 'handy' || hash === 'setup' || hash === 'seats' || hash === 'customer-qr' || hash === 'cust-tablet-qr' ? hash as AppView : null
 }
 
 export function yen(value: number): string {
@@ -240,10 +240,11 @@ export function buildCustomerUrl(
   storeSlug: string | null | undefined,
   qrToken: string | null | undefined,
   ticketToken?: string | null | undefined,
+  targetView: 'customer' | 'cust-tablet' = 'customer',
 ): string | null {
   if (!storeSlug || !qrToken) return null
   const url = new URL(resolveAppOrigin(baseLocation) + baseLocation.pathname)
-  url.searchParams.set('view', 'customer')
+  url.searchParams.set('view', targetView)
   url.searchParams.set('store', storeSlug)
   url.searchParams.set('qr', qrToken)
   if (ticketToken) {

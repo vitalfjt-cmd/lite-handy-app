@@ -5586,22 +5586,22 @@ h1 {
 }
 
 .seats-content {
-  padding: 16px;
+  padding: 20px;
   flex: 1;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
   box-sizing: border-box;
 }
 
 .seats-legend {
   background: var(--s-surface);
   border: 1px solid var(--s-border);
-  border-radius: 12px;
-  padding: 12px 16px;
+  border-radius: 16px;
+  padding: 14px 20px;
   display: flex;
-  gap: 16px;
+  gap: 20px;
   align-items: center;
   flex-wrap: wrap;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
@@ -5609,12 +5609,12 @@ h1 {
 
 .legend-title {
   font-weight: bold;
-  font-size: 0.95rem;
+  font-size: 1rem;
 }
 
 .legend-items {
   display: flex;
-  gap: 16px;
+  gap: 20px;
   flex-wrap: wrap;
 }
 
@@ -5622,13 +5622,13 @@ h1 {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
 }
 
 .legend-color {
-  width: 24px;
-  height: 16px;
-  border-radius: 4px;
+  width: 28px;
+  height: 18px;
+  border-radius: 6px;
   border: 1px solid rgba(0,0,0,0.1);
 }
 
@@ -5639,8 +5639,8 @@ h1 {
 
 .seats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
 }
 
 @media (max-width: 600px) {
@@ -5655,16 +5655,16 @@ h1 {
 }
 
 .seat-card {
-  border-radius: 12px;
-  padding: 14px;
-  min-height: 105px;
+  border-radius: 16px;
+  padding: 18px;
+  min-height: 130px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   border: 1px solid var(--s-border);
   transition: all 0.2s ease;
   user-select: none;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.06);
 }
 
 .seat-card.empty {
@@ -5710,22 +5710,25 @@ h1 {
 }
 
 .seat-table-label {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
+  font-weight: 800;
 }
 
 .seat-customer-count {
-  font-size: 1rem;
+  font-size: 1.15rem;
+  font-weight: 700;
 }
 
 .seat-card-middle {
-  margin-top: 8px;
-  font-size: 0.95rem;
+  margin-top: 10px;
+  font-size: 1.05rem;
+  font-weight: 500;
 }
 
 .seat-card-bottom {
-  margin-top: 4px;
-  font-weight: bold;
-  font-size: 1.1rem;
+  margin-top: 8px;
+  font-weight: 800;
+  font-size: 1.3rem;
 }
 
 

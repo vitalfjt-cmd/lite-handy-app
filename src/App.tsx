@@ -305,7 +305,7 @@ export default function App() {
       return
     }
     void loadLiveData(session, view, PROTOTYPE_STAFF_SESSION_STORAGE_KEY)
-  }, [session])
+  }, [session, view])
 
   useEffect(() => {
     if (!customerApiSupportsTicketBootstrap || publicMenuReady || customerBusy || !hasPublicCustomerAccess) return
@@ -593,7 +593,10 @@ export default function App() {
     }
     url.hash = ''
     window.history.pushState({}, '', url)
-    setView(nextView)
+    setView(targetView)
+    if (session) {
+      void loadLiveData(session, targetView, PROTOTYPE_STAFF_SESSION_STORAGE_KEY)
+    }
   }
 
 
@@ -606,7 +609,7 @@ export default function App() {
 
   return (
     <div
-      className={`shell ${view === 'customer' ? 'customer-only' : ''} ${view === 'cust-tablet' ? 'cust-tablet-shell' : ''} ${(view === 'admin' || view === 'sales') ? 'admin-mode' : ''} ${(view === 'staff' || view === 'handy') ? 'staff-mode' : ''} ${view === 'kds' ? 'kds-mode' : ''} ${view === 'seats' ? 'seats-mode' : ''}`}
+      className={`shell ${view === 'customer' ? 'customer-only' : ''} ${view === 'cust-tablet' ? 'cust-tablet-shell' : ''} ${(view === 'admin' || view === 'sales') ? 'admin-mode' : ''} ${(view === 'staff' || view === 'handy') ? 'staff-mode' : ''} ${view === 'kds' ? 'kds-mode' : ''} ${(view === 'seats' || view === 'customer-qr' || view === 'cust-tablet-qr') ? 'seats-mode' : ''}`}
     >
       <AppLauncher
         isOpen={isLauncherOpen}

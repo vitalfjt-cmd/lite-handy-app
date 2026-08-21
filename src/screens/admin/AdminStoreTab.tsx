@@ -3,6 +3,7 @@ import { AdminStoreSettings } from './types'
 
 type Props = {
   adminStoreName: string
+  adminStoreCode: string
   adminStoreSlug: string
   adminStoreTimezone: string
   adminStoreBusinessOffsetMinutes: string
@@ -14,6 +15,7 @@ type Props = {
   adminStoreTaxDisplayMode: 'INCLUDED' | 'EXCLUDED'
   disabled: boolean
   onStoreNameChange: (value: string) => void
+  onStoreCodeChange: (value: string) => void
   onStoreSlugChange: (value: string) => void
   onStoreTimezoneChange: (value: string) => void
   onStoreBusinessOffsetMinutesChange: (value: string) => void
@@ -41,6 +43,10 @@ export function AdminStoreTab(props: Props) {
             <input value={props.adminStoreName} onChange={(event) => props.onStoreNameChange(event.target.value)} disabled={props.disabled} />
           </label>
           <label className="admin-store-field">
+            <span>店舗コード</span>
+            <input value={props.adminStoreCode} onChange={(event) => props.onStoreCodeChange(event.target.value)} disabled={props.disabled} />
+          </label>
+          <label className="admin-store-field">
             <span>店舗スラッグ (URL用)</span>
             <input value={props.adminStoreSlug} onChange={(event) => props.onStoreSlugChange(event.target.value)} disabled={props.disabled} />
           </label>
@@ -50,12 +56,8 @@ export function AdminStoreTab(props: Props) {
           </label>
           <label className="admin-store-field">
             <span>営業日切替時刻</span>
-            <div>
-              <input type="number" value={props.adminStoreBusinessOffsetMinutes} onChange={(event) => props.onStoreBusinessOffsetMinutesChange(event.target.value)} disabled={props.disabled} />
-              <span style={{ fontSize: '0.8rem', color: '#666', marginTop: '4px', display: 'block' }}>
+            <input type="number" value={props.adminStoreBusinessOffsetMinutes} onChange={(event) => props.onStoreBusinessOffsetMinutesChange(event.target.value)} disabled={props.disabled} />
             <p className="hint" style={{ fontSize: "0.85rem", color: "var(--text-sub)", marginTop: "4px" }}>{"例: 深夜営業があり AM 5:00 で営業日付を切り替えたい場合は AM 0:00 からの経過時間を分で設定します （60分×5＝300分）"}</p>
-              </span>
-            </div>
           </label>
           <label className="admin-store-field">
             <span>標準税率 (%)</span>

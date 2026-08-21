@@ -43,7 +43,7 @@ export type StaffProfile = {
   password_configured?: boolean
 }
 
-export type LiveCategory = { id: string; name: string; sort_order: number; is_active: boolean; parent_category_id?: string | null }
+export type LiveCategory = { id: string; code?: string | null; name: string; sort_order: number; is_active: boolean; parent_category_id?: string | null }
 export type LiveMenuBook = {
   id: string
   code: string
@@ -55,9 +55,11 @@ export type LiveMenuBook = {
   available_to_time: string | null
   valid_from: string | null
   valid_to: string | null
+  time_limit_minutes: number | null
+  last_order_offset_minutes: number | null
 }
 export type LiveMenuBookItem = { id: string; menu_book_id: string; menu_category_id: string; menu_item_id: string; sort_order: number; is_active: boolean }
-export type LiveSubcategory = { id: string; name: string; sort_order: number; parent_category_id?: string | null; is_active: boolean }
+export type LiveSubcategory = { id: string; code?: string | null; name: string; sort_order: number; parent_category_id?: string | null; is_active: boolean }
 export type LiveBookCategorySubcategory = {
   id: string
   menu_book_id: string
@@ -92,6 +94,7 @@ export type LiveMenuItem = {
   category_id: string
   parent_category_id?: string | null
   name: string
+  name_en?: string | null
   price: number
   tax_type?: 'INCLUDED' | 'EXCLUDED' | 'NONE'
   tax_rate_type?: 'STANDARD' | 'REDUCED' | 'NONE'
@@ -99,11 +102,13 @@ export type LiveMenuItem = {
   image_url?: string | null
   sort_order: number
   is_active: boolean
-  toppings?: { id: string; name: string; price: number; is_sold_out: boolean }[]
+  toppings?: { id: string; name: string; name_en?: string | null; price: number; is_sold_out: boolean }[]
+  logical_printer_ids?: string[]
 }
 export type LiveStore = {
   id: string
   tenant_id: string
+  code?: string | null
   name: string
   slug: string
   timezone: string
@@ -117,16 +122,47 @@ export type LiveStore = {
   open_business_date?: string | null
   today_business_date?: string
 }
-export type LiveTableRef = { id: string; label: string; qr_token: string; group_name?: string | null; sort_order?: number; is_active: boolean }
+export type LiveTableRef = { id: string; label: string; qr_token: string; group_name?: string | null; floor_id?: string | null; sort_order?: number; is_active: boolean }
+export type LivePhysicalPrinter = {
+  id: string
+  name: string
+  ip_address: string
+  port: number
+  is_active: boolean
+  backup_printer_id?: string | null
+  is_default_fallback?: boolean
+}
+export type LiveLogicalPrinter = {
+  id: string
+  store_id: string
+  code: string
+  name: string
+  sort_order: number
+  is_receipt_printer?: boolean
+}
+export type LivePrinterRoutingRule = {
+  id: string
+  floor_id?: string | null
+  area_group: string
+  logical_printer_id?: string | null
+  logical_printer_code?: string | null
+  physical_printer_id: string
+}
+export type LiveFloor = {
+  id: string
+  name: string
+  sort_order: number
+  is_active: boolean
+}
 export type LiveTicket = {
   id: string
   ticket_no: string
   table_ref_id: string
   table_label?: string | null
   menu_book_id: string | null
-  customer_access_token: string,
-  customer_count?: number | null,
-  ordered_at: string,
+  customer_access_token: string
+  customer_count?: number | null
+  ordered_at: string
   status: 'OPEN' | 'CANCELLED' | 'CLOSED'
   receipt_no?: string | null
 }
@@ -146,26 +182,11 @@ export type LivePaymentEntry = {
   memo: string | null
   paid_at: string
 }
-export type LiveLine = {
-  id: string
-  order_ticket_id: string
-  item_id: string
-  item_name_snapshot: string
-  quantity: number
-  line_subtotal: number
-  tax_rate_type?: 'STANDARD' | 'REDUCED' | 'NONE'
-  kds_status: 'NEW' | 'COOKING' | 'SERVED' | 'CANCELLED'
-  customer_note: string | null
-  created_at: string
-  toppings?: { id: string; name: string; price: number }[]
-}
-export type LiveStaffUser = StaffProfile
-
 export type TicketSummaryView = {
   ticketId: string
   ticketNo: string
   tableName: string
-  customerUrl: string | null
+  customerUrl?: string | null
   orderedAt: string
   subtotal: number
   lineCount: number
@@ -175,8 +196,23 @@ export type TicketSummaryView = {
   menuBookId?: string | null
 }
 export type ReceiptSummaryLine = { itemName: string; qty: number; subtotal: number }
+
+export type LiveLine = {
+  id: string
+  order_ticket_id?: string
+  item_id?: string
+  item_name_snapshot: string
+  quantity: number
+  line_subtotal: number
+  tax_rate_type?: 'STANDARD' | 'REDUCED' | 'NONE'
+  kds_status: 'NEW' | 'COOKING' | 'SERVED' | 'CANCELLED' | string
+  customer_note: string | null
+  created_at: string
+  toppings?: { id: string; name: string; price: number }[]
+}
+export type LiveStaffUser = StaffProfile
 export type CustomerCategory = { id: string; name: string; parentId?: string | null }
-export type CustomerMenuItem = { id: string; categoryId: string; name: string; price: number; tax_type?: 'INCLUDED' | 'EXCLUDED' | 'NONE'; tax_rate_type?: 'STANDARD' | 'REDUCED' | 'NONE'; soldOut: boolean; lead?: string; imageUrl?: string | null; toppings?: { id: string; name: string; price: number; is_sold_out: boolean }[] }
+export type CustomerMenuItem = { id: string; categoryId: string; name: string; name_en?: string | null; price: number; tax_type?: 'INCLUDED' | 'EXCLUDED' | 'NONE'; tax_rate_type?: 'STANDARD' | 'REDUCED' | 'NONE'; soldOut: boolean; lead?: string; imageUrl?: string | null; toppings?: { id: string; name: string; name_en?: string | null; price: number; is_sold_out: boolean }[] }
 
 export type StaffPrototypeTopCategory = { id: string; name: string }
 export type StaffPrototypeSubCategory = { id: string; name: string; parentId: string; sortOrder: number }

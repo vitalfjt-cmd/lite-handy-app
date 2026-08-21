@@ -1,7 +1,7 @@
-import { StaffProfile, LiveStore, LiveTicket, LiveLine, LivePaymentEntry, LiveTableRef, LiveMenuBook, LiveCategory, LiveSubcategory, LiveBookCategory, LiveBookCategorySubcategory, LiveBookSubcategoryItem, LiveMenuItem, LiveStaffUser, AdminPaymentMethod } from '../types'
+import { StaffProfile, LiveStore, LiveTicket, LiveLine, LivePaymentEntry, LiveTableRef, LiveMenuBook, LiveCategory, LiveSubcategory, LiveBookCategory, LiveBookCategorySubcategory, LiveBookSubcategoryItem, LiveMenuItem, LiveStaffUser, LiveMenuBookItem , AdminPaymentMethod, LivePhysicalPrinter, LivePrinterRoutingRule, LiveFloor, LiveLogicalPrinter } from '../types'
 import { fetchStaffPrototypeSession, fetchStaffPrototypeBootstrap, fetchStaffTicketList, fetchAdminPrototypeBootstrap, staffReadStoreSlugOverride, staffReadApiEnabled } from '../lib/staffReadApi'
 import { fetchPublicMenu } from '../lib/publicCustomerApi'
-import { formatError, syncCustomerTicketInUrl, readCustomerAccessParams } from '../lib/appUtils'
+import { formatError, syncCustomerTicketInUrl, readCustomerAccessParams, readViewFromHash } from '../lib/appUtils'
 
 export type DataLoadingSetters = {
   setLoadBusy: (busy: boolean) => void
@@ -15,13 +15,17 @@ export type DataLoadingSetters = {
   setLiveMenuBooks: (menuBooks: LiveMenuBook[]) => void
   setLiveCategories: (categories: LiveCategory[]) => void
   setLiveSubcategories: (subcategories: LiveSubcategory[]) => void
-
+  setLiveMenuBookItems: (items: LiveMenuBookItem[]) => void
   setLiveBookCategories: (bookCategories: LiveBookCategory[]) => void
   setLiveBookCategorySubcategories: (relations: LiveBookCategorySubcategory[]) => void
   setLiveBookSubcategoryItems: (items: LiveBookSubcategoryItem[]) => void
   setLiveItems: (items: LiveMenuItem[]) => void
   setLiveStaffUsers: (users: LiveStaffUser[]) => void
   setLivePaymentMethods: (methods: AdminPaymentMethod[]) => void
+  setLivePhysicalPrinters?: (printers: LivePhysicalPrinter[]) => void
+  setLivePrinterRoutingRules?: (rules: LivePrinterRoutingRule[]) => void
+  setLiveFloors?: (floors: LiveFloor[]) => void
+  setLiveLogicalPrinters?: (printers: LiveLogicalPrinter[]) => void
   setNewTicketMenuBookId: (updater: string | ((current: string) => string)) => void
   setAdminMenuBookId: (updater: string | ((current: string) => string)) => void
   setAdminPlacementMenuBookId: (updater: string | ((current: string) => string)) => void
@@ -31,18 +35,20 @@ export type DataLoadingSetters = {
   setAdminPlacementCategoryId: (updater: string | ((current: string) => string)) => void
   setAdminPlacementItemId: (updater: string | ((current: string) => string)) => void
   setAdminStoreName: (name: string) => void
+  setAdminStoreCode: (code: string) => void
   setAdminStoreSlug: (slug: string) => void
   setAdminStoreTimezone: (tz: string) => void
-  setAdminStoreBusinessOffsetMinutes: (min: string | number) => void
-  setAdminStorePaymentTimingMode: (mode: 'PREPAID' | 'POSTPAID') => void
-  setAdminStoreTicketNoResetMode: (mode: 'DAILY' | 'SEQUENCE') => void
-  setAdminStoreTicketNoDigits: (digits: string | number) => void
+  setAdminStoreBusinessOffsetMinutes: (min: any) => void
+  setAdminStorePaymentTimingMode: (mode: any) => void
+  setAdminStoreTicketNoResetMode: (mode: any) => void
+  setAdminStoreTicketNoDigits: (digits: any) => void
   setAdminStoreTaxRate?: (rate: any) => void
   setAdminStoreReducedTaxRate?: (rate: any) => void
   setAdminStoreTaxDisplayMode?: (mode: any) => void
   setPublicStore: (store: any) => void
   setPublicTable: (table: any) => void
   setPublicOpenTicket: (ticket: any) => void
+  setPublicMenuBook: (menuBook: any) => void
   setPublicCategories: (categories: any[]) => void
   setPublicItems: (items: any[]) => void
   setPublicMenuReady: (ready: boolean) => void
@@ -55,14 +61,15 @@ export type DataLoadingSetters = {
 export function useDataLoading(setters: DataLoadingSetters) {
   const {
     setLoadBusy, setError, setProfile, setLiveStore, setLiveTickets, setLiveLines, setLivePaymentEntries,
-    setLiveTables, setLiveMenuBooks, setLiveCategories, setLiveSubcategories,
+    setLiveTables, setLiveMenuBooks, setLiveMenuBookItems, setLiveCategories, setLiveSubcategories,
     setLiveBookCategories, setLiveBookCategorySubcategories, setLiveBookSubcategoryItems, setLiveItems, setLiveStaffUsers, setLivePaymentMethods,
+    setLivePhysicalPrinters, setLivePrinterRoutingRules, setLiveFloors, setLiveLogicalPrinters,
     setNewTicketMenuBookId, setAdminMenuBookId, setAdminPlacementMenuBookId, setAdminCategoryParentId,
     setAdminItemCategoryId, setAdminPlacementTopCategoryId, setAdminPlacementCategoryId, setAdminPlacementItemId,
-    setAdminStoreName, setAdminStoreSlug, setAdminStoreTimezone, setAdminStoreBusinessOffsetMinutes,
+    setAdminStoreName, setAdminStoreCode, setAdminStoreSlug, setAdminStoreTimezone, setAdminStoreBusinessOffsetMinutes,
     setAdminStorePaymentTimingMode, setAdminStoreTicketNoResetMode, setAdminStoreTicketNoDigits,
     setAdminStoreTaxRate, setAdminStoreReducedTaxRate, setAdminStoreTaxDisplayMode,
-    setPublicStore, setPublicTable, setPublicOpenTicket, setPublicCategories, setPublicItems,
+    setPublicStore, setPublicTable, setPublicOpenTicket, setPublicMenuBook, setPublicCategories, setPublicItems,
     setPublicMenuReady, setCustomerBusy, setCustomerMessage, setCustomerAccess, setSession
   } = setters
 
@@ -176,6 +183,10 @@ export function useDataLoading(setters: DataLoadingSetters) {
       })),
     )
     setLivePaymentMethods(bootstrap.payment_methods)
+    setLivePhysicalPrinters?.(bootstrap.physical_printers)
+    setLivePrinterRoutingRules?.(bootstrap.printer_routing_rules)
+    setLiveFloors?.(bootstrap.floors || [])
+    setLiveLogicalPrinters?.((bootstrap.logical_printers || []).map(lp => ({ ...lp, store_id: bootstrap.store.id })))
     setNewTicketMenuBookId((current) =>
       typeof current === 'function' ? (current as any)(bootstrap.menu_books) : // Fallback if it's not a function
       current && bootstrap.menu_books.some((menuBook) => menuBook.id === current)
@@ -187,12 +198,13 @@ export function useDataLoading(setters: DataLoadingSetters) {
     setAdminPlacementMenuBookId(bootstrap.menu_books[0]?.id ?? '')
     const topCats = bootstrap.categories.filter(c => !c.parent_category_id)
     setAdminCategoryParentId(topCats[0]?.id ?? '')
-    setAdminItemCategoryId(bootstrap.subcategories[0]?.id ?? '')
+    setAdminItemCategoryId(topCats[0]?.id ?? bootstrap.categories[0]?.id ?? '')
     setAdminPlacementTopCategoryId(topCats[0]?.id ?? '')
     setAdminPlacementCategoryId(bootstrap.subcategories[0]?.id ?? '')
     setAdminPlacementItemId(bootstrap.items[0]?.id ?? '')
 
     setAdminStoreName(bootstrap.store.name)
+    setAdminStoreCode(bootstrap.store.code ?? '')
     setAdminStoreSlug(bootstrap.store.slug)
     setAdminStoreTimezone(bootstrap.store.timezone)
     setAdminStoreBusinessOffsetMinutes(bootstrap.store.business_date_offset_minutes)
@@ -271,9 +283,14 @@ export function useDataLoading(setters: DataLoadingSetters) {
       setPublicStore(null)
       setPublicTable(null)
       setPublicOpenTicket(null)
+      setPublicMenuBook(null)
       setPublicCategories([])
       setPublicItems([])
-      if (!silent) setCustomerMessage('卓情報が見つかりません。QRコードから開き直してください。')
+      if (!silent) {
+        const savedStore = window.localStorage.getItem('pos_tablet_store')
+        const savedQr = window.localStorage.getItem('pos_tablet_qr')
+        setCustomerMessage(`卓情報が見つかりません。URL: ${window.location.search || '(空)'} / キャッシュ: store=${savedStore || '(空)'}, qr=${savedQr || '(空)'}`)
+      }
       return
     }
     if (!silent) {
@@ -284,6 +301,7 @@ export function useDataLoading(setters: DataLoadingSetters) {
       const data = await fetchPublicMenu(publicStoreSlug, publicQrToken, publicTicketToken)
       setPublicStore(data.store)
       setPublicTable({ id: data.table.id, label: data.table.label })
+      setPublicMenuBook(data.menu_book)
       setPublicOpenTicket(
         data.current_ticket
           ? {
@@ -300,13 +318,10 @@ export function useDataLoading(setters: DataLoadingSetters) {
       )
       if (!publicTicketToken && data.current_ticket?.customer_access_token) {
         syncCustomerTicketInUrl(data.current_ticket.customer_access_token)
-        // Preserve existing store/qr params; only update the ticket token.
-        // readCustomerAccessParams() would return empty in Capacitor (no URL params).
-        setCustomerAccess({
-          storeSlug: publicStoreSlug,
-          qrToken: publicQrToken,
-          ticketToken: data.current_ticket.customer_access_token
-        })
+        setCustomerAccess(readCustomerAccessParams())
+      } else if (readViewFromHash() === 'cust-tablet' && publicTicketToken && !data.current_ticket) {
+        syncCustomerTicketInUrl(null)
+        setCustomerAccess(readCustomerAccessParams())
       }
       setPublicCategories(data.categories.map((item) => ({ ...item, is_active: true, parent_category_id: item.parent_category_id ?? null })))
       setPublicItems(data.items.map((item) => ({ ...item, is_active: true, parent_category_id: item.parent_category_id ?? null })))
@@ -314,6 +329,7 @@ export function useDataLoading(setters: DataLoadingSetters) {
     } catch (err) {
       setPublicMenuReady(false)
       setPublicOpenTicket(null)
+      setPublicMenuBook(null)
       setPublicCategories([])
       setPublicItems([])
       if (!silent) setCustomerMessage(formatError(err))
@@ -329,4 +345,3 @@ export function useDataLoading(setters: DataLoadingSetters) {
     loadPublicMenu
   }
 }
-

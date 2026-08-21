@@ -1,4 +1,4 @@
-
+import React from 'react'
 import { AdminStaffUserRow } from './types'
 
 type Props = {

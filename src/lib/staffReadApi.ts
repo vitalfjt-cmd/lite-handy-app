@@ -61,7 +61,7 @@ async function invoke<T>(body: Record<string, unknown>, maxRetries = 2): Promise
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ...body, qrToken: 'STAFF' }),
+        body: JSON.stringify({ qrToken: 'STAFF', ...body }),
       })
 
       let payload: unknown = null
@@ -285,6 +285,8 @@ export function fetchStaffPrototypeBootstrap(storeSlug: string) {
       available_to_time: string | null
       valid_from: string | null
       valid_to: string | null
+      time_limit_minutes: number | null
+      last_order_offset_minutes: number | null
     }[]
     payment_methods: {
       id: string
@@ -304,6 +306,7 @@ export function fetchAdminPrototypeBootstrap(storeSlug: string) {
     store: {
       id: string
       tenant_id: string
+      code?: string | null
       slug: string
       name: string
       timezone: string
@@ -319,6 +322,7 @@ export function fetchAdminPrototypeBootstrap(storeSlug: string) {
       label: string
       qr_token: string
       group_name: string | null
+      floor_id: string | null
       sort_order: number
       is_active: boolean
     }[]
@@ -333,9 +337,12 @@ export function fetchAdminPrototypeBootstrap(storeSlug: string) {
       available_to_time: string | null
       valid_from: string | null
       valid_to: string | null
+      time_limit_minutes: number | null
+      last_order_offset_minutes: number | null
     }[]
     categories: {
       id: string
+      code?: string | null
       name: string
       sort_order: number
       is_active: boolean
@@ -343,6 +350,7 @@ export function fetchAdminPrototypeBootstrap(storeSlug: string) {
     }[]
     subcategories: {
       id: string
+      code?: string | null
       name: string
       sort_order: number
       parent_category_id: string | null
@@ -381,7 +389,6 @@ export function fetchAdminPrototypeBootstrap(storeSlug: string) {
       name: string
       price: number
       tax_type: 'INCLUDED' | 'EXCLUDED' | 'NONE'
-      tax_rate_type?: 'STANDARD' | 'REDUCED' | 'NONE'
       is_sold_out: boolean
       image_url: string | null
       sort_order: number
@@ -404,6 +411,34 @@ export function fetchAdminPrototypeBootstrap(storeSlug: string) {
       is_active: boolean
       is_change_allowed: boolean
     }[]
+    physical_printers: {
+      id: string
+      name: string
+      ip_address: string
+      port: number
+      is_active: boolean
+      backup_printer_id?: string | null
+    }[]
+    printer_routing_rules: {
+      id: string
+      floor_id?: string | null
+      area_group: string
+      logical_printer_code?: string | null
+      logical_printer_id?: string | null
+      physical_printer_id: string
+    }[]
+    floors: {
+      id: string
+      name: string
+      sort_order: number
+      is_active: boolean
+    }[]
+    logical_printers: {
+      id: string
+      code: string
+      name: string
+      sort_order: number
+    }[]
   }>({
     action: 'admin-bootstrap',
     storeSlug,
@@ -415,6 +450,7 @@ export function saveAdminPrototypeStore(
   payload: {
     storeId: string
     name: string
+    code?: string
     slug: string
     timezone: string
     businessDateOffsetMinutes: number
@@ -430,6 +466,7 @@ export function saveAdminPrototypeStore(
     store: {
       id: string
       tenant_id: string
+      code?: string | null
       slug: string
       name: string
       timezone: string
@@ -460,6 +497,8 @@ export function saveAdminPrototypeMenuBook(
     availableToTime?: string | null
     validFrom?: string | null
     validTo?: string | null
+    timeLimitMinutes?: number | null
+    lastOrderOffsetMinutes?: number | null
   },
 ) {
   return invoke<{
@@ -474,6 +513,8 @@ export function saveAdminPrototypeMenuBook(
       available_to_time: string | null
       valid_from: string | null
       valid_to: string | null
+      time_limit_minutes: number | null
+      last_order_offset_minutes: number | null
     }
   }>({
     action: 'admin-save-menu-book',
@@ -497,6 +538,7 @@ export function saveAdminPrototypeTable(
     label: string
     qrToken: string
     groupName?: string | null
+    floorId?: string | null
     sortOrder: number
     isActive: boolean
   },
@@ -507,6 +549,7 @@ export function saveAdminPrototypeTable(
       label: string
       qr_token: string
       group_name: string | null
+      floor_id: string | null
       sort_order: number
       is_active: boolean
     }
@@ -530,6 +573,7 @@ export function saveAdminPrototypeCategory(
   payload: {
     categoryId?: string
     name: string
+    code?: string
     sortOrder: number
     isActive: boolean
     parentCategoryId?: string | null
@@ -539,6 +583,7 @@ export function saveAdminPrototypeCategory(
     category: {
       id: string
       name: string
+      code?: string | null
       sort_order: number
       is_active: boolean
       parent_category_id: string | null
@@ -563,6 +608,7 @@ export function saveAdminPrototypeSubcategory(
   payload: {
     subcategoryId?: string
     name: string
+    code?: string
     parentCategoryId?: string | null
     sortOrder: number
     isActive: boolean
@@ -572,6 +618,7 @@ export function saveAdminPrototypeSubcategory(
     subcategory: {
       id: string
       name: string
+      code?: string | null
       sort_order: number
       parent_category_id: string | null
       is_active: boolean
@@ -598,6 +645,7 @@ export function saveAdminPrototypeItem(
     code?: string | null
     categoryId: string
     name: string
+    nameEn?: string | null
     price: number
     taxType: 'INCLUDED' | 'EXCLUDED' | 'NONE'
     taxRateType?: 'STANDARD' | 'REDUCED' | 'NONE'
@@ -606,6 +654,7 @@ export function saveAdminPrototypeItem(
     sortOrder: number
     isActive: boolean
     toppingIds?: string[]
+    logicalPrinterIds?: string[]
   },
 ) {
   return invoke<{
@@ -614,13 +663,19 @@ export function saveAdminPrototypeItem(
       code: string | null
       category_id: string
       name: string
+      name_en: string | null
       price: number
       tax_type: 'INCLUDED' | 'EXCLUDED' | 'NONE'
       is_sold_out: boolean
       image_url: string | null
       sort_order: number
       is_active: boolean
-      toppings?: { id: string; name: string; price: number; is_sold_out: boolean }[]
+      toppings?: { id: string; name: string; name_en?: string | null; price: number; is_sold_out: boolean }[]
+      is_kp1?: boolean
+      is_kp2?: boolean
+      is_kp3?: boolean
+      is_kp4?: boolean
+      logical_printer_ids?: string[]
     }
   }>({
     action: 'admin-save-item',
@@ -748,6 +803,109 @@ export function saveAdminPrototypeStaffUser(
 
 export function deleteAdminPrototypeStaffUser(storeSlug: string, staffUserId: string) {
   return invoke<{ ok: true }>({ action: 'admin-delete-staff-user', storeSlug, staffUserId })
+}
+
+export function saveAdminPrototypePhysicalPrinter(
+  storeSlug: string,
+  payload: {
+    id?: string
+    name: string
+    ipAddress: string
+    port: number
+    isActive: boolean
+    backupPrinterId?: string | null
+    isDefaultFallback?: boolean
+  },
+) {
+  return invoke<{
+    printer: {
+      id: string
+      name: string
+      ip_address: string
+      port: number
+      is_active: boolean
+      backup_printer_id?: string | null
+      is_default_fallback?: boolean
+    }
+  }>({ action: 'admin-save-physical-printer', storeSlug, ...payload })
+}
+
+export function deleteAdminPrototypePhysicalPrinter(storeSlug: string, printerId: string) {
+  return invoke<{ ok: true }>({ action: 'admin-delete-physical-printer', storeSlug, printerId })
+}
+
+export function saveAdminPrototypePrinterRoutingRule(
+  storeSlug: string,
+  payload: {
+    id?: string
+    floorId: string
+    logicalPrinterId: string
+    physicalPrinterId: string
+  },
+) {
+  return invoke<{
+    rule: {
+      id: string
+      floor_id?: string | null
+      area_group: string
+      logical_printer_id?: string | null
+      logical_printer_code?: string | null
+      physical_printer_id: string
+    }
+  }>({ action: 'admin-save-printer-routing-rule', storeSlug, ...payload })
+}
+
+export function deleteAdminPrototypePrinterRoutingRule(storeSlug: string, ruleId: string) {
+  return invoke<{ ok: true }>({ action: 'admin-delete-printer-routing-rule', storeSlug, ruleId })
+}
+
+export function saveAdminPrototypeLogicalPrinter(
+  storeSlug: string,
+  payload: {
+    id?: string
+    code: string
+    name: string
+    sortOrder: number
+    isReceiptPrinter?: boolean
+  },
+) {
+  return invoke<{
+    logical_printer: {
+      id: string
+      store_id?: string
+      code: string
+      name: string
+      sort_order: number
+      is_receipt_printer?: boolean
+    }
+  }>({ action: 'admin-save-logical-printer', storeSlug, ...payload })
+}
+
+export function deleteAdminPrototypeLogicalPrinter(storeSlug: string, logicalPrinterId: string) {
+  return invoke<{ ok: true }>({ action: 'admin-delete-logical-printer', storeSlug, logicalPrinterId })
+}
+
+export function saveAdminPrototypeFloor(
+  storeSlug: string,
+  payload: {
+    floorId?: string
+    name: string
+    sortOrder: number
+    isActive: boolean
+  },
+) {
+  return invoke<{
+    floor: {
+      id: string
+      name: string
+      sort_order: number
+      is_active: boolean
+    }
+  }>({ action: 'admin-save-floor', storeSlug, ...payload })
+}
+
+export function deleteAdminPrototypeFloor(storeSlug: string, floorId: string) {
+  return invoke<{ ok: true }>({ action: 'admin-delete-floor', storeSlug, floorId })
 }
 
 export function fetchStaffTicketDetail(
@@ -1148,7 +1306,6 @@ export function getStaffSubcategorySalesHistory(storeSlug: string, startDate: st
   })
 }
 
-
 export function staffAuditLog(storeSlug: string, actionType: string, targetTicketId?: string | null, detailsJson?: string | null) {
   return invoke<{ ok: true }>({
     action: 'audit-log',
@@ -1163,7 +1320,12 @@ export function voidStaffTicket(
   storeSlug: string,
   receiptNo: string,
   newPaymentType?: string | null,
-  paymentChanges?: { id: string; paymentType: string }[] | null,
+  paymentChanges?: {
+    id: string
+    paymentType?: string
+    amount?: number
+    action: 'UPDATE' | 'DELETE' | 'ADD'
+  }[] | null,
 ) {
   return invoke<{ ok: true; ticket_id: string }>({
     action: 'void-ticket',

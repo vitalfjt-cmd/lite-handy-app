@@ -33,10 +33,13 @@ const ADMIN_SUB_MENU_ITEMS = [
   { id: 'subcategories', label: 'サブカテゴリ' },
   { id: 'items', label: 'メニュー' },
   { id: 'placements', label: 'メニューブック構成' },
-  { id: 'tables', label: 'テーブル' },
   { id: 'store', label: '店舗' },
+  { id: 'tables', label: 'テーブル' },
+  { id: 'floors', label: 'フロア設定' },
   { id: 'staff', label: 'スタッフ' },
   { id: 'paymentMethods', label: '決済種別' },
+  { id: 'logicalPrinters', label: '部門別プリンター設定' },
+  { id: 'printers', label: 'プリンター設定' },
 ]
 
 const SALES_SUB_MENU_ITEMS = [
@@ -166,7 +169,7 @@ export function AppLauncher({
               })}
             </div>
 
-            <div className="launcher-footer" style={{display:'flex', gap:'12px', justifyContent:'center'}}>
+            <div className="launcher-footer">
               <button className="launcher-auth-button signout" onClick={() => { onSignOut(); onClose(); }}>
                 Sign Out
               </button>
@@ -203,6 +206,24 @@ export function AppLauncher({
                 {authBusy ? 'Signing in...' : 'Sign In'}
               </button>
             </form>
+            <div className="launcher-grid" style={{ marginTop: '24px', opacity: 0.5 }}>
+               {/* Show customer views even when not logged in */}
+               {VIEWS.filter(v => v.id.startsWith('cust')).map((view) => (
+                <button
+                  key={view.id}
+                  className={`launcher-item ${currentView === view.id ? 'active' : ''}`}
+                  onClick={() => {
+                    onMove(view.id)
+                    onClose()
+                  }}
+                >
+                  <div className="launcher-icon">{getIcon(view.id, currentView === view.id)}</div>
+                  <div className="launcher-info">
+                    <span className="launcher-label">{view.label}</span>
+                  </div>
+                </button>
+              ))}
+            </div>
           </div>
         )}
       </div>

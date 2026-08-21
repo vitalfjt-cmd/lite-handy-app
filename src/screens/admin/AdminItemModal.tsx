@@ -1,6 +1,5 @@
-
 import React from 'react'
-import { AdminMenuItem } from './types'
+import { AdminMenuItem, AdminLogicalPrinter } from './types'
 
 type Props = {
   isOpen: boolean
@@ -8,9 +7,10 @@ type Props = {
   adminItemCategoryId: string
   adminItemCode: string
   adminItemName: string
+  adminItemNameEn: string
   adminItemPrice: string
   adminItemTaxType: 'INCLUDED' | 'EXCLUDED' | 'NONE'
-  adminItemTaxRateType?: 'STANDARD' | 'REDUCED' | 'NONE'
+  adminItemTaxRateType: 'STANDARD' | 'REDUCED' | 'NONE'
   adminStoreTaxRate?: string | number
   adminStoreReducedTaxRate?: string | number
   adminItemImageUrl: string
@@ -18,6 +18,8 @@ type Props = {
   adminItemIsActive: boolean
   adminItemIsSoldOut: boolean
   adminItemToppingIds: string[]
+  logicalPrinters: AdminLogicalPrinter[]
+  adminItemLogicalPrinterIds: string[]
   itemImageUploadBusy: boolean
   disabled: boolean
   itemCategoryOptions: { id: string; name: string }[]
@@ -26,9 +28,10 @@ type Props = {
   onItemCategoryChange: (value: string) => void
   onItemCodeChange: (value: string) => void
   onItemNameChange: (value: string) => void
+  onItemNameEnChange: (value: string) => void
   onItemPriceChange: (value: string) => void
   onItemTaxTypeChange: (value: 'INCLUDED' | 'EXCLUDED' | 'NONE') => void
-  onItemTaxRateTypeChange?: (value: 'STANDARD' | 'REDUCED' | 'NONE') => void
+  onItemTaxRateTypeChange: (value: 'STANDARD' | 'REDUCED' | 'NONE') => void
   onItemImageUrlChange: (value: string) => void
   onUploadItemImage: (file: File) => Promise<void>
   onClearItemImage: () => void
@@ -36,6 +39,7 @@ type Props = {
   onItemIsActiveChange: (value: boolean) => void
   onItemIsSoldOutChange: (value: boolean) => void
   onItemToppingIdsChange: (value: string[]) => void
+  onItemLogicalPrinterIdsChange: (value: string[]) => void
   onCreateMenuItem: () => Promise<boolean>
   checkBox: (checked: boolean, onChange: (next: boolean) => void, disabled?: boolean) => React.ReactNode
 }
@@ -90,6 +94,7 @@ export function AdminItemModal(props: Props) {
           </label>
           <label>メニューコード<input value={props.adminItemCode} onChange={(event) => props.onItemCodeChange(event.target.value)} disabled={disabled} /></label>
           <label>メニュー名<input value={props.adminItemName} onChange={(event) => props.onItemNameChange(event.target.value)} disabled={disabled} /></label>
+          <label>英語表記<input value={props.adminItemNameEn} onChange={(event) => props.onItemNameEnChange(event.target.value)} disabled={disabled} /></label>
           <label>価格<input type="number" value={props.adminItemPrice} onChange={(event) => props.onItemPriceChange(event.target.value)} disabled={disabled} /></label>
           <label>
             税区分
@@ -101,7 +106,7 @@ export function AdminItemModal(props: Props) {
           </label>
           <label>
             税率区分
-            <select value={props.adminItemTaxRateType || 'STANDARD'} onChange={(event) => props.onItemTaxRateTypeChange?.(event.target.value as 'STANDARD' | 'REDUCED' | 'NONE')} disabled={disabled}>
+            <select value={props.adminItemTaxRateType} onChange={(event) => props.onItemTaxRateTypeChange(event.target.value as 'STANDARD' | 'REDUCED' | 'NONE')} disabled={disabled}>
               <option value="STANDARD">標準税率 ({props.adminStoreTaxRate || '10'}%)</option>
               <option value="REDUCED">軽減税率 ({props.adminStoreReducedTaxRate || '8'}%)</option>
               <option value="NONE">非課税 (0%)</option>
@@ -139,6 +144,33 @@ export function AdminItemModal(props: Props) {
           <label>表示順<input type="number" value={props.adminItemSortOrder} onChange={(event) => props.onItemSortOrderChange(event.target.value)} disabled={disabled} /></label>
           <label>有効{props.checkBox(props.adminItemIsActive, props.onItemIsActiveChange, disabled)}</label>
           <label>売切{props.checkBox(props.adminItemIsSoldOut, props.onItemIsSoldOutChange, disabled)}</label>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '8px' }}>
+            <span style={{ fontWeight: 'bold' }}>出力指示プリンター（部門別）</span>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
+              {props.logicalPrinters.map((lp) => {
+                const isChecked = props.adminItemLogicalPrinterIds.includes(lp.id)
+                return (
+                  <label key={lp.id} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    {lp.name} ({lp.code})
+                    {props.checkBox(
+                      isChecked,
+                      (nextChecked) => {
+                        if (nextChecked) {
+                          props.onItemLogicalPrinterIdsChange([...props.adminItemLogicalPrinterIds, lp.id])
+                        } else {
+                          props.onItemLogicalPrinterIdsChange(props.adminItemLogicalPrinterIds.filter(id => id !== lp.id))
+                        }
+                      },
+                      disabled
+                    )}
+                  </label>
+                )
+              })}
+              {props.logicalPrinters.length === 0 && (
+                <span style={{ color: '#d9534f' }}>※部門別プリンター設定がありません。</span>
+              )}
+            </div>
+          </div>
           <div className="admin-topping-select-section" style={{ marginTop: '16px', borderTop: '1px solid #eee', paddingTop: '16px' }}>
             <span style={{ fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>トッピング・オプション設定</span>
             <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>

@@ -19,6 +19,7 @@ import { customerApiSupportsTicketBootstrap, fetchPublicMenu } from './lib/publi
 import {
   staffReadApiEnabled,
   staffReadStoreSlugOverride,
+  printStaffPrototypeReceipt,
 } from './lib/staffReadApi'
 import { kdsStatusLabel } from './lib/staffUtils'
 import { AdminScreen } from './screens/AdminScreen'
@@ -627,6 +628,31 @@ export default function App() {
     }
   }
 
+  const handlePrintReceipt = async (ticketId: string): Promise<boolean> => {
+    setMutationBusy('print-receipt')
+    setStaffMessage(null)
+    setError(null)
+    try {
+      const storeSlug = staffReadStoreSlugOverride || liveStore?.slug
+      if (!storeSlug) throw new Error('staff_store_slug_missing')
+      const res = await printStaffPrototypeReceipt(storeSlug, ticketId)
+      if (!res.success) {
+        alert(res.error || 'レシートの印刷に失敗しました')
+        return false
+      }
+      setStaffMessage('レシートの印刷指示を送信しました。')
+      return true
+    } catch (err) {
+      const message = formatError(err)
+      setError(message)
+      setStaffMessage(message)
+      alert('レシートの印刷に失敗しました: ' + message)
+      return false
+    } finally {
+      setMutationBusy(null)
+    }
+  }
+
   return (
     <div
       className={`shell ${view === 'customer' ? 'customer-only' : ''} ${view === 'cust-tablet' ? 'cust-tablet-shell' : ''} ${(view === 'admin' || view === 'sales') ? 'admin-mode' : ''} ${(view === 'staff' || view === 'handy') ? 'staff-mode' : ''} ${view === 'kds' ? 'kds-mode' : ''} ${(view === 'seats' || view === 'customer-qr' || view === 'cust-tablet-qr') ? 'seats-mode' : ''}`}
@@ -753,6 +779,7 @@ export default function App() {
             onUpdateTicketMenuBook={(ticketId, menuBookId) => updateTicketMenuBook(ticketId, menuBookId)}
             onSavePaymentEntry={async (payload) => { const res = await savePaymentEntry(payload); return Boolean(res) }}
             onCloseTicket={async (ticketId?: string) => { return await settleTicket(ticketId) }}
+            onPrintReceipt={handlePrintReceipt}
             liveLines={liveLines}
             directAction={staffDirectAction}
             onClearDirectAction={() => setStaffDirectAction(null)}

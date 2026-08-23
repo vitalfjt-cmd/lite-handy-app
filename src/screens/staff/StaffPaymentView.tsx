@@ -43,6 +43,7 @@ type StaffPaymentViewProps = {
   setPaymentFinalized: React.Dispatch<React.SetStateAction<boolean>>
   onSavePaymentEntry: (payload: any) => Promise<boolean>
   onCloseTicket: (ticketId?: string) => Promise<string | null>
+  onPrintReceipt?: (ticketId: string) => Promise<boolean>
   handleNumpadPayment: (num: string) => void
   addPaymentMethod: (methodStr: string) => void
   applyDiscountAmount: () => void
@@ -133,6 +134,7 @@ export function StaffPaymentView({
   onRemoveCombinedTicket,
   livePaymentMethods,
   staffMessage,
+  onPrintReceipt,
 }: StaffPaymentViewProps) {
   const activeSelectedLines = React.useMemo(() => selectedLines.filter(l => l.kds_status !== 'CANCELLED'), [selectedLines])
 
@@ -623,7 +625,13 @@ export function StaffPaymentView({
                 </div>
 
                 <button
-                  onClick={() => window.print()}
+                  onClick={async () => {
+                    if (onPrintReceipt) {
+                      await onPrintReceipt(selectedSummary.ticketId)
+                    } else {
+                      window.print()
+                    }
+                  }}
                   style={{
                     width: '100%',
                     padding: '12px',

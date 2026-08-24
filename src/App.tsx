@@ -901,6 +901,7 @@ export default function App() {
             adminLogicalPrinterName={adminForm.adminLogicalPrinterName}
             adminLogicalPrinterSortOrder={adminForm.adminLogicalPrinterSortOrder}
             adminLogicalPrinterIsReceiptPrinter={adminForm.adminLogicalPrinterIsReceiptPrinter}
+            adminLogicalPrinterIsOrderPrinter={adminForm.adminLogicalPrinterIsOrderPrinter}
             editingLogicalPrinterId={adminForm.editingLogicalPrinterId}
             adminItemLogicalPrinterIds={adminForm.adminItemLogicalPrinterIds}
             adminItemSortOrder={adminForm.adminItemSortOrder}
@@ -1118,6 +1119,7 @@ export default function App() {
             onLogicalPrinterNameChange={adminForm.setAdminLogicalPrinterName}
             onLogicalPrinterSortOrderChange={adminForm.setAdminLogicalPrinterSortOrder}
             onLogicalPrinterIsReceiptPrinterChange={adminForm.setAdminLogicalPrinterIsReceiptPrinter}
+            onLogicalPrinterIsOrderPrinterChange={adminForm.setAdminLogicalPrinterIsOrderPrinter}
             onSaveLogicalPrinter={() => adminOps.saveLogicalPrinter()}
             onDeleteLogicalPrinter={(id) => void adminOps.deleteLogicalPrinter(id)}
             onEditLogicalPrinter={(lp) => adminForm.startEditLogicalPrinter(lp)}

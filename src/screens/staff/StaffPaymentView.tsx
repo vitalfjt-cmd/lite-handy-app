@@ -43,7 +43,7 @@ type StaffPaymentViewProps = {
   setPaymentFinalized: React.Dispatch<React.SetStateAction<boolean>>
   onSavePaymentEntry: (payload: any) => Promise<boolean>
   onCloseTicket: (ticketId?: string) => Promise<string | null>
-  onPrintReceipt?: (ticketId: string) => Promise<boolean>
+  onPrintReceipt?: (ticketId: string, paymentEntryMemo?: string | null) => Promise<boolean>
   handleNumpadPayment: (num: string) => void
   addPaymentMethod: (methodStr: string) => void
   applyDiscountAmount: () => void
@@ -625,7 +625,7 @@ export function StaffPaymentView({
                 <button
                   onClick={async () => {
                     if (onPrintReceipt) {
-                      await onPrintReceipt(selectedSummary.ticketId)
+                      await onPrintReceipt(selectedSummary.ticketId, activePrintGroupId)
                     } else {
                       window.print()
                     }

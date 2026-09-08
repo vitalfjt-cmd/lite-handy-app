@@ -5365,6 +5365,35 @@ h1 {
   font-weight: 700;
 }
 
+.launcher-submenu-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.launcher-submenu-group-title {
+  padding: 10px 24px 6px 24px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #1b813e;
+  background: #eef5e4;
+  border-bottom: 1px solid #e0ebd4;
+  letter-spacing: 0.5px;
+}
+
+.launcher-submenu-subgroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.launcher-submenu-subgroup-title {
+  padding: 8px 24px 4px 40px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #495057;
+  background: #f1f3f5;
+  border-bottom: 1px solid #e9ecef;
+}
+
 /* Ensure vertical scrolling in drawer */
 .launcher-grid {
   overflow-y: auto !important;

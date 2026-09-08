@@ -16,13 +16,10 @@ export type BrowserLocationLike = {
 
 function resolveAppOrigin(currentLocation: Pick<BrowserLocationLike, 'origin'>): string {
   const publicOrigin = import.meta.env.VITE_PUBLIC_APP_ORIGIN?.trim()
-  if (publicOrigin && !publicOrigin.includes('localhost') && !publicOrigin.includes('127.0.0.1') && !publicOrigin.includes('192.168.')) {
+  if (publicOrigin) {
     return publicOrigin.replace(/\/+$/, '')
   }
-  if (currentLocation.origin && !currentLocation.origin.includes('localhost') && !currentLocation.origin.includes('127.0.0.1') && !currentLocation.origin.includes('192.168.') && !currentLocation.origin.startsWith('capacitor://')) {
-    return currentLocation.origin.replace(/\/+$/, '')
-  }
-  return 'https://lite-app-v3.pages.dev'
+  return currentLocation.origin
 }
 
 export function normalizeAppLocation(currentLocation: Pick<Location, 'href' | 'hash' | 'pathname' | 'search'> = window.location) {

@@ -10,6 +10,8 @@ React 19 + Vite 7 + TypeScript 5 をベースとした Web SPA であり、Capac
 主なビューは以下の通りです：
 - `staff`: スタッフ向け伝票一覧・詳細・会計・注文操作画面
 - `handy`: ハンディ端末向け直接注文入力モード（カテゴリ選択・トッピング選択・買い物かご・厨房送信）
+- `customer-qr`: モバイル向け 卓別 QR コード発行・表示画面 (`TableQrListScreen`)
+- `cust-tablet-qr`: タブレット向け 卓別 QR コード発行・表示画面 (`TableQrListScreen`)
 - `kds`: キッチンディスプレイシステム (Kitchen Display System - 調理・提供管理画面)
 - `seats`: 店舗座席稼働モニター画面
 - `admin`: マスタメンテナンス画面（メニューブック、カテゴリ、サブカテゴリ、メニュー、トッピング、店舗、スタッフ、決済種別、卓配置設定）

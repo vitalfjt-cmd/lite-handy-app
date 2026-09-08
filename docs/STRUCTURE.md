@@ -34,14 +34,15 @@ lite-handy-app/
     │   ├── staffReadApi.ts   # Workers / D1 バックエンド通信クライアント
     │   └── staffUtils.ts     # 伝票・KDSロジック補助関数
     ├── screens/        # 画面ビューコンポーネント
-    │   ├── admin/            # マスタ管理 & 売上分析サブタブ群 (27コンポーネント)
+    │   ├── admin/            # マスタ管理 & 売上分析サブタブ群 (33コンポーネント + 型定義)
     │   ├── staff/            # スタッフ画面サブビュー (Handy/Payment/DirectAction)
     │   ├── AdminScreen.tsx   # マスタメンテナンス・売上管理メイン画面
     │   ├── KdsScreen.tsx     # キッチンディスプレイシステム (KDS) 画面
     │   ├── LoginScreen.tsx   # スタッフログイン画面
     │   ├── SeatsScreen.tsx   # 座席情報・テーブル稼働画面
     │   ├── SetupScreen.tsx   # 端末設定画面 (Capacitorネイティブ設定)
-    │   └── StaffScreen.tsx   # スタッフ伝票一覧・詳細画面
+    │   ├── StaffScreen.tsx   # スタッフ伝票一覧・詳細画面
+    │   └── TableQrListScreen.tsx # 卓用 QR コード一覧・発行画面 (customer-qr / cust-tablet-qr)
     ├── App.tsx         # ルーティング・状態結合メインコンポーネント
     ├── constants.ts    # ビュー定義およびセッションキー定数
     ├── main.tsx        # エントリポイント

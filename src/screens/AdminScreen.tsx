@@ -705,13 +705,18 @@ export function AdminScreen(props: Props) {
             />
           ) : null}
 
-          {activeTab === 'sales' ? (
+          {activeTab === 'sales' || activeTab.startsWith('sales:') ? (
             <AdminSalesTab
               storeSlug={props.adminStoreSlug}
               disabled={disabled}
               yen={props.yen}
               setAdminMessage={(msg) => msg ? alert(msg) : null}
               setError={(msg) => msg ? alert(msg) : null}
+              initialSubTab={
+                activeTab.includes(':')
+                  ? (activeTab.split(':')[1] as any)
+                  : 'status'
+              }
             />
           ) : null}
 

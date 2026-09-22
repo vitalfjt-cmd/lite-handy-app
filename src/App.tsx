@@ -177,6 +177,7 @@ export default function App() {
     setAdminStoreTaxRate: (rate) => adminForm.setAdminStoreTaxRate(Number(rate)),
     setAdminStoreReducedTaxRate: (rate) => adminForm.setAdminStoreReducedTaxRate(Number(rate)),
     setAdminStoreTaxDisplayMode: adminForm.setAdminStoreTaxDisplayMode,
+    setAdminStoreInvoiceNumber: adminForm.setAdminStoreInvoiceNumber,
     setPublicStore, setPublicTable, setPublicOpenTicket, setPublicCategories, setPublicItems,
     setPublicMenuBook,
     setPublicMenuReady, setCustomerBusy, setCustomerMessage, setCustomerAccess, setSession
@@ -592,6 +593,7 @@ export default function App() {
     name: publicStore?.name ?? liveStore?.name ?? '',
     tableName: publicTable?.label ?? liveTables[0]?.label ?? '',
     ticketNo: ticketReceipt?.ticketNo ?? publicOpenTicket?.ticket_no ?? selectedTicket?.ticket_no ?? '',
+    invoice_number: (publicStore as any)?.invoice_number ?? liveStore?.invoice_number ?? null,
   }
   const lastUpdatedText = new Intl.DateTimeFormat('ja-JP', { hour: '2-digit', minute: '2-digit', second: '2-digit' }).format(new Date())
   const ticketSummaryLines: ReceiptSummaryLine[] = []
@@ -727,6 +729,7 @@ export default function App() {
             staffReadOnlyMode={staffReadApiEnabled}
             staffPrototypeDebug={null}
             storeName={liveStore?.name ?? activeStore.name}
+            invoiceNumber={liveStore?.invoice_number ?? activeStore.invoice_number}
             lastUpdatedText={lastUpdatedText}
             ticketCount={liveTicketSummaries.length}
             selectedTicketExists={!!selectedTicket}
@@ -942,6 +945,7 @@ export default function App() {
             adminStoreTaxRate={String(adminForm.adminStoreTaxRate)}
             adminStoreReducedTaxRate={String(adminForm.adminStoreReducedTaxRate)}
             adminStoreTaxDisplayMode={adminForm.adminStoreTaxDisplayMode}
+            adminStoreInvoiceNumber={adminForm.adminStoreInvoiceNumber}
             adminTableLabel={adminForm.adminTableLabel}
             adminTableQrToken={adminForm.adminTableQrToken}
             adminTableGroupName={adminForm.adminTableGroupName}
@@ -1021,6 +1025,7 @@ export default function App() {
             onStoreTaxRateChange={(v) => adminForm.setAdminStoreTaxRate(Number(v))}
             onStoreReducedTaxRateChange={(v) => adminForm.setAdminStoreReducedTaxRate(Number(v))}
             onStoreTaxDisplayModeChange={adminForm.setAdminStoreTaxDisplayMode}
+            onStoreInvoiceNumberChange={adminForm.setAdminStoreInvoiceNumber}
             onSaveStoreSettings={adminOps.saveStoreSettings}
             onTableLabelChange={adminForm.setAdminTableLabel}
             onTableQrTokenChange={adminForm.setAdminTableQrToken}

@@ -143,6 +143,7 @@ type Props = {
   adminStoreTaxRate: string
   adminStoreReducedTaxRate: string
   adminStoreTaxDisplayMode: 'INCLUDED' | 'EXCLUDED'
+  adminStoreInvoiceNumber?: string
   adminTableLabel: string
   adminTableQrToken: string
   adminTableGroupName: string
@@ -229,6 +230,7 @@ type Props = {
   onStoreTaxRateChange: (value: string) => void
   onStoreReducedTaxRateChange: (value: string) => void
   onStoreTaxDisplayModeChange: (value: 'INCLUDED' | 'EXCLUDED') => void
+  onStoreInvoiceNumberChange?: (value: string) => void
   onSaveStoreSettings: () => void
   onTableLabelChange: (value: string) => void
   onTableQrTokenChange: (value: string) => void
@@ -580,6 +582,7 @@ export function AdminScreen(props: Props) {
               adminStoreTaxRate={props.adminStoreTaxRate}
               adminStoreReducedTaxRate={props.adminStoreReducedTaxRate}
               adminStoreTaxDisplayMode={props.adminStoreTaxDisplayMode}
+              adminStoreInvoiceNumber={props.adminStoreInvoiceNumber ?? ''}
               disabled={disabled}
               onStoreNameChange={props.onStoreNameChange}
               onStoreCodeChange={props.onStoreCodeChange}
@@ -592,6 +595,7 @@ export function AdminScreen(props: Props) {
               onStoreTaxRateChange={props.onStoreTaxRateChange}
               onStoreReducedTaxRateChange={props.onStoreReducedTaxRateChange}
               onStoreTaxDisplayModeChange={props.onStoreTaxDisplayModeChange}
+              onStoreInvoiceNumberChange={props.onStoreInvoiceNumberChange || (() => {})}
               onSaveStoreSettings={props.onSaveStoreSettings}
             />
           ) : null}

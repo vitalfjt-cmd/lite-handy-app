@@ -14,6 +14,7 @@ type StaffScreenProps = {
   staffReadOnlyMode: boolean
   staffPrototypeDebug?: string | null
   storeName: string
+  invoiceNumber?: string | null
   lastUpdatedText: string
   ticketCount: number
   selectedTicketExists: boolean
@@ -88,6 +89,7 @@ export function StaffScreen({
   staffReadOnlyMode,
   staffPrototypeDebug,
   storeName,
+  invoiceNumber,
   lastUpdatedText,
   ticketCount,
   selectedTicketExists,
@@ -857,6 +859,7 @@ export function StaffScreen({
         paymentFinalized={paymentFinalized}
         mutationBusy={mutationBusy}
         storeName={storeName}
+        invoiceNumber={invoiceNumber}
         yen={yen}
         staffMessage={staffMessage}
         setShowPaymentModal={setShowPaymentModal}

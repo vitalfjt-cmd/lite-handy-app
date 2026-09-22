@@ -116,6 +116,7 @@ export function useAdminForm() {
   const [adminStoreTaxRate, setAdminStoreTaxRate] = useState(10)
   const [adminStoreReducedTaxRate, setAdminStoreReducedTaxRate] = useState(8)
   const [adminStoreTaxDisplayMode, setAdminStoreTaxDisplayMode] = useState<'INCLUDED' | 'EXCLUDED'>('INCLUDED')
+  const [adminStoreInvoiceNumber, setAdminStoreInvoiceNumber] = useState('')
   const [itemImageUploadBusy, setItemImageUploadBusy] = useState(false)
 
   const resetBook = () => {
@@ -442,6 +443,7 @@ export function useAdminForm() {
     adminStoreTaxRate, setAdminStoreTaxRate,
     adminStoreReducedTaxRate, setAdminStoreReducedTaxRate,
     adminStoreTaxDisplayMode, setAdminStoreTaxDisplayMode,
+    adminStoreInvoiceNumber, setAdminStoreInvoiceNumber,
     itemImageUploadBusy, setItemImageUploadBusy,
     startEditMenuBook,
     startEditCategory,

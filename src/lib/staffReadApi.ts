@@ -132,6 +132,10 @@ export function loginStaffPrototype(storeSlug: string, email: string, password: 
       payment_timing_mode: 'PREPAID' | 'POSTPAID'
       ticket_no_reset_mode: 'DAILY' | 'SEQUENCE'
       ticket_no_digits: number
+      tax_rate?: number
+      reduced_tax_rate?: number
+      tax_display_mode?: 'INCLUDED' | 'EXCLUDED'
+      invoice_number?: string | null
       open_business_date?: string | null
       today_business_date?: string
     }
@@ -204,6 +208,10 @@ export function fetchStaffPrototypeSession(storeSlug: string, accessToken: strin
         payment_timing_mode: 'POSTPAID',
         ticket_no_reset_mode: 'DAILY',
         ticket_no_digits: 4,
+        tax_rate: 10,
+        reduced_tax_rate: 8,
+        tax_display_mode: 'INCLUDED',
+        invoice_number: 'T1234567890123',
       },
     } as any)
   }
@@ -235,6 +243,10 @@ export function fetchStaffPrototypeSession(storeSlug: string, accessToken: strin
       payment_timing_mode: 'PREPAID' | 'POSTPAID'
       ticket_no_reset_mode: 'DAILY' | 'SEQUENCE'
       ticket_no_digits: number
+      tax_rate?: number
+      reduced_tax_rate?: number
+      tax_display_mode?: 'INCLUDED' | 'EXCLUDED'
+      invoice_number?: string | null
       open_business_date?: string | null
       today_business_date?: string
     }
@@ -265,6 +277,10 @@ export function fetchStaffPrototypeBootstrap(storeSlug: string) {
       payment_timing_mode: 'PREPAID' | 'POSTPAID'
       ticket_no_reset_mode: 'DAILY' | 'SEQUENCE'
       ticket_no_digits: number
+      tax_rate?: number
+      reduced_tax_rate?: number
+      tax_display_mode?: 'INCLUDED' | 'EXCLUDED'
+      invoice_number?: string | null
       open_business_date?: string | null
       today_business_date?: string
     }
@@ -314,6 +330,10 @@ export function fetchAdminPrototypeBootstrap(storeSlug: string) {
       payment_timing_mode: 'PREPAID' | 'POSTPAID'
       ticket_no_reset_mode: 'DAILY' | 'SEQUENCE'
       ticket_no_digits: number
+      tax_rate?: number
+      reduced_tax_rate?: number
+      tax_display_mode?: 'INCLUDED' | 'EXCLUDED'
+      invoice_number?: string | null
       open_business_date?: string | null
       today_business_date?: string
     }
@@ -460,6 +480,7 @@ export function saveAdminPrototypeStore(
     taxRate?: number
     reducedTaxRate?: number
     taxDisplayMode?: 'INCLUDED' | 'EXCLUDED'
+    invoiceNumber?: string | null
   },
 ) {
   return invoke<{
@@ -474,6 +495,10 @@ export function saveAdminPrototypeStore(
       payment_timing_mode: 'PREPAID' | 'POSTPAID'
       ticket_no_reset_mode: 'DAILY' | 'SEQUENCE'
       ticket_no_digits: number
+      tax_rate?: number
+      reduced_tax_rate?: number
+      tax_display_mode?: 'INCLUDED' | 'EXCLUDED'
+      invoice_number?: string | null
       open_business_date?: string | null
       today_business_date?: string
     }
